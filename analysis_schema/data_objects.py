@@ -10,7 +10,10 @@ class Region(BaseModel):
     left_edge: Coordinate
     right_edge: Coordinate
 
-data_objects = typing.Union[Region, Sphere]
+class AllData(BaseModel):
+    pass
+
+data_objects = typing.Union[Region, Sphere, AllData]
 
 class DataSource(BaseModel):
     source: typing.Union[data_objects, typing.List[data_objects]]

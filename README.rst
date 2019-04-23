@@ -14,8 +14,6 @@ Analysis Schema
         :alt: Documentation Status
 
 
-
-
 Declarative schema for analysis of physical systems
 
 
