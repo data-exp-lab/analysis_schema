@@ -1,19 +1,26 @@
 import typing
-from pydantic import BaseModel
-from .quantities import Coordinate, Vector, Path, UnitfulValue, UnitfulArray
+import enum
+from pydantic import BaseModel, Schema, create_model
+from .quantities import UnitfulCoordinate, Vector, Path, UnitfulValue, UnitfulArray
 
 class Sphere(BaseModel):
-    center: Coordinate
+    center: UnitfulCoordinate
     radius: UnitfulValue
 
+class SphereID(BaseModel):
+    sphere: Sphere
+
 class Region(BaseModel):
-    left_edge: Coordinate
-    right_edge: Coordinate
+    left_edge: UnitfulCoordinate
+    right_edge: UnitfulCoordinate
+
+class RegionID(BaseModel):
+    region: Region
 
 class AllData(BaseModel):
     pass
 
-data_objects = typing.Union[Region, Sphere, AllData]
+class AllDataID(BaseModel):
+    all_data: typing.Union[AllData, None]
 
-class DataSource(BaseModel):
-    source: typing.Union[data_objects, typing.List[data_objects]]
+DataObject = DataSource = typing.Union[AllDataID, RegionID, SphereID]

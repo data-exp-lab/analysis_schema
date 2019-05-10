@@ -1,8 +1,8 @@
 import typing
-from pydantic import BaseModel
-from .operations import operations
-from .data_objects import data_objects
+from pydantic import BaseModel, Schema
+from .operations import Operation, Sum
+from .data_objects import AllData, DataObject
 
 class Projection(BaseModel):
-    source: data_objects
-    operation: operations
+    source: DataObject = {"all_data": {}}
+    operation: Operation = {"sum": "density", "axis": "x"}

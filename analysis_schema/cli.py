@@ -14,7 +14,6 @@ def main():
 @click.option("--output", default=None, help='output filename')
 def generate(name, output):
     click.echo("Hi there!  Generating {}.".format(name))
-
     if output is None:
         click.echo("No output")
     else:

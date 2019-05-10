@@ -10,6 +10,7 @@ from .data_objects import (
     Sphere,
     Region,
     AllData,
+    DataObject,
     DataSource,
 )
 
@@ -19,7 +20,7 @@ from .operations import (
     Minimum,
     Maximum,
     Integrate,
-    operations,
+    Operation,
 )
 
 from .products import (
@@ -30,7 +31,7 @@ from .quantities import (
     UnitfulValue,
     UnitfulArray,
     unyt_array_model,
-    Coordinate,
+    UnitfulCoordinate,
     Vector,
     Path,
 )
