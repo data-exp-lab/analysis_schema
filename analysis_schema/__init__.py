@@ -8,7 +8,7 @@ __version__ = '0.1.0'
 
 from .data_objects import (
     Sphere,
-    Region
+    Region,
     AllData,
     DataSource,
 )
@@ -17,7 +17,7 @@ from .operations import (
     Average,
     Sum,
     Minimum,
-    Maximum
+    Maximum,
     Integrate,
     operations,
 )
@@ -29,7 +29,7 @@ from .products import (
 from .quantities import (
     UnitfulValue,
     UnitfulArray,
-    unyt_array_model
+    unyt_array_model,
     Coordinate,
     Vector,
     Path,
