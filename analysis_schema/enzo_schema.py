@@ -144,41 +144,49 @@ print(MainModel.schema_json(indent=2))
 get_ipython().run_line_magic('pinfo', 'pydantic.BaseModel')
 
 
-# In[162]:
+# In[175]:
 
 
 # building a schema for enzo hierarchy
 
 class EnzoGrid(BaseModel):
-    grid : int
-    task: int = 0
-    grid_rank : int
-    grid_dimension : List[int]
-    grid_start_index : List[int]
-    grid_end_index : List[int]
-    grid_left_edge : List[int] = [0,0]
-    grid_right_edge : List[int] = [1,1]
-    time : int = 1
+    Grid : int
+    Task: int = 0
+    GridRank : int
+    GridDimension : List[int]
+    GridStartIndex : List[int]
+    GridEndIndex : List[int]
+    GridLeftEdge : List[int] = [0,0]
+    GridRightEdge : List[int] = [1,1]
+    Time : int = 1
+    SubGridsAreStatic : int 
+    NumberOfBaryonFields : int
+    FieldType : List[int] 
+    BaryonFileName : str
+    CourantSafetyNumber : float
+    PPMFlatteningParameter : int
+    PPMDiffusionParameter : int
+    PPMSteepeningParameter : int
+    NumberOfParticles : int
 
 
-# In[167]:
+# In[191]:
 
 
 # storing values in a variable, that are then passed into a the enzo schema
 
-e = {'grid':1, 'grid_rank': 2, 'grid_dimension': [70,70],
-    'grid_start_index': [3,3], 'grid_end_index': [66,66]}
+e = {'Grid':1, 'Task':0, 'GridRank': 3, 'GridDimension': [70,70],
+    'GridStartIndex': [3,3], 'GridEndIndex': [66,66], 
+     'SubGridsAreStatic':0, 'NumberOfBaryonFields': 4,
+    'FieldType': [0,1,4,5], 'BaryonFileName': './DD0011/DD0011.cpu0000',
+    'CourantSafetyNumber' : 0.400000, 'PPMFlatteningParameter': 0,
+    'PPMDiffusionParameter' : 0,'PPMSteepeningParameter' : 0,
+    'NumberOfParticles' : 0}
 eg = EnzoGrid(**e)
 print(eg)
 
 
-# In[132]:
-
-
-get_ipython().run_line_magic('pinfo', 'pydantic.Schema')
-
-
-# In[169]:
+# In[192]:
 
 
 # defining the enzo model
@@ -190,35 +198,66 @@ class EnzoModel(BaseModel):
         title = 'Enzo Schema'
 
 
-# In[170]:
+# In[193]:
 
 
 print(EnzoModel.schema())
 
 
-# In[171]:
+# In[194]:
 
 
 print(EnzoModel.schema_json(indent=2))
 
 
-# In[147]:
+# In[207]:
 
 
-ds = yt.load("/Users/swalkow2/Downloads/Data/EnzoKelvinHelmholtz/DD0011/DD0011.hierarchy")
+ds = yt.load("/Users/swalkow2/Downloads/Data/EnzoKelvinHelmholtz/DD0011/DD0011")
 
 
-# In[160]:
+# In[211]:
 
 
-print(ds.dimensionality)
+print(ds.domain_dimensions)
 
 
-# In[156]:
+# In[212]:
 
 
-deg = enzo_grid(ds)
+print(ds.field_list)
+
+
+# In[214]:
+
+
+ds.get_metadata()
+
+
+# In[213]:
+
+
+deg = enzo_grid(**ds)
 print(deg)
+
+
+# In[250]:
+
+
+text = open('/Users/swalkow2/Downloads/Data/EnzoKelvinHelmholtz/DD0011/DD0011.hierarchy', 'r')
+
+
+# In[251]:
+
+
+reading = text.readlines()
+
+
+# In[253]:
+
+
+for r in reading:
+    print(r)
 
 
 # In[ ]:
