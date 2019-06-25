@@ -25,4 +25,5 @@ class Integrate(BaseModel):
     field: typing.Tuple[str, str]
     axis: typing.Union[typing.Tuple[str, str], str]
 
-Operation = typing.Union[Average, Sum, Minimum, Maximum, Integrate]
+class Operation(BaseModel):
+    operation: typing.Union[Average, Sum, Minimum, Maximum, Integrate]

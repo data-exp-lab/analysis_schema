@@ -4,27 +4,30 @@
 import sys
 import click
 import http.server
+from operations import Operation
+from server import run as run_editor
 
 @click.group()
 def main():
     pass
 
 @main.command()
-@click.argument("name")
 @click.option("--output", default=None, help='output filename')
-def generate(name, output):
-    click.echo("Hi there!  Generating {}.".format(name))
+def generate(output):
+    click.echo("Generating schema for Operation")
+    s = Operation.schema_json(indent = 2)
     if output is None:
-        click.echo("No output")
+        click.echo_via_pager(s)
     else:
         click.echo("Outputting to {}".format(output))
+        with open(output, "w") as f:
+            f.write(s)
 
 @main.command()
-@click.argument("editor")
+@click.option("--host", default="localhost", help="Hostname to listen at")
 @click.option("--port", default=8000, help='Port to serve on')
-def editor(port):
-    # TODO: Make this work with the generated files
-    http.server.SimpleHTTPServer()
+def editor(host, port):
+	run_editor(host, port)
 
 if __name__ == "__main__":
     sys.exit(main())  # pragma: no cover

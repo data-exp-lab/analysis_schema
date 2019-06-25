@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/editor/editor.main.css" />
+</head>
+<body>
+
+<h2>Monaco Editor Sync Loading Sample</h2>
+<div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/loader.js"></script>
+
+<script>
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs' }});
+    window.MonacoEnvironment = {
+        getWorkerUrl: function(workerId, label) {
+            return 'monaco-editor-worker-loader-proxy.js';
+        }
+    };
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/editor/editor.main.nls.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/editor/editor.main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/language/json/jsonMode.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/language/json/jsonWorker.js"></script>
+    require(["vs/editor/editor.main", "vs/language/json/jsonMode], function () {
+        var jsonCode = [
+            '{',
+            '    "p1": "v3",',
+            '    "p2": false',
+            "}"
+        ].join('\n');
+        var modelUri = monaco.Uri.parse(window.location);
+        modelUri.path = "/schema.json";
+        var model = monaco.editor.createModel(jsonCode, "json", modelUri);
+
+        monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+            validate: true,
+            enableSchemaRequest: true,
+            schemas: []
+        });
+
+        var editor = monaco.editor.create(document.getElementById("container"), {
+            model:model
+        });
+    });
+</script>
+
+</body>
+</html>
