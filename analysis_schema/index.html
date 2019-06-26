@@ -19,15 +19,12 @@
             return 'monaco-editor-worker-loader-proxy.js';
         }
     };
-<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/editor/editor.main.nls.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/editor/editor.main.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/language/json/jsonMode.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/language/json/jsonWorker.js"></script>
-    require(["vs/editor/editor.main", "vs/language/json/jsonMode], function () {
+    require(["vs/editor/editor.main"], function () {
+        var modelUri = monaco.Uri.parse(window.location);
+        modelUri.path = "/schema.json";
         var jsonCode = [
             '{',
-            '    "p1": "v3",',
-            '    "p2": false',
+            '    "$schema": "'+ modelUri.toString()+'"',
             "}"
         ].join('\n');
         var modelUri = monaco.Uri.parse(window.location);
