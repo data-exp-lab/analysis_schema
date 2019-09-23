@@ -26,7 +26,7 @@ class ProfilePlot(BaseModel):
     y_log : bool = None
     x_title : str = None
     y_title : str = None
-    profiles : list[Profile]
+    profiles : List[Profile]
 
 class PhasePlot(BaseModel):
     x_log : bool = None

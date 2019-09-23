@@ -1,4 +1,4 @@
-from operations import Operation
+from .operations import Operation
 import http.server
 import pkg_resources
 
