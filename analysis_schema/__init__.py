@@ -35,3 +35,10 @@ from .quantities import (
     Vector,
     Path,
 )
+
+from .visualization_objects import (
+    FixedResolutionBuffer,
+    ProfilePlot,
+    PhasePlot,
+    PhasePlotMPL,
+)
