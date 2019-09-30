@@ -49,3 +49,26 @@ class PhasePlotMPL(BaseModel):
     # this attribute eventually holds a color, does that get encoded into the typing/
     cb : tuple = None
 
+### Sam adding more stuff
+
+class LineBuffer(BaseModel):
+    data : Dict[Tuple[str, str], UnitfulArray] = {}
+    start_point : Tuple[UnitfulValue, UnitfulValue, UnitfulValue] = None
+    end_point : Tuple[UnitfulValue, UnitfulValue, UnitfulValue] = None
+    npoints : int = 0
+    label : str = None
+    ds : Dataset = None
+    # not sure if vector is correct here
+    points : Vector
+
+class LinePlotDictionary(BaseModel):
+    known_dimensions : dict = None
+
+class LinePlot(BaseModel):
+    plot_valid : bool
+    # calling previous function
+    lines : LineBuffer
+    x_unit : str = None
+    plot_type : str = 'line_plot'
+
+
