@@ -71,4 +71,30 @@ class LinePlot(BaseModel):
     x_unit : str = None
     plot_type : str = 'line_plot'
 
+class FieldTransform(BaseModel):
+    # Unsure of this one
+    func : Any # a function call of some kind
+    name : str = None
+
+class PlotDictionary(BaseModel):
+    data_source: DataObject = None
+
+class PlotContainer(BaseModel):
+    plot_valid : bool = False
+    ylabel : str = None
+    field_transform : dict = None
+    minorticks : dict = None
+    font_color : str = None
+    font_properties : tuple = None
+    data_valid : bool = False
+    # could be a pair of floats if iterable
+    figure_size : float = None
+    # not sure what the difference is between ds, dataset, or data_source
+    data_source : DataObject = None
+    xlabel : str = None
+    ds : Dataset
+    # should be DatasetSeries?
+    ts : Dataset
+    plot_type : str = None
+
 
