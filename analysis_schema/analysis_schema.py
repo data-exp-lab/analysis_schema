@@ -51,4 +51,8 @@ from .visualization_objects import (
     PhasePlotMPL,
 )
 
+from .fields import (
+    FieldDefinition
+)
+
 schema = { n: v for n, v in locals().items() if isinstance(v, type) and issubclass(v, BaseModel) }
