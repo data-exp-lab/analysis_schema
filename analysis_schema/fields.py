@@ -28,7 +28,7 @@ class SpatialValidator(BaseModel):
 
 
 class ParameterValidator(BaseModel):
-    parameters: typing.List[str] = []
+    parameters: typing.List[FieldParameter] = []
 
 
 class PropertyValidator(BaseModel):

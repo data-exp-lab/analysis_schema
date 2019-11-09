@@ -4,14 +4,7 @@
 
 from pydantic import BaseModel
 
-from .data_objects import (
-    Sphere,
-    SphereID,
-    Region,
-    RegionID,
-    AllData,
-    AllDataID,
-)
+from .data_objects import Sphere, SphereID, Region, RegionID, AllData, AllDataID
 
 from .dataset import (
     DomainContext,
@@ -21,28 +14,11 @@ from .dataset import (
     Dataset,
 )
 
-from .operations import (
-    Average,
-    Sum,
-    Minimum,
-    Maximum,
-    Integrate,
-    Operation,
-)
+from .operations import Average, Sum, Minimum, Maximum, Integrate, Operation
 
-from .products import (
-    Projection,
-    ProfileND,
-    Profile,
-)
+from .products import Projection, ProfileND, Profile
 
-from .quantities import (
-    UnitfulValue,
-    UnitfulArray,
-    UnitfulCoordinate,
-    Vector,
-    Path,
-)
+from .quantities import UnitfulValue, UnitfulArray, UnitfulCoordinate, Vector, Path
 
 from .visualization_objects import (
     FixedResolutionBuffer,
@@ -51,8 +27,10 @@ from .visualization_objects import (
     PhasePlotMPL,
 )
 
-from .fields import (
-    FieldDefinition
-)
+from .fields import FieldDefinition
 
-schema = { n: v for n, v in locals().items() if isinstance(v, type) and issubclass(v, BaseModel) }
+schema = {
+    n: v
+    for n, v in locals().items()
+    if isinstance(v, type) and issubclass(v, BaseModel)
+}

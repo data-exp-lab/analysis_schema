@@ -3,7 +3,7 @@ import http.server
 import pkg_resources
 
 # For static serving:
-#_index_contents = pkg_resources.resource_string(__name__, "index.html")
+# _index_contents = pkg_resources.resource_string(__name__, "index.html")
 
 # Implement do_GET for only the files we want -- index.html and the schema
 
@@ -13,6 +13,7 @@ self.MonacoEnvironment = {
 };
 importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/base/worker/workerMain.js');
 """
+
 
 class EditorHandler(http.server.BaseHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -39,7 +40,7 @@ class EditorHandler(http.server.BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
-        s = Operation.schema_json(indent = 2)
+        s = Operation.schema_json(indent=2)
         self.wfile.write(s.encode("utf-8"))
         return
 
@@ -49,6 +50,7 @@ class EditorHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(_monaco_env)
         return
+
 
 def run(host, port):
     server_address = (host, port)
