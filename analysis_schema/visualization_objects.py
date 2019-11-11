@@ -97,4 +97,18 @@ class PlotContainer(BaseModel):
     ts : Dataset
     plot_type : str = None
 
+class ImagePlotContainer(BaseModel):
+    # 'Any' is used when 'Plot Dictionary' is the value, I was unsure if we want to call it directly
+     background_color : Any
+     colorbar_label : Any
+     colormaps : dict
+     callbacks : list = None
+     colorbar_valid : bool = False
+     cbar_minorticks : dict
+     plots : Any
+
+
+
+
+
 
