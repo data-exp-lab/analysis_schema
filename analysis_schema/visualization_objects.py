@@ -98,14 +98,14 @@ class PlotContainer(BaseModel):
     plot_type : str = None
 
 class ImagePlotContainer(BaseModel):
-    # 'Any' is used when 'Plot Dictionary' is the value, I was unsure if we want to call it directly
-     background_color : Any
-     colorbar_label : Any
-     colormaps : dict
-     callbacks : list = None
+    # call from previous functions:
+     background_color : PlotContainer
+     colorbar_label : PlotContainer
+     colormaps : dict = {}
+     callbacks : list = []
      colorbar_valid : bool = False
      cbar_minorticks : dict
-     plots : Any
+     plots : PlotContainer
 
 
 
