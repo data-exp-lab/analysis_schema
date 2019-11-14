@@ -107,3 +107,14 @@ class PlotContainer(BaseModel):
     # should be DatasetSeries?
     ts: Dataset
     plot_type: str = None
+
+
+class ImagePlotContainer(BaseModel):
+    # call from previous functions:
+    background_color: PlotContainer
+    colorbar_label: PlotContainer
+    colormaps: dict = {}
+    callbacks: list = []
+    colorbar_valid: bool = False
+    cbar_minorticks: dict
+    plots: PlotContainer
