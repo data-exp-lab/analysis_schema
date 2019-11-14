@@ -219,3 +219,7 @@ class AMRDataSpecification(BaseModel):
     periodicity: Tuple[bool, bool, bool] = (True, True, True)
     geometry: Union[str, Tuple[str, Tuple[str, str, str]]] = "cartesian"
     refine_by: Union[List[int], int] = 2
+
+
+class YTDatasetSpecification(BaseModel):
+    data_specification: Union[AMRDataSpecification] = None

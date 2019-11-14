@@ -29,7 +29,11 @@ from .visualization_objects import (
 
 from .fields import FieldDefinition
 
-from .stream_frontend import AMRGridDataSpecification, AMRDataSpecification
+from .stream_frontend import (
+    AMRGridDataSpecification,
+    AMRDataSpecification,
+    YTDatasetSpecification,
+)
 
 schema = {
     n: v
