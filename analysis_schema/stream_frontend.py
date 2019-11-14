@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Schema, create_model
-from typing import Dict, List, Optional, Sequence, Set, Tuple, OrderedDict, Any, Union
+from typing import Dict, List, Optional, Sequence, Set, Tuple, Any, Union
 import enum
 import time
 
