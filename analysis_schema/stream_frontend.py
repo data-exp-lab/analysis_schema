@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Schema, create_model
-from typing import Dict, List, Optional, Sequence, Set, Tuple, OrderedDict, Any
+from typing import Dict, List, Optional, Sequence, Set, Tuple, OrderedDict, Any, Union
 import enum
 import time
 
@@ -9,11 +9,10 @@ from .dataset import Dataset
 from .products import Profile
 
 class StreamGrid(BaseModel):
-    parent_id : int = 1
+    parent_id : int = -1
     Level : int = -1
-    children_ids : list
+    children_ids : List[int]
     # this value was hard coded:
-    slots : list = ['proc_num']
     id_offset : int = 0
 
 class StreamHandler(BaseModel):
@@ -29,7 +28,7 @@ class StreamHandler(BaseModel):
     # not sure if this is should be a Vector, or an np.array:
     right_edges : Vector
     periodicity : str
-    fields : list
+    _fields : list
     # not sure if this is should be a Vector, or an np.array:
     left_edges : Vector
     levels : str
@@ -54,6 +53,9 @@ class StreamHierarchy(BaseModel):
     # calls previous 'StreamGrid' class
     grid : StreamGrid
 
+class StreamFieldInfo(BaseModel):
+    pass
+
 class StreamDataset(BaseModel):
     # astro specific stuff:
     # there's a lot I'm not sure about:
@@ -75,7 +77,7 @@ class StreamDataset(BaseModel):
     periodicity : str
     geometry : str = 'cartesian'
     domain_dimensions : int
-    current_time : time.time()
+    current_time : float = time.time()
     gamma : float = 5./3.
     # not sure about refine_by
     refine_by : Any
@@ -85,7 +87,7 @@ class StreamDataset(BaseModel):
     dataset_type : str = 'stream'
 
 class StreamDictFieldHandler(BaseModel):
-    additional_fields : Tuple
+    additional_fields : Any
 
 class StreamParticleIndex(BaseModel):
     # dataset calls streamhandler, how to type annotation that?
@@ -119,7 +121,7 @@ class StreamHexahedralHiearchy(BaseModel):
 
 class StreamHexahedralDataset(BaseModel):
     index_class : StreamHexahedralHiearchy
-    field_info_class : StreamFeildInfo # not yet defined
+    field_info_class : StreamFieldInfo # not yet defined
     dataset_type : str = 'stream_hexahedral'
 
 class StreamOctreeSubset(BaseModel):
@@ -170,4 +172,29 @@ class StreamUnstructuredMeshDataset(BaseModel):
     field_info_class : StreamFieldInfo # not yet defined
     dataset_type : str = 'stream_unstructured'
 
+_field_name = Union[Tuple[str, str], str]
+_field_values = Union[Any, Tuple[Any, str]]
 
+class AMRGridDataSpecification(BaseModel):
+    # Maps to a single element of the `grid_data` argument to yt.load_amr_grids
+    # Note that the "fields" here are what would normally be in the rest of the dict
+    left_edge: Tuple[float, float, float]
+    right_edge: Tuple[float, float, float]
+    dimensions: Tuple[int, int, int]
+    level: int
+    field_data: Dict[_field_name, _field_values]
+
+class AMRDataSpecification(BaseModel):
+    # load_amr_grids
+    grid_data: List[AMRGridDataSpecification] = None
+    domain_dimensions: Tuple[int, int, int] = None
+    length_unit : Union[str, float] = None
+    mass_unit : Union[str, float] = None
+    time_unit : Union[str, float] = None
+    velocity_unit : Union[str, float] = None
+    magnetic_unit : Union[str, float] = None
+    bbox: Tuple[Tuple[float, float], Tuple[float, float], Tuple[float, float]] = None
+    sim_time: float = 0.0
+    periodicity: Tuple[bool, bool, bool] = (True, True, True)
+    geometry: Union[str, Tuple[str, Tuple[str, str, str]]] = "cartesian"
+    refine_by: Union[List[int], int] = 2
