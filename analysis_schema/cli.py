@@ -38,8 +38,8 @@ def list_objects():
 @click.option("--host", default="localhost", help="Hostname to listen at")
 @click.option("--port", default=8000, help="Port to serve on")
 @click.argument("schema_object", default="Operation")
-def editor(host, port):
-    run_editor(host, port)
+def editor(host, port, schema_object):
+    run_editor(host, port, schema_object)
 
 
 if __name__ == "__main__":

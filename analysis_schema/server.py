@@ -1,4 +1,5 @@
 from .operations import Operation
+from .analysis_schema import schema
 import http.server
 import pkg_resources
 
@@ -40,8 +41,7 @@ class EditorHandler(http.server.BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
-        s = Operation.schema_json(indent=2)
-        self.wfile.write(s.encode("utf-8"))
+        self.wfile.write(self.server._schema_definition.encode("utf-8"))
         return
 
     def return_worker_proxy(self):
@@ -52,7 +52,14 @@ class EditorHandler(http.server.BaseHTTPRequestHandler):
         return
 
 
-def run(host, port):
+class SchemaHTTPServer(http.server.HTTPServer):
+    def __init__(self, *args, schema_object="Operation", **kwargs):
+        obj = schema[schema_object]  # TODO: add error
+        self._schema_definition = obj.schema_json(indent=2)
+        super().__init__(*args, **kwargs)
+
+
+def run(host, port, schema_object="Operation"):
     server_address = (host, port)
-    httpd = http.server.HTTPServer(server_address, EditorHandler)
+    httpd = SchemaHTTPServer(server_address, EditorHandler, schema_object=schema_object)
     httpd.serve_forever()
