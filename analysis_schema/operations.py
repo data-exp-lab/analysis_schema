@@ -25,6 +25,14 @@ class Maximum(BaseModel):
     axis: typing.Union[typing.Tuple[str, str], str]
 
 
+class ArgMin(BaseModel):  # location of the maximum value
+    field: typing.Tuple[str, str]
+
+
+class ArgMax(BaseModel):  # location of the maximum value
+    field: typing.Tuple[str, str]
+
+
 class Integrate(BaseModel):
     integrate: typing.Union[str, typing.Tuple[str, str]]
     field: typing.Tuple[str, str]
