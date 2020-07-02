@@ -12,6 +12,8 @@ _parameter_value_types = typing.Union[
     quantities.Path,
 ]
 
+FieldName = typing.Union[str, typing.Tuple[str, str]]
+
 
 class SamplingTypeEnum(str, enum.Enum):
     cell = "cell"

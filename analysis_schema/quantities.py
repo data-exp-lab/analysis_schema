@@ -2,11 +2,14 @@ import typing
 from pydantic import BaseModel, Schema
 
 
-class UnitfulValue(BaseModel):
+class _UnitfulValue(BaseModel):
     value: float
     # This is a simplification -- we are not allowing for the case of full
     # unyt unit registries, etc
     unit: str = "unitary"
+
+
+UnitfulValue = typing.Union[_UnitfulValue, typing.Tuple[float, str]]
 
 
 class UnitfulArray(BaseModel):
@@ -16,10 +19,14 @@ class UnitfulArray(BaseModel):
     shape: typing.Tuple[int] = ()
 
 
-class UnitfulCoordinate(BaseModel):
+class _UnitfulCoordinate(BaseModel):
     values: typing.List[float] = Schema([0.5, 0.5, 0.5], minItems=3, maxItems=3)
     unit: str = "unitary"
 
+
+UnitfulCoordinate = typing.Union[
+    _UnitfulCoordinate, typing.Tuple[typing.List[float], str]
+]
 
 unyt_array_model = typing.Union[typing.List[UnitfulValue], UnitfulArray]
 

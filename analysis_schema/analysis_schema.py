@@ -35,6 +35,8 @@ from .stream_frontend import (
     YTDatasetSpecification,
 )
 
+from .image_gallery import ImageGallery
+
 schema = {
     n: v
     for n, v in locals().items()
