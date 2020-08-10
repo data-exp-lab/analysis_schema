@@ -1,6 +1,7 @@
 import enum
 from typing import List, Tuple, Union
-from pydantic import BaseModel, Schema, create_model, Field
+from pydantic.fields import Field
+from pydantic import BaseModel, Schema, create_model
 from .quantities import UnitfulValue, UnitfulCoordinate
 from .fields import FieldName
 
