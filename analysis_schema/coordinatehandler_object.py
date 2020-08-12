@@ -10,16 +10,13 @@ from .products import Profile
 
 class CoordinateHandler(BaseModel):
     # not sure what the input for data projection is, but it eventually becomes a dictionary
-    data_projection: dict
-    axis_id: dict
-    y_axis: dict
-    image_axis_name: dict
-    x_axis: dict
-    data_transform: dict
-    axis_order: list
+    data_projection: Dict
+    axis_id: Dict
+    y_axis: Dict
+    image_axis_name: Dict
+    x_axis: Dict
+    data_transform: Dict
+    axis_order: List
     ds: Dataset = None
-    axis_name: dict
+    axis_name: Dict
     name: str = None
-
-
-print(CoordinateHandler.schema_json(indent=2))
