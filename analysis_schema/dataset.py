@@ -36,8 +36,8 @@ domain_contexts = typing.Union[CosmologyContext, TurbulentContext, NeuroImagingC
 class Dataset(BaseModel):
     domain_left_edge: UnitfulCoordinate
     domain_right_edge: UnitfulCoordinate
-    domain_dimensions: typing.List[float]
+    domain_dimensions: typing.List[int]
     current_time: UnitfulValue
-    geometry: str
+    geometry: str = "cartesian"
     dataset_type: str
     domain_contexts: typing.List[domain_contexts]

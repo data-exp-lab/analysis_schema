@@ -35,7 +35,7 @@ from .stream_frontend import (
     YTDatasetSpecification,
 )
 
-from .image_gallery import ImageGallery
+from .image_gallery import ImageGallery, PlotDefinition
 
 schema = {
     n: v
