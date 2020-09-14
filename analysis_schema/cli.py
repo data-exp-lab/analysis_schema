@@ -39,6 +39,7 @@ def list_objects():
 @click.option("--port", default=8000, help="Port to serve on")
 @click.argument("schema_object", default="Operation")
 def editor(host, port, schema_object):
+    click.echo(f"Launching on {host}:{port}")
     run_editor(host, port, schema_object)
 
 
