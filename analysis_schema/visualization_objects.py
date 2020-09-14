@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Schema, create_model
 from typing import Dict, List, Optional, Sequence, Set, Tuple, Any
-import enum
 
 from .quantities import UnitfulCoordinate, Vector, Path, UnitfulValue, UnitfulArray
 from .data_objects import DataObject

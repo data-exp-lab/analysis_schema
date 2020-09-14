@@ -4,7 +4,7 @@
 
 from pydantic import BaseModel
 
-from .data_objects import Sphere, SphereID, Region, RegionID, AllData, AllDataID
+from .data_objects import DataSource, DataObject
 
 from .dataset import (
     DomainContext,
