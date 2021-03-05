@@ -1,0 +1,8 @@
+{
+    "$schema": "./example_schema.json",
+    "operation": {
+        "field": ["density", "temperature"],
+        "axis":["x"],
+        "integrate":["text"]
+    }
+}
