@@ -1,0 +1,253 @@
+{
+  "title": "yt example",
+  "description": "An example for a yt analysis schema using Pydantic",
+  "type": "object",
+  "properties": {
+    "Plot": {
+      "title": "Plot",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SlicePlot"
+      }
+    }
+  },
+  "required": [
+    "Plot"
+  ],
+  "definitions": {
+    "Dataset": {
+      "title": "Dataset",
+      "description": "The dataset model to load and that will be drawn from for other classes. Filename is the only required field. ",
+      "type": "object",
+      "properties": {
+        "filename": {
+          "title": "Filename",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "default": "Data for Science",
+          "type": "string"
+        },
+        "comments": {
+          "title": "Comments",
+          "type": "string"
+        },
+        "grammar": {
+          "title": "Grammar",
+          "default": "registration",
+          "type": "string"
+        }
+      },
+      "required": [
+        "filename"
+      ]
+    },
+    "Fields": {
+      "title": "Fields",
+      "type": "object",
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "comments": {
+          "title": "Comments",
+          "type": "string"
+        },
+        "grammar": {
+          "title": "Grammar",
+          "default": "selection",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "unit"
+      ]
+    },
+    "Sum": {
+      "title": "Sum",
+      "type": "object",
+      "properties": {
+        "sum_field": {
+          "$ref": "#/definitions/Fields"
+        },
+        "comments": {
+          "title": "Comments",
+          "type": "string"
+        },
+        "grammar": {
+          "title": "Grammar",
+          "default": "reduction",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sum_field"
+      ]
+    },
+    "Average": {
+      "title": "Average",
+      "type": "object",
+      "properties": {
+        "average_field": {
+          "$ref": "#/definitions/Fields"
+        },
+        "comments": {
+          "title": "Comments",
+          "type": "string"
+        },
+        "grammar": {
+          "title": "Grammar",
+          "default": "reduction",
+          "type": "string"
+        }
+      },
+      "required": [
+        "average_field"
+      ]
+    },
+    "Operations": {
+      "title": "Operations",
+      "type": "object",
+      "properties": {
+        "operation": {
+          "title": "Operation",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Sum"
+            },
+            {
+              "$ref": "#/definitions/Average"
+            }
+          ]
+        }
+      },
+      "required": [
+        "operation"
+      ]
+    },
+    "DataSource": {
+      "title": "DataSource",
+      "type": "object",
+      "properties": {
+        "dataset": {
+          "$ref": "#/definitions/Dataset"
+        },
+        "data_selection": {
+          "title": "Data Selection",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Fields"
+            },
+            {
+              "$ref": "#/definitions/Operations"
+            }
+          ]
+        }
+      },
+      "required": [
+        "dataset",
+        "data_selection"
+      ]
+    },
+    "AxisPlot": {
+      "title": "AxisPlot",
+      "type": "object",
+      "properties": {
+        "axis": {
+          "title": "Axis",
+          "type": "string"
+        },
+        "comments": {
+          "title": "Comments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "axis"
+      ]
+    },
+    "Center": {
+      "title": "Center",
+      "type": "object",
+      "properties": {
+        "center": {
+          "title": "Center",
+          "type": "string"
+        },
+        "comments": {
+          "title": "Comments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "center"
+      ]
+    },
+    "Widths": {
+      "title": "Widths",
+      "type": "object",
+      "properties": {
+        "width": {
+          "title": "Width",
+          "type": "string"
+        },
+        "comments": {
+          "title": "Comments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "width"
+      ]
+    },
+    "SlicePlot": {
+      "title": "SlicePlot",
+      "type": "object",
+      "properties": {
+        "Data": {
+          "$ref": "#/definitions/DataSource"
+        },
+        "AxisPlot": {
+          "title": "Axisplot",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AxisPlot"
+          }
+        },
+        "CenterPlot": {
+          "$ref": "#/definitions/Center"
+        },
+        "WidthPlot": {
+          "title": "Widthplot",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Widths"
+          }
+        },
+        "Comments": {
+          "title": "Comments",
+          "type": "string"
+        },
+        "Annotation": {
+          "title": "Annotation",
+          "default": false,
+          "type": "boolean"
+        },
+        "ColorMap": {
+          "title": "Colormap",
+          "type": "string"
+        }
+      },
+      "required": [
+        "Data"
+      ]
+    }
+  }
+}

@@ -24,7 +24,9 @@ class EditorHandler(http.server.BaseHTTPRequestHandler):
         if self.path in ("/", "/index.html"):
             return self.return_index()
         elif self.path == "/schema.json":
-            return self.return_schema()
+            # calls a specific schema
+            # can call the default schema through `return_schema`or a different schema from a local JSON file through `return_external_schema`
+            return self.return_external_schema()
         elif self.path == "/monaco-editor-worker-loader-proxy.js":
             return self.return_worker_proxy()
         self.send_response(404)
@@ -38,10 +40,23 @@ class EditorHandler(http.server.BaseHTTPRequestHandler):
         return
 
     def return_schema(self):
+        """This function returns the schema generate within this module, which I am calling the defalut schema.
+        """
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
         self.wfile.write(self.server._schema_definition.encode("utf-8"))
+        return
+
+    def return_external_schema(self):
+        """This function grabs a local schema file instead of generating the default schema. To change the file, change file name in `_json_contents` agruements. To change back to the default schema, change the call in `do_GET` under self.path to call return_schema.  
+        """
+        self.send_response(200)
+        self.send_header("Content-type", "application/json")
+        self.end_headers()
+        # grabs the local file
+        _json_contents = pkg_resources.resource_string(__name__, "pydantic_schema.json")
+        self.wfile.write(_json_contents)
         return
 
     def return_worker_proxy(self):

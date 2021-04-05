@@ -21,6 +21,7 @@
     };
     require(["vs/editor/editor.main"], function () {
         var modelUri = monaco.Uri.parse(window.location);
+        // This names the hyperlink to the schema in the browser
         modelUri.path = "/schema.json";
         var jsonCode = [
             '{',
