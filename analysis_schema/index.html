@@ -7,8 +7,11 @@
 </head>
 <body>
 
-<h2>Monaco Editor Sync Loading Sample</h2>
-<div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
+<h2>yt Analysis Schema</h2>
+<section>
+    <div id="leftcontainer" style="float:left; width:650px;height:600px;border:1px solid grey"></div>
+    <div id="rightcontainer" style="float:right; width:650px;height:600px;border:1px solid grey"></div>
+</section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/loader.js"></script>
 
@@ -21,7 +24,6 @@
     };
     require(["vs/editor/editor.main"], function () {
         var modelUri = monaco.Uri.parse(window.location);
-        // This names the hyperlink to the schema in the browser
         modelUri.path = "/schema.json";
         var jsonCode = [
             '{',
@@ -38,7 +40,7 @@
             schemas: []
         });
 
-        var editor = monaco.editor.create(document.getElementById("container"), {
+        var editor = monaco.editor.create(document.getElementById("leftcontainer"), {
             model:model
         });
     });
