@@ -7,7 +7,14 @@
       "title": "Plot",
       "type": "array",
       "items": {
-        "$ref": "#/definitions/SlicePlot"
+        "anyOf": [
+          {
+            "$ref": "#/definitions/SlicePlot"
+          },
+          {
+            "$ref": "#/definitions/ProjectionPlot"
+          }
+        ]
       }
     }
   },
@@ -32,11 +39,6 @@
         "comments": {
           "title": "Comments",
           "type": "string"
-        },
-        "grammar": {
-          "title": "Grammar",
-          "default": "registration",
-          "type": "string"
         }
       },
       "required": [
@@ -51,126 +53,13 @@
           "title": "Field",
           "type": "string"
         },
-        "unit": {
-          "title": "Unit",
-          "type": "string"
-        },
-        "comments": {
-          "title": "Comments",
-          "type": "string"
-        },
-        "grammar": {
-          "title": "Grammar",
-          "default": "selection",
-          "type": "string"
-        }
-      },
-      "required": [
-        "field",
-        "unit"
-      ]
-    },
-    "Sum": {
-      "title": "Sum",
-      "type": "object",
-      "properties": {
-        "sum_field": {
-          "$ref": "#/definitions/Fields"
-        },
-        "comments": {
-          "title": "Comments",
-          "type": "string"
-        },
-        "grammar": {
-          "title": "Grammar",
-          "default": "reduction",
-          "type": "string"
-        }
-      },
-      "required": [
-        "sum_field"
-      ]
-    },
-    "Average": {
-      "title": "Average",
-      "type": "object",
-      "properties": {
-        "average_field": {
-          "$ref": "#/definitions/Fields"
-        },
-        "comments": {
-          "title": "Comments",
-          "type": "string"
-        },
-        "grammar": {
-          "title": "Grammar",
-          "default": "reduction",
-          "type": "string"
-        }
-      },
-      "required": [
-        "average_field"
-      ]
-    },
-    "Operations": {
-      "title": "Operations",
-      "type": "object",
-      "properties": {
-        "operation": {
-          "title": "Operation",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Sum"
-            },
-            {
-              "$ref": "#/definitions/Average"
-            }
-          ]
-        }
-      },
-      "required": [
-        "operation"
-      ]
-    },
-    "DataSource": {
-      "title": "DataSource",
-      "type": "object",
-      "properties": {
-        "dataset": {
-          "$ref": "#/definitions/Dataset"
-        },
-        "data_selection": {
-          "title": "Data Selection",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Fields"
-            },
-            {
-              "$ref": "#/definitions/Operations"
-            }
-          ]
-        }
-      },
-      "required": [
-        "dataset",
-        "data_selection"
-      ]
-    },
-    "AxisPlot": {
-      "title": "AxisPlot",
-      "type": "object",
-      "properties": {
-        "axis": {
-          "title": "Axis",
-          "type": "string"
-        },
         "comments": {
           "title": "Comments",
           "type": "string"
         }
       },
       "required": [
-        "axis"
+        "field"
       ]
     },
     "Center": {
@@ -211,15 +100,15 @@
       "title": "SlicePlot",
       "type": "object",
       "properties": {
-        "Data": {
-          "$ref": "#/definitions/DataSource"
+        "Dataset": {
+          "$ref": "#/definitions/Dataset"
         },
-        "AxisPlot": {
-          "title": "Axisplot",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AxisPlot"
-          }
+        "Field": {
+          "$ref": "#/definitions/Fields"
+        },
+        "Axis": {
+          "title": "Axis",
+          "type": "string"
         },
         "CenterPlot": {
           "$ref": "#/definitions/Center"
@@ -234,19 +123,48 @@
         "Comments": {
           "title": "Comments",
           "type": "string"
+        }
+      },
+      "required": [
+        "Dataset",
+        "Field",
+        "Axis"
+      ]
+    },
+    "ProjectionPlot": {
+      "title": "ProjectionPlot",
+      "type": "object",
+      "properties": {
+        "Dataset": {
+          "$ref": "#/definitions/Dataset"
         },
-        "Annotation": {
-          "title": "Annotation",
-          "default": false,
-          "type": "boolean"
+        "Field": {
+          "$ref": "#/definitions/Fields"
         },
-        "ColorMap": {
-          "title": "Colormap",
+        "Axis": {
+          "title": "Axis",
+          "type": "string"
+        },
+        "CenterPlot": {
+          "$ref": "#/definitions/Center"
+        },
+        "WidthPlot": {
+          "title": "Widthplot",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Widths"
+          }
+        },
+        "Comments": {
+          "title": "Comments",
           "type": "string"
         }
       },
       "required": [
-        "Data"
+        "Dataset",
+        "Field",
+        "Axis",
+        "CenterPlot"
       ]
     }
   }
