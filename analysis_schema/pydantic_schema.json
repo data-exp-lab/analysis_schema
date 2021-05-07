@@ -9,6 +9,9 @@
       "items": {
         "anyOf": [
           {
+            "$ref": "#/definitions/PhasePlot"
+          },
+          {
             "$ref": "#/definitions/SlicePlot"
           },
           {
@@ -47,6 +50,7 @@
     },
     "Fields": {
       "title": "Fields",
+      "description": "The fields dataclasses allows uers to type in a string for a field in the dataset. Field is the only required attribute. ",
       "type": "object",
       "properties": {
         "field": {
@@ -62,42 +66,90 @@
         "field"
       ]
     },
-    "Center": {
-      "title": "Center",
+    "PhasePlot": {
+      "title": "PhasePlot",
+      "description": "The phase plot data class maps to a yt operation and parameters. ",
       "type": "object",
       "properties": {
-        "center": {
-          "title": "Center",
+        "Dataset": {
+          "$ref": "#/definitions/Dataset"
+        },
+        "xField": {
+          "$ref": "#/definitions/Fields"
+        },
+        "yField": {
+          "$ref": "#/definitions/Fields"
+        },
+        "zField": {
+          "title": "Zfield",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Fields"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Fields"
+              }
+            }
+          ]
+        },
+        "WeightedField": {
+          "$ref": "#/definitions/Fields"
+        },
+        "xBins": {
+          "title": "Xbins",
+          "type": "integer"
+        },
+        "yBins": {
+          "title": "Ybins",
+          "type": "integer"
+        },
+        "Accumulation": {
+          "title": "Accumulation",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          ]
+        },
+        "Fractional": {
+          "title": "Fractional",
+          "type": "boolean"
+        },
+        "FigureSize": {
+          "title": "Figuresize",
+          "type": "integer"
+        },
+        "FontSize": {
+          "title": "Fontsize",
+          "type": "integer"
+        },
+        "Shading": {
+          "title": "Shading",
           "type": "string"
         },
-        "comments": {
+        "Comments": {
           "title": "Comments",
           "type": "string"
         }
       },
       "required": [
-        "center"
-      ]
-    },
-    "Widths": {
-      "title": "Widths",
-      "type": "object",
-      "properties": {
-        "width": {
-          "title": "Width",
-          "type": "string"
-        },
-        "comments": {
-          "title": "Comments",
-          "type": "string"
-        }
-      },
-      "required": [
-        "width"
+        "Dataset",
+        "xField",
+        "yField",
+        "zField"
       ]
     },
     "SlicePlot": {
       "title": "SlicePlot",
+      "description": "The slice plot data class maps to a yt operation and parameters. Dataset, Field and Axis are required. All other attributes will take the yt default if not specified. ",
       "type": "object",
       "properties": {
         "Dataset": {
@@ -111,13 +163,14 @@
           "type": "string"
         },
         "CenterPlot": {
-          "$ref": "#/definitions/Center"
+          "title": "Centerplot",
+          "type": "string"
         },
         "WidthPlot": {
           "title": "Widthplot",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Widths"
+            "type": "string"
           }
         },
         "Comments": {
@@ -133,6 +186,7 @@
     },
     "ProjectionPlot": {
       "title": "ProjectionPlot",
+      "description": "The projection plot data class maps to a yt operation and parameters. Dataset, Field, Axis and AxisUnit are required. All other attributes will take the yt default if not specified.\n ",
       "type": "object",
       "properties": {
         "Dataset": {
@@ -143,17 +197,49 @@
         },
         "Axis": {
           "title": "Axis",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ]
         },
         "CenterPlot": {
-          "$ref": "#/definitions/Center"
+          "title": "Centerplot",
+          "type": "string"
         },
         "WidthPlot": {
           "title": "Widthplot",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Widths"
-          }
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "WeightedField": {
+          "$ref": "#/definitions/Fields"
+        },
+        "AxesUnit": {
+          "title": "Axesunit",
+          "type": "string"
+        },
+        "Origin": {
+          "title": "Origin",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {}
+            }
+          ]
         },
         "Comments": {
           "title": "Comments",
@@ -164,7 +250,7 @@
         "Dataset",
         "Field",
         "Axis",
-        "CenterPlot"
+        "AxesUnit"
       ]
     }
   }
