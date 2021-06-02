@@ -7,17 +7,7 @@
       "title": "Plot",
       "type": "array",
       "items": {
-        "anyOf": [
-          {
-            "$ref": "#/definitions/PhasePlot"
-          },
-          {
-            "$ref": "#/definitions/SlicePlot"
-          },
-          {
-            "$ref": "#/definitions/ProjectionPlot"
-          }
-        ]
+        "$ref": "#/definitions/Visualizations"
       }
     }
   },
@@ -27,11 +17,12 @@
   "definitions": {
     "Dataset": {
       "title": "Dataset",
-      "description": "The dataset model to load and that will be drawn from for other classes. Filename is the only required field. ",
+      "description": "The dataset to load. Must be a string.\n\nRequired fields: Filename ",
       "type": "object",
       "properties": {
-        "filename": {
+        "FileName": {
           "title": "Filename",
+          "description": "Must be string containing the (path to the file and the) file name",
           "type": "string"
         },
         "name": {
@@ -45,12 +36,12 @@
         }
       },
       "required": [
-        "filename"
+        "FileName"
       ]
     },
-    "Fields": {
-      "title": "Fields",
-      "description": "The fields dataclasses allows uers to type in a string for a field in the dataset. Field is the only required attribute. ",
+    "FieldNames": {
+      "title": "FieldNames",
+      "description": "Specify a field name and optionally, a unit",
       "type": "object",
       "properties": {
         "field": {
@@ -66,36 +57,203 @@
         "field"
       ]
     },
-    "PhasePlot": {
-      "title": "PhasePlot",
-      "description": "The phase plot data class maps to a yt operation and parameters. ",
+    "SlicePlot": {
+      "title": "SlicePlot",
       "type": "object",
       "properties": {
         "Dataset": {
-          "$ref": "#/definitions/Dataset"
-        },
-        "xField": {
-          "$ref": "#/definitions/Fields"
-        },
-        "yField": {
-          "$ref": "#/definitions/Fields"
-        },
-        "zField": {
-          "title": "Zfield",
+          "title": "Dataset",
           "anyOf": [
             {
-              "$ref": "#/definitions/Fields"
+              "$ref": "#/definitions/Dataset"
+            },
+            {}
+          ]
+        },
+        "FieldNames": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "Axis": {
+          "title": "Axis",
+          "type": "string"
+        },
+        "Center": {
+          "title": "Center",
+          "anyOf": [
+            {
+              "type": "string"
             },
             {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Fields"
+                "type": "number"
               }
             }
           ]
         },
-        "WeightedField": {
-          "$ref": "#/definitions/Fields"
+        "Width": {
+          "title": "Width",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        "Comments": {
+          "title": "Comments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "Dataset",
+        "FieldNames",
+        "Axis"
+      ]
+    },
+    "ProjectionPlot": {
+      "title": "ProjectionPlot",
+      "type": "object",
+      "properties": {
+        "Dataset": {
+          "title": "Dataset",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Dataset"
+            },
+            {}
+          ]
+        },
+        "FieldNames": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "Axis": {
+          "title": "Axis",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Center": {
+          "title": "Center",
+          "type": "string"
+        },
+        "Width": {
+          "title": "Width",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AxesUnit": {
+          "title": "Axesunit",
+          "type": "string"
+        },
+        "WeightFieldName": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "MaxLevel": {
+          "title": "Maxlevel",
+          "type": "integer"
+        },
+        "Origin": {
+          "title": "Origin",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "RightHanded": {
+          "title": "Righthanded",
+          "type": "boolean"
+        },
+        "FontSize": {
+          "title": "Fontsize",
+          "type": "integer"
+        },
+        "FieldParameters": {
+          "title": "Fieldparameters",
+          "type": "object"
+        },
+        "Method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "Comments": {
+          "title": "Comments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "Dataset",
+        "FieldNames",
+        "Axis"
+      ]
+    },
+    "PhasePlot": {
+      "title": "PhasePlot",
+      "type": "object",
+      "properties": {
+        "Dataset": {
+          "title": "Dataset",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Dataset"
+            },
+            {}
+          ]
+        },
+        "xField": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "yField": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "zField(s)": {
+          "title": "Zfield(S)",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldNames"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FieldNames"
+              }
+            }
+          ]
+        },
+        "WegihtFieldName": {
+          "$ref": "#/definitions/FieldNames"
         },
         "xBins": {
           "title": "Xbins",
@@ -144,114 +302,23 @@
         "Dataset",
         "xField",
         "yField",
-        "zField"
+        "zField(s)"
       ]
     },
-    "SlicePlot": {
-      "title": "SlicePlot",
-      "description": "The slice plot data class maps to a yt operation and parameters. Dataset, Field and Axis are required. All other attributes will take the yt default if not specified. ",
+    "Visualizations": {
+      "title": "Visualizations",
       "type": "object",
       "properties": {
-        "Dataset": {
-          "$ref": "#/definitions/Dataset"
+        "SlicePlot": {
+          "$ref": "#/definitions/SlicePlot"
         },
-        "Field": {
-          "$ref": "#/definitions/Fields"
+        "ProjectionPlot": {
+          "$ref": "#/definitions/ProjectionPlot"
         },
-        "Axis": {
-          "title": "Axis",
-          "type": "string"
-        },
-        "CenterPlot": {
-          "title": "Centerplot",
-          "type": "string"
-        },
-        "WidthPlot": {
-          "title": "Widthplot",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "Comments": {
-          "title": "Comments",
-          "type": "string"
+        "PhasePlot": {
+          "$ref": "#/definitions/PhasePlot"
         }
-      },
-      "required": [
-        "Dataset",
-        "Field",
-        "Axis"
-      ]
-    },
-    "ProjectionPlot": {
-      "title": "ProjectionPlot",
-      "description": "The projection plot data class maps to a yt operation and parameters. Dataset, Field, Axis and AxisUnit are required. All other attributes will take the yt default if not specified.\n ",
-      "type": "object",
-      "properties": {
-        "Dataset": {
-          "$ref": "#/definitions/Dataset"
-        },
-        "Field": {
-          "$ref": "#/definitions/Fields"
-        },
-        "Axis": {
-          "title": "Axis",
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "integer"
-            }
-          ]
-        },
-        "CenterPlot": {
-          "title": "Centerplot",
-          "type": "string"
-        },
-        "WidthPlot": {
-          "title": "Widthplot",
-          "anyOf": [
-            {
-              "type": "array",
-              "items": {}
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "WeightedField": {
-          "$ref": "#/definitions/Fields"
-        },
-        "AxesUnit": {
-          "title": "Axesunit",
-          "type": "string"
-        },
-        "Origin": {
-          "title": "Origin",
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "array",
-              "items": {}
-            }
-          ]
-        },
-        "Comments": {
-          "title": "Comments",
-          "type": "string"
-        }
-      },
-      "required": [
-        "Dataset",
-        "Field",
-        "Axis",
-        "AxesUnit"
-      ]
+      }
     }
   }
 }

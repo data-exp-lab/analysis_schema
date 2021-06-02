@@ -1,8 +1,31 @@
 {
-    "$schema": "./example_schema.json",
-    "operation": {
-        "field": ["density", "temperature"],
-        "axis":["x"],
-        "integrate":["text"]
+  "$schema": "./pydantic_schema_file.json",
+  "Plot": [
+    {
+      "SlicePlot": {
+        "Dataset":{
+          "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030"
+        },
+        "Comments": "",
+        "FieldNames": {
+          "field": "density"
+        },
+        "Axis": "z"
+      },
+      "PhasePlot": {
+        "Dataset":{
+          "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030"
+        },
+        "xField": {
+          "field": "density"
+        },
+        "yField": {
+          "field": "temperature"
+        },
+        "zField(s)":{
+          "field": "velocity_magnitude"
+        }
+      }
     }
+  ]
 }

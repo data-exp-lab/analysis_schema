@@ -4,9 +4,32 @@ from typing import Generic, List, Union, Dict, Optional, Sequence, Tuple
 import pydantic
 from pydantic.main import create_model
 from inspect import getfullargspec
+import json
 
+def show_plots(schema):
+    """This function accepts the schema model and runs it using yt code which returns a list. This function iterates through the list and displays each output. 
+
+    Args:
+        schema ([dict]): the analysis schema filled out with yt specificaions
+    """
+    result = schema._run()
+    print(result)
+    for output in range(len(tuple(result))):
+        print("each output:", result[output])
+        result[output].show()
 
 class ytBaseModel(BaseModel):
+    """A class to connect attributes and their values to yt operations and their keywork arguements. 
+
+    Args:
+        BaseModel ([type]): A pydantic basemodel in the form of a json schema
+
+    Raises:
+        AttributeError: [description]
+
+    Returns:
+        [list]: A list of yt classes to be run and then displayed
+    """
     _arg_mapping: dict = {}  # mapping from internal yt name to schema name
     _yt_operation: Optional[str]
 
@@ -16,10 +39,10 @@ class ytBaseModel(BaseModel):
 
         # first make sure yt is imported and then get our function handle. This assumes
         # that our class name exists in yt's top level api.
-        # will only work with yt 4.0. Version 3.6.1 does not grap the arguements
         import yt
         #print(yt.__version__)
-        print(self._yt_operation)
+
+        print("yt operation:", self._yt_operation)
     
         funcname = getattr(self, "_yt_operation", type(self).__name__)
         func = getattr(yt, funcname)
@@ -53,14 +76,19 @@ class ytBaseModel(BaseModel):
             # check if we've remapped the yt internal argument name for the schema
             if arg == 'self':
                 continue
-            if arg in self._arg_mapping:
-                arg = self._arg_mapping[arg]
+            # if arg in self._arg_mapping:
+                # arg = self._arg_mapping[arg]
 
             # get the value for this argument. If it's not there, attempt to set default values
             # for arguments needed for yt but not exposed in our pydantic class
-            print(arg)
+            print("the arguemnt:", arg)
             try:
                 arg_value = getattr(self, arg)
+                print("the arg value:", arg_value)
+                if arg_value == None:
+                    default_index = arg_i - named_kw_start_at
+                    arg_value = func_spec.defaults[default_index]
+                    print('defaults:', default_index, arg_value)
             except AttributeError:
                 if arg_i >= named_kw_start_at:
                     # we are in the named keyword arguments, grab the default
@@ -68,6 +96,7 @@ class ytBaseModel(BaseModel):
                     # argument, so need to offset the arg_i counter
                     default_index = arg_i - named_kw_start_at
                     arg_value = func_spec.defaults[default_index]
+                    print('defaults:', default_index, arg_value)
                 else:
                     raise AttributeError
 
@@ -95,95 +124,110 @@ class ytParameter(BaseModel):
             raise ValueError(
                 "whoops. ytParameter instances can only have single values")
         return p[0]
-
-
 class Dataset(ytBaseModel):
     """ 
-    The dataset model to load and that will be drawn from for other classes. Filename is the only required field. 
+    The dataset to load. Must be a string.
+    
+    Required fields: Filename 
     """
-    filename: str
+    fn: str = Field(alias="FileName", description='Must be string containing the (path to the file and the) file name')
     name: str = "Data for Science"
     comments: Optional[str] 
-    _grammar: str = "registration"
     _yt_operation: str = "load"
-    _arg_mapping: dict = {'fn' : 'filename'}
+    #_arg_mapping: dict = {'fn' : 'filename'}
     
-class Fields(ytParameter):
+
+class FieldNames(ytParameter):
     """
-    The fields dataclasses allows uers to type in a string for a field in the dataset. Field is the only required attribute. 
+    Specify a field name and optionally, a unit
     """
-    field: str
+    # can't seeem to alias 'field' - maybe because the pydantic name 'Field' is called to do the alias?
+    field: str 
     # unit - domain specific
     # getting an error with unit enabled
     _unit: Optional[str]
     comments: Optional[str]
 
 class SlicePlot(ytBaseModel):
-    """
-    The slice plot data class maps to a yt operation and parameters. Dataset, Field and Axis are required. All other attributes will take the yt default if not specified. 
-    """
-    Dataset: Dataset
-    Field: Fields
-    Axis: str
-    CenterPlot: Optional[str]
-    WidthPlot: Optional[List[str]]
+    ds: Union[Dataset, Any] = Field(alias='Dataset')
+    fields: FieldNames = Field(alias='FieldNames')
+    axis: str = Field(alias='Axis')
+    center: Optional[Union[str, List[float]]] = Field(alias='Center')
+    width: Optional[Union[List[str], tuple[int, str]]] = Field(alias='Width')
     Comments: Optional[str]
     _yt_operation: str = "SlicePlot"
-    _arg_mapping: dict = {'ds': 'Dataset', 'fields': 'Field',
-                          'axis': 'Axis', 'center': 'CenterPlot', 'width': 'WidthPlot'}
+    #_arg_mapping: dict = {'ds': 'Dataset', 'fields': 'Field',
+    #                     'axis': 'Axis', 'center': 'CenterPlot', 'width': 'WidthPlot'}
   
 
 class ProjectionPlot(ytBaseModel):
-    """
-   The projection plot data class maps to a yt operation and parameters. Dataset, Field, Axis and AxisUnit are required. All other attributes will take the yt default if not specified.
-    """
-    Dataset: Dataset
-    Field: Fields
-    Axis: Union[str, int]
+    ds: Union[Dataset, Any] = Field(alias='Dataset')
+    fields: FieldNames = Field(alias='FieldNames')
+    axis: Union[str, int] = Field(alias='Axis')
     # domain stuff here. Can we simplify? Contains operations stuff too
-    CenterPlot: Optional[str]
+    center: Optional[str] = Field(alias='Center')
     # more confusing design. Can we simplify? This contain field names, units, and widths
-    WidthPlot: Optional[Union[tuple, float]]
-    WeightedField: Optional[Fields]
-    AxesUnit: str
+    width: Optional[Union[tuple, float]] = Field(alias='Width')
+    axes_unit: Optional[str] = Field(alias='AxesUnit')
+    weight_field: Optional[FieldNames] = Field(alias='WeightFieldName')
+    max_level: Optional[int] = Field(alias='MaxLevel')
     # need to sort this design out
     # might need to be a seperate class since we need to limit the length
-    Origin: Optional[Union[str, Sequence]]
+    origin: Optional[Union[str, List[str]]] = Field(alias='Origin')
+    #right handed? what does this mean?
+    right_handed: Optional[bool] = Field(alias='RightHanded')
+    fontsize: Optional[int] = Field(alias='FontSize')
+    # TODO: a dict for dervied fields - can imporve
+    field_parameters: Optional[dict] = Field(alias='FieldParameters')
+    # better name?
+    method: Optional[str] = Field(alias='Method')
+    #DataSource: Optional[Sphere]
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
-    _arg_mapping: dict = {'ds': 'Dataset', 'fields': 'Field',
-                            'axis': 'Axis', 'center': 'CenterPlot',
-                          'weight_field': 'WeightedField', 'axes_unit': 'AxesUnit'}
+    # #_arg_mapping: dict = {'ds': 'Dataset', 'fields': 'Field',
+    #                         'axis': 'Axis', 'center': 'CenterPlot',
+    #                       'weight_field': 'WeightedField', 'axes_unit': 'AxesUnit', 
+    #                       'max_level': 'MaxLevel',
+    #                       'right_handed': 'RightHanded',
+    #                       'font_size': 'FontSize',
+    #                       'Method': 'method',
+    #                       'data_source': 'DataSource'}
 
 class PhasePlot(ytBaseModel):
-    """
-    The phase plot data class maps to a yt operation and parameters. 
-    """
-    Dataset: Dataset
-    xField: Fields
-    yField: Fields
-    zField: Union[Fields, List[Fields]]
-    WeightedField: Optional[Fields]
-    xBins: Optional[int]
-    yBins: Optional[int]
+    data_source: Union[Dataset, Any] = Field(alias='Dataset')
+    x_field: FieldNames = Field(alias='xField')
+    y_field: FieldNames = Field(alias='yField')
+    z_fields: Union[FieldNames, List[FieldNames]] = Field(alias='zField(s)')
+    weight_field: Optional[FieldNames]= Field(alias='WegihtFieldName')
+    x_bins: Optional[int] = Field(alias='xBins')
+    y_bins: Optional[int] = Field(alias='yBins')
     # different names and explaintions for accumulation and fractional and shading
-    Accumulation: Optional[Union[bool, List[bool]]]
-    Fractional: Optional[bool]
-    FigureSize: Optional[int]
-    FontSize: Optional[int]
+    accumulation: Optional[Union[bool, List[bool]]] = Field(alias='Accumulation')
+    fractional: Optional[bool] = Field(alias='Fractional')
+    figure_size: Optional[int] = Field(alias='FigureSize')
+    fontsize: Optional[int] = Field(alias='FontSize')
     # different name? Maybe should be an enum?
-    Shading: Optional[str]
+    shading: Optional[str] = Field(alias='Shading')
     Comments: Optional[str]
     _yt_operation: str = "PhasePlot"
-    _arg_mapping: dict = {'data_source': 'Dataset', 'x_field': 'xField', 'y_field': 'yField', 'z_fields': 'zField', 'weight_field': 'WeightedField', 'x_bins': 'xBins', 'y_bins': 'yBins', 'accumulation': 'Accumulation', 'fractional': 'Fractional', 'figure_size': 'FigureSize', 'fontsize': 'FontSize',
-    'shading': 'Shading'}
+    #_arg_mapping: dict = {'data_source': 'Dataset', 'x_field': 'xField', 'y_field': 'yField', 'z_fields': 'zField', 'weight_field': 'WeightedField', 'x_bins': 'xBins', 'y_bins': 'yBins', 'accumulation': 'Accumulation', 'fractional': 'Fractional', 'figure_size': 'FigureSize', 'fontsize': 'FontSize',
+    #'shading': 'Shading'}
+
+class Visualizations(BaseModel):
+    # use pydantic basemodel
+    SlicePlot: Optional[SlicePlot]
+    ProjectionPlot: Optional[ProjectionPlot]
+    PhasePlot: Optional[PhasePlot]
+    #_yt_operation: str = None
 
 # outer most model
 class ytModel(ytBaseModel):
     '''
     An example for a yt analysis schema using Pydantic
     '''
-    Plot: List[Union[PhasePlot, SlicePlot, ProjectionPlot]]
+    #Plot: List[Union[ProjectionPlot, PhasePlot, SlicePlot]]
+    #Data: Dataset
+    Plot: List[Visualizations]
 
     class Config:
         title = 'yt example'
@@ -191,11 +235,26 @@ class ytModel(ytBaseModel):
     
     def _run(self):
         # for the top level model, we override this. Nested objects will still be recursive!
+        output_list = list()
+        # data_att = getattr(self, "Data")
+        # data_container = data_att._run()
         att = getattr(self, "Plot")
-        # print("this is the att:", att[0])
-        # for p in att:
-        #     print("this is p:", p._yt_operation)
-        return [p._run() for p in att]
+        # print("full att:", att)
+        # print("what is att:", type(att))
+        # print()
+    
+        for p in att:
+            # print("atts:", p)
+            # print("atts type:", type(p))
+            # print("atts dir:", dir(p))
+            for attribute in dir(p):
+                if attribute.endswith('Plot'):
+                    new_att = getattr(p, attribute)
+                    #print("new att:", new_att)
+                    #print()
+                    if new_att is not None:
+                        output_list.append(new_att._run())
+            return output_list
 
 # json for a slice plot
 json_slice = {"Dataset": {
@@ -228,17 +287,22 @@ json_phase = {"Dataset": {
     "Shading": "nearest"}
 
 # create yt model and print
-analysis_model = ytModel(Plot= [json_phase, json_slice, json_projection])
-print(analysis_model)
+live_json = open("schema_instance.json")
+live_schema = json.load(live_json)
+live_schema.pop('$schema')
+print(live_schema)
 
-# show plot results
-result = analysis_model._run()
-result[0].show()
-result[1].show()
-result[2].show()
+analysis_model = ytModel(Plot = 
+    live_schema['Plot']
+)
+
+print(show_plots(analysis_model))
+
+print("the model:", analysis_model)
+print(type(analysis_model))
 
 # write schema out to a file
-with open("pydantic_schema_file.json", "w") as file:
+with open("pydantic_schema.json", "w") as file:
     file.write(analysis_model.schema_json(indent=2))
 
 
