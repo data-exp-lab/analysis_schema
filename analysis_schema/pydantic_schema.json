@@ -17,7 +17,7 @@
   "definitions": {
     "Dataset": {
       "title": "Dataset",
-      "description": "The dataset to load. Must be a string.\n\nRequired fields: Filename ",
+      "description": "The dataset to load. Filen name must be a string.\n\nRequired fields: Filename ",
       "type": "object",
       "properties": {
         "FileName": {
@@ -57,18 +57,50 @@
         "field"
       ]
     },
+    "Sphere": {
+      "title": "Sphere",
+      "description": "A sphere of points defined by a *center* and a *radius*.\n\nArgs:\n    ytBaseModel ([type]): [description]",
+      "type": "object",
+      "properties": {
+        "Center": {
+          "title": "Center",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "Radius": {
+          "title": "Radius",
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "Center",
+        "Radius"
+      ]
+    },
     "SlicePlot": {
       "title": "SlicePlot",
+      "description": "A class to connect attributes and their values to yt operations and their keywork arguements. \n\nArgs:\n    BaseModel ([type]): A pydantic basemodel in the form of a json schema\n\nRaises:\n    AttributeError: [description]\n\nReturns:\n    [list]: A list of yt classes to be run and then displayed",
       "type": "object",
       "properties": {
         "Dataset": {
-          "title": "Dataset",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Dataset"
-            },
-            {}
-          ]
+          "$ref": "#/definitions/Dataset"
         },
         "FieldNames": {
           "$ref": "#/definitions/FieldNames"
@@ -113,6 +145,9 @@
             }
           ]
         },
+        "data_source": {
+          "$ref": "#/definitions/Sphere"
+        },
         "Comments": {
           "title": "Comments",
           "type": "string"
@@ -124,18 +159,39 @@
         "Axis"
       ]
     },
+    "Slice": {
+      "title": "Slice",
+      "description": "A class to connect attributes and their values to yt operations and their keywork arguements. \n\nArgs:\n    BaseModel ([type]): A pydantic basemodel in the form of a json schema\n\nRaises:\n    AttributeError: [description]\n\nReturns:\n    [list]: A list of yt classes to be run and then displayed",
+      "type": "object",
+      "properties": {
+        "axis": {
+          "title": "Axis",
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "coord": {
+          "title": "Coord",
+          "type": "number"
+        }
+      },
+      "required": [
+        "axis",
+        "coord"
+      ]
+    },
     "ProjectionPlot": {
       "title": "ProjectionPlot",
+      "description": "A class to connect attributes and their values to yt operations and their keywork arguements. \n\nArgs:\n    BaseModel ([type]): A pydantic basemodel in the form of a json schema\n\nRaises:\n    AttributeError: [description]\n\nReturns:\n    [list]: A list of yt classes to be run and then displayed",
       "type": "object",
       "properties": {
         "Dataset": {
-          "title": "Dataset",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Dataset"
-            },
-            {}
-          ]
+          "$ref": "#/definitions/Dataset"
         },
         "FieldNames": {
           "$ref": "#/definitions/FieldNames"
@@ -208,6 +264,18 @@
           "title": "Method",
           "type": "string"
         },
+        "DataSource": {
+          "title": "Datasource",
+          "description": "Select a subset of the dataset to visualize from the overall dataset",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Sphere"
+            },
+            {
+              "$ref": "#/definitions/Slice"
+            }
+          ]
+        },
         "Comments": {
           "title": "Comments",
           "type": "string"
@@ -221,6 +289,7 @@
     },
     "PhasePlot": {
       "title": "PhasePlot",
+      "description": "A class to connect attributes and their values to yt operations and their keywork arguements. \n\nArgs:\n    BaseModel ([type]): A pydantic basemodel in the form of a json schema\n\nRaises:\n    AttributeError: [description]\n\nReturns:\n    [list]: A list of yt classes to be run and then displayed",
       "type": "object",
       "properties": {
         "Dataset": {

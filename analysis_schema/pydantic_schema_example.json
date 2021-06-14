@@ -1,0 +1,17 @@
+{
+    "$schema": "./pydantic_schema.json",
+    "Plot": [
+    {
+      "SlicePlot": {
+        "Dataset": {
+          "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030"
+        },
+        "Axis": "x",
+        "FieldNames": {
+          "field": "density"
+        }
+      }
+    }
+   
+  ]
+}
