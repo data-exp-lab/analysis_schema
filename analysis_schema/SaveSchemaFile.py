@@ -1,5 +1,5 @@
 import json
-from RunAnalysis import analysis_model
+from .RunAnalysis import analysis_model
 import pydantic
 
 # This code will save the model to a json file, which will be referenced by the user

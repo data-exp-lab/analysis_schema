@@ -1,6 +1,6 @@
-from BaseModelFunctions import ytBaseModel
+from .BaseModelFunctions import ytBaseModel
 from typing import List
-from ytDataClasses import Visualizations
+from .ytDataClasses import Visualizations
 
 
 class ytModel(ytBaseModel):

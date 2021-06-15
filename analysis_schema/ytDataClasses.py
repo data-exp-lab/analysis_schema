@@ -1,4 +1,4 @@
-from BaseModelFunctions import ytBaseModel, ytParameter
+from .BaseModelFunctions import ytBaseModel, ytParameter
 from pydantic import Field, BaseModel
 from typing import Optional, List, Union, Tuple, Any
 
