@@ -15,7 +15,7 @@ requirements = ['pydantic', ]
 
 setup_requirements = ['pytest-runner', ]
 
-test_requirements = ['pytest', ]
+test_requirements = ['Click>=6.0', 'pytest', ]
 
 setup(
     author="Matthew Turk",
