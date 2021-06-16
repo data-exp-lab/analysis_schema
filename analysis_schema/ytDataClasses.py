@@ -51,7 +51,7 @@ class SlicePlot(ytBaseModel):
     fields: FieldNames = Field(alias='FieldNames')
     axis: str = Field(alias='Axis')
     center: Optional[Union[str, List[float]]] = Field(alias='Center')
-    width: Optional[Union[List[str], tuple[int, str]]] = Field(alias='Width')
+    width: Optional[Union[List[str], Tuple[int, str]]] = Field(alias='Width')
     data_source: Optional[Sphere]
     Comments: Optional[str]
     _yt_operation: str = "SlicePlot"
