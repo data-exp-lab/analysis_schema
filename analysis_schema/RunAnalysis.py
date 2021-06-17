@@ -1,6 +1,6 @@
 import json
-from .BaseModelFunctions import show_plots
-from .SchemaModel import ytModel
+from analysis_schema.BaseModelFunctions import show_plots
+from analysis_schema.SchemaModel import ytModel
 import sys
  
 # total arguments
@@ -27,5 +27,7 @@ analysis_model = ytModel(Plot =
     live_schema['Plot']
 )
 
-# print file output
-print(show_plots(analysis_model))
+if __name__ == "__main__":
+
+    # print file output
+    print(show_plots(analysis_model))
