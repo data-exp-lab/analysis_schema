@@ -3,9 +3,9 @@
 """Console script for analysis_schema."""
 import sys
 import click
-import http.server
-from .analysis_schema import schema
-from .server import run as run_editor
+# import http.server
+from .SchemaModel import schema
+from .server import run as run_editor, server_defaults
 
 
 @click.group()
@@ -18,7 +18,7 @@ def main():
 @click.argument("schema_object", default="Operation")
 def generate(schema_object, output):
     click.echo("Generating schema for Operation")
-    obj = schema[schema_object]  # TODO: add error
+    obj = schema["properties"][schema_object]  # TODO: add error
     s = obj.schema_json(indent=2)
     if output is None:
         click.echo_via_pager(s)
@@ -34,13 +34,13 @@ def list_objects():
         click.echo("Object available: {}".format(name))
 
 
+
 @main.command()
-@click.option("--host", default="localhost", help="Hostname to listen at")
-@click.option("--port", default=8000, help="Port to serve on")
-@click.argument("schema_object", default="Operation")
-def editor(host, port, schema_object):
+@click.option("--host", default=server_defaults["h"], help="Hostname to listen at")
+@click.option("--port", default=server_defaults["p"], help="Port to serve on")
+def editor(host, port):
     click.echo(f"Launching on {host}:{port}")
-    run_editor(host, port, schema_object)
+    run_editor(host, port, cli=True)
 
 
 if __name__ == "__main__":
