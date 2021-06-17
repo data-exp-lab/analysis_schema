@@ -27,3 +27,5 @@ class ytModel(ytBaseModel):
                         output_list.append(new_att._run())
             return output_list
 
+
+schema = ytModel

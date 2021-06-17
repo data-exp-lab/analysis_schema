@@ -1,5 +1,5 @@
-from .operations import Operation
-from .analysis_schema import schema
+# from .operations import Operation
+from .SchemaModel import schema
 import http.server
 import pkg_resources
 
@@ -15,6 +15,7 @@ self.MonacoEnvironment = {
 importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/base/worker/workerMain.js');
 """
 
+server_defaults = {"h": "localhost", "p": 8000, "schema_obj": "Plot"}
 
 class EditorHandler(http.server.BaseHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -22,12 +23,14 @@ class EditorHandler(http.server.BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path in ("/", "/index.html"):
+            print("returning index")
             return self.return_index()
         elif self.path == "/schema.json":
             # calls a specific schema
             # can call the default schema through `return_schema`or a different schema from a local JSON file through `return_external_schema`
             return self.return_external_schema()
         elif self.path == "/monaco-editor-worker-loader-proxy.js":
+            print("getting worker proxy")
             return self.return_worker_proxy()
         self.send_response(404)
 
@@ -68,13 +71,24 @@ class EditorHandler(http.server.BaseHTTPRequestHandler):
 
 
 class SchemaHTTPServer(http.server.HTTPServer):
-    def __init__(self, *args, schema_object="Operation", **kwargs):
-        obj = schema[schema_object]  # TODO: add error
-        self._schema_definition = obj.schema_json(indent=2)
+    def __init__(self, *args, **kwargs):        
+        self._schema_definition = schema.schema_json(indent=2)
         super().__init__(*args, **kwargs)
 
 
-def run(host, port, schema_object="Operation"):
+def run(host = server_defaults["h"], port = server_defaults["p"], cli=False):
+    """
+    run from command line using cli (see docstring in cli.py) or run from 
+    interactive shell with 
+
+    >>> from analysis_schema import server
+    >>> server.run()
+    """
+    
     server_address = (host, port)
-    httpd = SchemaHTTPServer(server_address, EditorHandler, schema_object=schema_object)
+    if cli is False:
+        print(f"starting server at {host}:{port}")
+        print(f"visit http://{host}:{port} to launch schema editor")
+        print(f"crtl-c to kill server")
+    httpd = SchemaHTTPServer(server_address, EditorHandler)
     httpd.serve_forever()

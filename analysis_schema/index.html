@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/editor/editor.main.css" />
+</head>
+<body>
+
+<h2>yt schema example</h2>
+<h3>(hit space for autocomplete suggestions)</h3>
+
+<!-- our main container with the monaco editor: -->
+<div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
+<!-- a submit button that will take the current json and do something with it: -->
+<button id="submitbutton">Submit</button> 
+<!-- on submit, just copy the json text into another div for now:  -->
+<div id="results" style="width:800px;height:600px;border:1px solid grey"></div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/loader.js"></script>
+
+<script>
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs' }});
+
+    window.MonacoEnvironment = {
+        getWorkerUrl: function(workerId, label) {
+            return 'monaco-editor-worker-loader-proxy.js';
+        }
+    };
+
+    require(["vs/editor/editor.main"], function () {
+        var modelUri = monaco.Uri.parse(window.location);
+        modelUri.path = "/schema.json";
+        var jsonCode = [
+            '{',
+            '    "$schema": "'+ modelUri.toString()+'"',
+            "}"
+        ].join('\n');
+        var modelUri = monaco.Uri.parse(window.location);
+        modelUri.path = "/schema.json";
+        var model = monaco.editor.createModel(jsonCode, "json", modelUri);
+
+        monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+            validate: true,
+            enableSchemaRequest: true,
+            schemas: []
+        });
+
+        var editor = monaco.editor.create(document.getElementById("container"), {
+            model:model
+        });
+
+        function submitJson() 
+        {            
+            // pulls out the json text and does something with it. right now this just copies the 
+            // text into another div, but we could call a GET/POST method here with the json text
+            document.getElementById('results').innerHTML = editor.getValue()
+        }
+        document.getElementById('submitbutton').onclick = submitJson; // update the func to call for button
+        
+    }); 
+
+
+
+</script>
+
+
+</body>
+</html>
