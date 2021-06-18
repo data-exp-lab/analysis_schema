@@ -1,4 +1,4 @@
-from .BaseModelFunctions import ytBaseModel, ytParameter
+from .BaseModelFunctions import ytBaseModel, ytParameter, ytDataObjectAbstract
 from pydantic import Field, BaseModel
 from typing import Optional, List, Union, Tuple, Any
 
@@ -24,7 +24,7 @@ class FieldNames(ytParameter):
     _unit: Optional[str]
     comments: Optional[str]
 
-class Sphere(ytBaseModel):
+class Sphere(ytDataObjectAbstract):
     """A sphere of points defined by a *center* and a *radius*.
 
     Args:

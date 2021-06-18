@@ -17,6 +17,7 @@ def load_and_run(json_file):
         live_schema['Plot']
     )
     print(show_plots(analysis_model))
+    
 
 if __name__ == "__main__":
 
@@ -32,4 +33,4 @@ if __name__ == "__main__":
     # run the analysis
     load_and_run(args.JSONFile)
 
-   
+
