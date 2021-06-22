@@ -87,6 +87,9 @@
               ]
             }
           ]
+        },
+        "Dataset": {
+          "$ref": "#/definitions/Dataset"
         }
       },
       "required": [
@@ -282,7 +285,6 @@
         }
       },
       "required": [
-        "Dataset",
         "FieldNames",
         "Axis"
       ]

@@ -33,6 +33,7 @@ class Sphere(ytDataObjectAbstract):
     # found in the 'selection_data_containers.py' 
     center: List[float] = Field(alias='Center')
     radius: Union[float, Tuple[float, str]] = Field(alias='Radius')
+    data_source: Optional[Dataset] = Field(alias="DataSet")
     _yt_operation: str = "sphere"
 
 class Region(ytBaseModel):
@@ -58,7 +59,7 @@ class SlicePlot(ytBaseModel):
   
 
 class ProjectionPlot(ytBaseModel):
-    ds: Dataset = Field(alias='Dataset')
+    ds: Optional[Dataset] = Field(alias='Dataset')
     fields: FieldNames = Field(alias='FieldNames')
     axis: Union[str, int] = Field(alias='Axis')
     # domain stuff here. Can we simplify? Contains operations stuff too

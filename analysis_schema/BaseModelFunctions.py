@@ -141,20 +141,31 @@ class ytDataObjectAbstract(ytBaseModel):
 
         the_args = []
         funcname = getattr(self, "_yt_operation", type(self).__name__)
+        print("function name:", funcname)
+
+        val = data_object_registry[funcname]
+        #func_spec = getfullargspec(val)
         
         # get the function from the data object registry
         val = data_object_registry[funcname]
-        
+        print("function:", val)
+             
         # iterate through the arguments for the found data object
         for arguments in val._con_args:
+            print("the args:", arguments)
             con_value = getattr(self, arguments)
+            print(con_value)
 
             # check that the argument is the correct instance
-            if isinstance(con_value, ytBaseModel) or isinstance(con_value, ytParameter) or isinstance(con_value, ytDataObjectAbstract):
+            if isinstance(con_value, ytDataObjectAbstract):
                 # call the _run() function on the agrument
                 con_value = con_value._run()
-            
             the_args.append(con_value)
-            print(the_args)
-        the_args.append(self._data_source['test'])
-        return val(*the_args)
+  
+        print("the argument list:", the_args)
+        # if there is a dataset sitting in _data_source, add it to the args and call as a keyword argument
+        if len(self._data_source) > 0:
+            ds = list(self._data_source.values())[0]
+            return val(*the_args, ds=ds)
+        else:
+            return val(*the_args)
