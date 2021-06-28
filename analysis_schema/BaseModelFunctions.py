@@ -118,7 +118,7 @@ class ytBaseModel(BaseModel):
         
         # this saves the data from yt.load, so it can be used to instaniate the data object items
         if funcname == 'load':
-            self._data_source['test'] = func(*the_args)
+            self._data_source[funcname] = func(*the_args)
         return func(*the_args)
 
 class ytParameter(BaseModel):
@@ -141,31 +141,28 @@ class ytDataObjectAbstract(ytBaseModel):
 
         the_args = []
         funcname = getattr(self, "_yt_operation", type(self).__name__)
-        print("function name:", funcname)
+        #print("function name:", funcname)
 
         val = data_object_registry[funcname]
-        #func_spec = getfullargspec(val)
         
         # get the function from the data object registry
         val = data_object_registry[funcname]
-        print("function:", val)
+        #print("function:", val)
              
         # iterate through the arguments for the found data object
         for arguments in val._con_args:
-            print("the args:", arguments)
+            #print("the args:", arguments)
             con_value = getattr(self, arguments)
-            print(con_value)
+            #print(con_value)
 
             # check that the argument is the correct instance
             if isinstance(con_value, ytDataObjectAbstract):
                 # call the _run() function on the agrument
                 con_value = con_value._run()
+
             the_args.append(con_value)
-  
-        print("the argument list:", the_args)
+
         # if there is a dataset sitting in _data_source, add it to the args and call as a keyword argument
         if len(self._data_source) > 0:
             ds = list(self._data_source.values())[0]
             return val(*the_args, ds=ds)
-        else:
-            return val(*the_args)

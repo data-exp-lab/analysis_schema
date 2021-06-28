@@ -4,7 +4,7 @@ from analysis_schema.SchemaModel import ytModel
 import sys
 import argparse 
 
-def load_and_run(json_file, save):
+def load_and_run(json_file):
     # open the file where the user is entering values
     live_json = open(json_file)
     # assign to a variable
@@ -17,10 +17,6 @@ def load_and_run(json_file, save):
         live_schema['Plot']
     )
     print(show_plots(analysis_model))
-
-    if save=="Save":
-         with open("schema_instance.json", "w") as file:
-            file.write(analysis_model.schema_json(indent=2))
    
 
 if __name__ == "__main__":
@@ -32,13 +28,10 @@ if __name__ == "__main__":
     parser.add_argument('JSONFile',
                     help='Call the JSON with the Schema to run')
 
-    parser.add_argument('--SaveSchema',
-                    type=str)
     
     args = parser.parse_args()
-    print(args)
 
     # run the analysis
-    load_and_run(args.JSONFile, args.SaveSchema)
+    load_and_run(args.JSONFile)
 
 

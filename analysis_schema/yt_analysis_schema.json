@@ -1,6 +1,6 @@
 {
-  "title": "yt example",
-  "description": "An example for a yt analysis schema using Pydantic",
+  "title": "yt Schema Model for Descriptive Visualization and Analysis",
+  "description": "Create a model in the form of a json schema, using the yt data classes. As values are added to the file referencing the schema, the function `run` with be called recursively to acccess nested yt elements and run the yt code. \n\nThe run function iterates through the attributes of the class and runs this values entered for those attributes and puts the output into a list. This list will be iterated through to render and display the output. ",
   "type": "object",
   "properties": {
     "Plot": {
@@ -41,7 +41,7 @@
     },
     "FieldNames": {
       "title": "FieldNames",
-      "description": "Specify a field name and optionally, a unit",
+      "description": "Specify a field name from the dataset",
       "type": "object",
       "properties": {
         "field": {
@@ -88,7 +88,7 @@
             }
           ]
         },
-        "Dataset": {
+        "DataSet": {
           "$ref": "#/definitions/Dataset"
         }
       },

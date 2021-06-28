@@ -1,18 +1,18 @@
 {
-    "$schema": "./pydantic_schema.json",
+    "$schema": "./yt_analysis_schema.json",
     "Plot": [
     {
       "ProjectionPlot": {
+        "Dataset": {
+          "FileName": "./IsolatedGalaxy/galaxy0030/galaxy0030"
+        },
         "Axis":"y",
         "FieldNames": {
           "field": "density"
         },
         "DataSource":{
           "Center": [0.5, 0.5, 0.5],
-          "Radius": 0.1,
-          "Dataset": {
-            "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030"
-          }
+          "Radius": 0.1
         }
       }
     }

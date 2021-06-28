@@ -1,6 +1,7 @@
 from .BaseModelFunctions import ytBaseModel, ytParameter, ytDataObjectAbstract
 from pydantic import Field, BaseModel
 from typing import Optional, List, Union, Tuple, Any
+from pathlib import Path
 
 class Dataset(ytBaseModel):
     """ 
@@ -8,7 +9,7 @@ class Dataset(ytBaseModel):
     
     Required fields: Filename 
     """
-    fn: str = Field(alias="FileName", description='Must be string containing the (path to the file and the) file name')
+    fn: Path = Field(alias="FileName", description='Must be string containing the (path to the file and the) file name')
     name: str = "Data for Science"
     comments: Optional[str] 
     _yt_operation: str = "load"
@@ -79,7 +80,7 @@ class ProjectionPlot(ytBaseModel):
     field_parameters: Optional[dict] = Field(alias='FieldParameters')
     # better name?
     method: Optional[str] = Field(alias='Method')
-    data_source: Optional[Union[Sphere, Slice]] = Field(alias="DataSource", description="Select a subset of the dataset to visualize from the overall dataset")
+    data_source: Optional[Union[Sphere, Region]] = Field(alias="DataSource", description="Select a subset of the dataset to visualize from the overall dataset")
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
 

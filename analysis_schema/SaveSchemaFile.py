@@ -1,8 +1,17 @@
+
 import json
-from .RunAnalysis import analysis_model
 import pydantic
+from analysis_schema.SchemaModel import ytModel
 
-# This code will save the model to a json file, which will be referenced by the user
+# This code will save an empty (no values have been entered) model to a json file, which will be referenced by the user
 
-with open("schema_instance.json", "w") as file:
-    file.write(analysis_model.schema_json(indent=2))
+analysis_model_schema = ytModel(Plot = [
+    {
+        }
+    ]
+)
+
+with open("yt_analysis_schema.json", "w") as file:
+    file.write(analysis_model_schema.schema_json(indent=2))
+
+print("Schema is has been saved!")
