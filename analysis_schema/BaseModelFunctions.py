@@ -3,7 +3,7 @@ from typing import Optional
 from inspect import getfullargspec
 
 
-def show_plots(schema):
+def show_plots(schema, files):
     """This function accepts the schema model and runs it using yt code which returns a list. This function iterates through the list and displays each output.
 
     Args:
@@ -13,7 +13,11 @@ def show_plots(schema):
     print(result)
     for output in range(len(tuple(result))):
         print("each output:", result[output])
-        result[output].show()
+        if files == "Jupter":
+            result[output].show()
+        if files != "Jupyter":
+            result[output].save()
+            print("Files with output have been created!")
 
 
 class ytBaseModel(BaseModel):
@@ -87,7 +91,7 @@ class ytBaseModel(BaseModel):
             try:
                 arg_value = getattr(self, arg)
                 print("the arg value:", arg_value)
-                if arg_value is None:
+                if arg_value is None and arg !='ds':
                     default_index = arg_i - named_kw_start_at
                     arg_value = func_spec.defaults[default_index]
                     print("defaults:", default_index, arg_value)
@@ -110,16 +114,25 @@ class ytBaseModel(BaseModel):
                     f"{arg_value} is a {type(arg_value)}, calling {arg_value}._run() now..."
                 )
                 arg_value = arg_value._run()
-            # if isinstance(arg_value, ytDataObjectAbstract):
-            #     arg_value = arg_value._run(data_source=data_source)
 
             the_args.append(arg_value)
         print("the args list:", the_args)
 
         # this saves the data from yt.load, so it can be used to instaniate the data object items
-        if funcname == "load":
-            self._data_source[funcname] = func(*the_args)
-        return func(*the_args)
+        if funcname == 'load':
+            arg_value = str(arg_value)
+            self._data_source[arg_value] = func(arg_value)
+            print("data source:", self._data_source)
+
+        # if ds is None, then find ._data_source and insert it in the first position
+        if the_args[0] is None:
+            if len(self._data_source) > 0:
+                ds = self._data_source['IsolatedGalaxy/galaxy0030/galaxy0030']
+                the_args.remove(None)
+                the_args.insert(0, ds)
+                return func(*the_args)
+        else:
+            return func(*the_args)
 
 
 class ytParameter(BaseModel):

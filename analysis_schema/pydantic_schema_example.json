@@ -1,20 +1,23 @@
 {
     "$schema": "./yt_analysis_schema.json",
+    "Data": {
+      "FileName": "./IsolatedGalaxy/galaxy0030/galaxy0030",
+      "DatasetName": "IG_Testing"
+    },
     "Plot": [
-    {
-      "ProjectionPlot": {
-        "Dataset": {
-          "FileName": "./IsolatedGalaxy/galaxy0030/galaxy0030"
-        },
-        "Axis":"y",
-        "FieldNames": {
-          "field": "density"
-        },
-        "DataSource":{
-          "Center": [0.5, 0.5, 0.5],
-          "Radius": 0.1
+      {
+        "ProjectionPlot": {
+          "Axis":"y",
+          "Center": "m",
+          "FieldNames": {
+            "field": "temperature"
+          },
+          "FontSize": 30,
+          "DataSource":{
+            "Center": [0.6, 0.6, 0.6],
+            "Radius":0.2
+          }
         }
       }
-    }
-  ]
+    ]
 }

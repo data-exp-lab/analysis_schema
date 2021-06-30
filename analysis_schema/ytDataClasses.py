@@ -15,7 +15,7 @@ class Dataset(ytBaseModel):
         alias="FileName",
         description="Must be string containing the (path to the file and the) file name",
     )
-    name: str = "Data for Science"
+    DatasetName: Optional[str]
     comments: Optional[str]
     _yt_operation: str = "load"
 
@@ -66,7 +66,7 @@ class Slice(ytDataObjectAbstract):
 
 
 class SlicePlot(ytBaseModel):
-    ds: Dataset = Field(alias="Dataset")
+    ds: Optional[Dataset] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
     axis: str = Field(alias="Axis")
     center: Optional[Union[str, List[float]]] = Field(alias="Center")
@@ -106,7 +106,7 @@ class ProjectionPlot(ytBaseModel):
 
 
 class PhasePlot(ytBaseModel):
-    data_source: Union[Dataset, Any] = Field(alias="Dataset")
+    data_source: Optional[Dataset] = Field(alias="Dataset")
     x_field: FieldNames = Field(alias="xField")
     y_field: FieldNames = Field(alias="yField")
     z_fields: Union[FieldNames, List[FieldNames]] = Field(alias="zField(s)")
