@@ -53,6 +53,7 @@ class Region(ytDataObjectAbstract):
     Args:
         ytDataObjectAbstract ([type]): [description]
     """
+
     center: List[float]
     left_edge: List[float]
     right_edge: List[float]
@@ -130,6 +131,7 @@ class Visualizations(BaseModel):
     Args:
         BaseModel (Pydantic BaseModel): [description]
     """
+
     # use pydantic basemodel
     SlicePlot: Optional[SlicePlot]
     ProjectionPlot: Optional[ProjectionPlot]

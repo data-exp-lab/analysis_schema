@@ -91,7 +91,7 @@ class ytBaseModel(BaseModel):
             try:
                 arg_value = getattr(self, arg)
                 print("the arg value:", arg_value)
-                if arg_value is None and arg !='ds':
+                if arg_value is None and arg != "ds":
                     default_index = arg_i - named_kw_start_at
                     arg_value = func_spec.defaults[default_index]
                     print("defaults:", default_index, arg_value)
@@ -119,7 +119,7 @@ class ytBaseModel(BaseModel):
         print("the args list:", the_args)
 
         # this saves the data from yt.load, so it can be used to instaniate the data object items
-        if funcname == 'load':
+        if funcname == "load":
             arg_value = str(arg_value)
             self._data_source[arg_value] = func(arg_value)
             print("data source:", self._data_source)
@@ -127,7 +127,7 @@ class ytBaseModel(BaseModel):
         # if ds is None, then find ._data_source and insert it in the first position
         if the_args[0] is None:
             if len(self._data_source) > 0:
-                ds = self._data_source['IsolatedGalaxy/galaxy0030/galaxy0030']
+                ds = self._data_source["IsolatedGalaxy/galaxy0030/galaxy0030"]
                 the_args.remove(None)
                 the_args.insert(0, ds)
                 return func(*the_args)
