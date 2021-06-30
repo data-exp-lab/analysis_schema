@@ -1,9 +1,10 @@
-from pydantic import BaseModel, Field, constr
+from pydantic import BaseModel
 from typing import Optional
 from inspect import getfullargspec
 
+
 def show_plots(schema):
-    """This function accepts the schema model and runs it using yt code which returns a list. This function iterates through the list and displays each output. 
+    """This function accepts the schema model and runs it using yt code which returns a list. This function iterates through the list and displays each output.
 
     Args:
         schema ([dict]): the analysis schema filled out with yt specificaions
@@ -16,7 +17,7 @@ def show_plots(schema):
 
 
 class ytBaseModel(BaseModel):
-    """A class to connect attributes and their values to yt operations and their keywork arguements. 
+    """A class to connect attributes and their values to yt operations and their keywork arguements.
 
     Args:
         BaseModel ([type]): A pydantic basemodel in the form of a json schema
@@ -27,18 +28,17 @@ class ytBaseModel(BaseModel):
     Returns:
         [list]: A list of yt classes to be run and then displayed
     """
+
     _arg_mapping: dict = {}  # mapping from internal yt name to schema name
     _yt_operation: Optional[str]
     # the list to store the data after it has been instaniated
     _data_source = {}
-    
+
     def _run(self):
 
-         # the list that we'll use to eventually call our function
+        # the list that we'll use to eventually call our function
         the_args = []
         # this method actually executes the yt code
-        
-    
 
         # first make sure yt is imported and then get our function handle. This assumes
         # that our class name exists in yt's top level api.
@@ -52,7 +52,6 @@ class ytBaseModel(BaseModel):
         # try:
         func = getattr(yt, funcname)
         print(f"pulled func {func}", type(func))
-                    
 
         # now we get the arguments for the function:
         # func_spec.args, which lists the named arguments and keyword arguments.
@@ -77,10 +76,10 @@ class ytBaseModel(BaseModel):
         # this is recursive! will call _run() if a given argument value is also a ytBaseModel.
         for arg_i, arg in enumerate(func_spec.args):
             # check if we've remapped the yt internal argument name for the schema
-            if arg == 'self':
+            if arg == "self":
                 continue
             # if arg in self._arg_mapping:
-                # arg = self._arg_mapping[arg]
+            # arg = self._arg_mapping[arg]
 
             # get the value for this argument. If it's not there, attempt to set default values
             # for arguments needed for yt but not exposed in our pydantic class
@@ -88,10 +87,10 @@ class ytBaseModel(BaseModel):
             try:
                 arg_value = getattr(self, arg)
                 print("the arg value:", arg_value)
-                if arg_value == None:
+                if arg_value is None:
                     default_index = arg_i - named_kw_start_at
                     arg_value = func_spec.defaults[default_index]
-                    print('defaults:', default_index, arg_value)
+                    print("defaults:", default_index, arg_value)
             except AttributeError:
                 if arg_i >= named_kw_start_at:
                     # we are in the named keyword arguments, grab the default
@@ -99,7 +98,7 @@ class ytBaseModel(BaseModel):
                     # argument, so need to offset the arg_i counter
                     default_index = arg_i - named_kw_start_at
                     arg_value = func_spec.defaults[default_index]
-                    print('defaults:', default_index, arg_value)
+                    print("defaults:", default_index, arg_value)
                 else:
                     raise AttributeError
 
@@ -108,30 +107,37 @@ class ytBaseModel(BaseModel):
             # if hasattr(arg_value,'_run'):
             if isinstance(arg_value, ytBaseModel) or isinstance(arg_value, ytParameter):
                 print(
-                    f"{arg_value} is a {type(arg_value)}, calling {arg_value}._run() now...")
+                    f"{arg_value} is a {type(arg_value)}, calling {arg_value}._run() now..."
+                )
                 arg_value = arg_value._run()
             # if isinstance(arg_value, ytDataObjectAbstract):
             #     arg_value = arg_value._run(data_source=data_source)
 
             the_args.append(arg_value)
         print("the args list:", the_args)
-        
+
         # this saves the data from yt.load, so it can be used to instaniate the data object items
-        if funcname == 'load':
+        if funcname == "load":
             self._data_source[funcname] = func(*the_args)
         return func(*the_args)
 
+
 class ytParameter(BaseModel):
-    _skip_these = ['comments']
+    _skip_these = ["comments"]
 
     def _run(self):
-        p = [getattr(self, key) for key in self.schema()[
-            'properties'].keys() if key not in self._skip_these]
+        p = [
+            getattr(self, key)
+            for key in self.schema()["properties"].keys()
+            if key not in self._skip_these
+        ]
         if len(p) > 1:
             print("some error", p)
             raise ValueError(
-                "whoops. ytParameter instances can only have single values")
+                "whoops. ytParameter instances can only have single values"
+            )
         return p[0]
+
 
 class ytDataObjectAbstract(ytBaseModel):
     # abstract class for all the data selectors to inherit from
@@ -141,19 +147,15 @@ class ytDataObjectAbstract(ytBaseModel):
 
         the_args = []
         funcname = getattr(self, "_yt_operation", type(self).__name__)
-        #print("function name:", funcname)
 
-        val = data_object_registry[funcname]
-        
         # get the function from the data object registry
         val = data_object_registry[funcname]
-        #print("function:", val)
-             
+
         # iterate through the arguments for the found data object
         for arguments in val._con_args:
-            #print("the args:", arguments)
+            # print("the args:", arguments)
             con_value = getattr(self, arguments)
-            #print(con_value)
+            # print(con_value)
 
             # check that the argument is the correct instance
             if isinstance(con_value, ytDataObjectAbstract):
