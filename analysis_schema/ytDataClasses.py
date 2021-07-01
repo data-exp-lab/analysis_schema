@@ -2,16 +2,17 @@ from .BaseModelFunctions import ytBaseModel, ytParameter, ytDataObjectAbstract
 from pydantic import Field, BaseModel
 from typing import Optional, List, Union, Tuple, Any
 from pathlib import Path
+import numpy as np
 
 class Dataset(ytBaseModel):
-    """ 
+    """
     The dataset to load. Filen name must be a string.
-    
-    Required fields: Filename 
+
+    Required fields: Filename
     """
     fn: Path = Field(alias="FileName", description='Must be string containing the (path to the file and the) file name')
     name: str = "Data for Science"
-    comments: Optional[str] 
+    comments: Optional[str]
     _yt_operation: str = "load"
 
 class FieldNames(ytParameter):
@@ -19,11 +20,17 @@ class FieldNames(ytParameter):
     Specify a field name from the dataset
     """
     # can't seeem to alias 'field' - maybe because the pydantic name 'Field' is called to do the alias?
-    field: str 
+    field: str
     # unit - domain specific
     # getting an error with unit enabled
     _unit: Optional[str]
     comments: Optional[str]
+
+    def _run(self):
+        fieldname = super()._run()
+        if ',' in fieldname:
+            fieldtype, field = fieldname.split(',')
+            return (fieldtype, field)
 
 class Sphere(ytDataObjectAbstract):
     """A sphere of points defined by a *center* and a *radius*.
@@ -31,7 +38,7 @@ class Sphere(ytDataObjectAbstract):
     Args:
         ytBaseModel ([type]): [description]
     """
-    # found in the 'selection_data_containers.py' 
+    # found in the 'selection_data_containers.py'
     center: List[float] = Field(alias='Center')
     radius: Union[float, Tuple[float, str]] = Field(alias='Radius')
     data_source: Optional[Dataset] = Field(alias="DataSet")
@@ -57,7 +64,7 @@ class SlicePlot(ytBaseModel):
     data_source: Optional[Sphere]
     Comments: Optional[str]
     _yt_operation: str = "SlicePlot"
-  
+
 
 class ProjectionPlot(ytBaseModel):
     ds: Optional[Dataset] = Field(alias='Dataset')
@@ -103,9 +110,45 @@ class PhasePlot(ytBaseModel):
     Comments: Optional[str]
     _yt_operation: str = "PhasePlot"
 
+class NapariVolume(ytBaseModel):
+    ds: Dataset = Field(alias='Dataset')
+    field: FieldNames = Field(alias='Field')
+    resolution: Optional[Tuple] = (100, 100, 100)
+    left_edge: Optional[Tuple] = (0., 0., 0.)
+    right_edge: Optional[Tuple] = (1., 1., 1.)
+    length_units: Optional[str] = 'code_length'
+    take_log: Optional[int] = 1
+
+    def _run(self, napari=False):
+        if napari:
+            # this gets run by the napari plugin for a schema, just returns a 3d ndarray
+            data = self._get_ndarray()
+            return data
+        else:
+            return None
+
+
+    def _get_ndarray(self):
+        # first instantiate the dataset
+        ds = self.ds._run()
+
+        frb = ds.r[
+              self.left_edge[0]:self.right_edge[0]:complex(0, self.resolution[0]),
+              self.left_edge[1]:self.right_edge[1]:complex(0, self.resolution[1]),
+              self.left_edge[2]:self.right_edge[2]:complex(0, self.resolution[2]),
+              ]
+
+        field = self.field._run()
+
+        if self.take_log:
+            return np.log10(frb[field])
+        else:
+            return frb[field]
+
 
 class Visualizations(BaseModel):
     # use pydantic basemodel
     SlicePlot: Optional[SlicePlot]
     ProjectionPlot: Optional[ProjectionPlot]
     PhasePlot: Optional[PhasePlot]
+    Napari: Optional[NapariVolume]
