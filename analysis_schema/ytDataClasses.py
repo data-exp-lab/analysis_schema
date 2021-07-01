@@ -35,9 +35,10 @@ class FieldNames(ytParameter):
 
     def _run(self):
         fieldname = super()._run()
-        if ',' in fieldname:
-            fieldtype, field = fieldname.split(',')
+        if "," in fieldname:
+            fieldtype, field = fieldname.split(",")
             return (fieldtype, field)
+
 
 class Sphere(ytDataObjectAbstract):
     """A sphere of points defined by a *center* and a *radius*.
@@ -130,13 +131,14 @@ class PhasePlot(ytBaseModel):
     Comments: Optional[str]
     _yt_operation: str = "PhasePlot"
 
+
 class NapariVolume(ytBaseModel):
-    ds: Dataset = Field(alias='Dataset')
-    field: FieldNames = Field(alias='Field')
+    ds: Dataset = Field(alias="Dataset")
+    field: FieldNames = Field(alias="Field")
     resolution: Optional[Tuple] = (100, 100, 100)
-    left_edge: Optional[Tuple] = (0., 0., 0.)
-    right_edge: Optional[Tuple] = (1., 1., 1.)
-    length_units: Optional[str] = 'code_length'
+    left_edge: Optional[Tuple] = (0.0, 0.0, 0.0)
+    right_edge: Optional[Tuple] = (1.0, 1.0, 1.0)
+    length_units: Optional[str] = "code_length"
     take_log: Optional[int] = 1
 
     def _run(self, napari=False):
@@ -147,16 +149,15 @@ class NapariVolume(ytBaseModel):
         else:
             return None
 
-
     def _get_ndarray(self):
         # first instantiate the dataset
         ds = self.ds._run()
 
         frb = ds.r[
-              self.left_edge[0]:self.right_edge[0]:complex(0, self.resolution[0]),
-              self.left_edge[1]:self.right_edge[1]:complex(0, self.resolution[1]),
-              self.left_edge[2]:self.right_edge[2]:complex(0, self.resolution[2]),
-              ]
+            self.left_edge[0] : self.right_edge[0] : complex(0, self.resolution[0]),
+            self.left_edge[1] : self.right_edge[1] : complex(0, self.resolution[1]),
+            self.left_edge[2] : self.right_edge[2] : complex(0, self.resolution[2]),
+        ]
 
         field = self.field._run()
 
