@@ -375,6 +375,63 @@
         "zField(s)"
       ]
     },
+    "NapariVolume": {
+      "title": "NapariVolume",
+      "description": "A class to connect attributes and their values to yt operations and their keywork arguements.\n\nArgs:\n    BaseModel ([type]): A pydantic basemodel in the form of a json schema\n\nRaises:\n    AttributeError: [description]\n\nReturns:\n    [list]: A list of yt classes to be run and then displayed",
+      "type": "object",
+      "properties": {
+        "Dataset": {
+          "$ref": "#/definitions/Dataset"
+        },
+        "Field": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "resolution": {
+          "title": "Resolution",
+          "default": [
+            100,
+            100,
+            100
+          ],
+          "type": "array",
+          "items": {}
+        },
+        "left_edge": {
+          "title": "Left Edge",
+          "default": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "type": "array",
+          "items": {}
+        },
+        "right_edge": {
+          "title": "Right Edge",
+          "default": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "type": "array",
+          "items": {}
+        },
+        "length_units": {
+          "title": "Length Units",
+          "default": "code_length",
+          "type": "string"
+        },
+        "take_log": {
+          "title": "Take Log",
+          "default": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "Dataset",
+        "Field"
+      ]
+    },
     "Visualizations": {
       "title": "Visualizations",
       "description": "This class organizes the attributes below so users can select the plot by name, and see the correct arguments as suggestiongs\n\nArgs:\n    BaseModel (Pydantic BaseModel): [description]",
@@ -388,6 +445,9 @@
         },
         "PhasePlot": {
           "$ref": "#/definitions/PhasePlot"
+        },
+        "Napari": {
+          "$ref": "#/definitions/NapariVolume"
         }
       }
     }
