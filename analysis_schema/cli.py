@@ -1,13 +1,7 @@
-# -*- coding: utf-8 -*-
-
 """Console script for analysis_schema."""
 import sys
 import click
-
-# import http.server
-# from .SchemaModel import schema, schema_dict
 import analysis_schema
-from .server import run as run_editor, server_defaults
 
 
 @click.group()
@@ -94,14 +88,15 @@ def list_model_types():
         click.echo(f"{name} ({model_class})")
 
 
+server_defaults = analysis_schema.server.server_defaults
+
+
 @main.command()
-@click.option("--host",
-              default=server_defaults["h"],
-              help="Hostname to listen at")
+@click.option("--host", default=server_defaults["h"], help="Hostname to listen at")
 @click.option("--port", default=server_defaults["p"], help="Port to serve on")
 def editor(host, port):
     click.echo(f"Launching on {host}:{port}")
-    run_editor(host, port, cli=True)
+    analysis_schema.server.run(host, port, cli=True)
 
 
 if __name__ == "__main__":
