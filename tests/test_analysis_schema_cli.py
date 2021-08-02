@@ -86,16 +86,19 @@ def test_schema_generation(tmpdir):
     type(schema_result.exception) == ValueError
 
 
-def test_schema_availibility():
-    """ check that our cli methods for printing availbe models and schema objects work"""
+def test_schema_availability():
+    """ check that our cli methods for printing available models and schema objects work"""
 
     runner = CliRunner()
-    cls, kwargs = _empty_model_registry['ytModel']
-    mod = cls(**kwargs)
 
+    # test the model type list generation
     schema_result = runner.invoke(cli.main, ['list-model-types'])
     assert schema_result.exit_code == 0
     assert all([s in schema_result.output for s in _model_types])
 
-    for s in _model_types:
-        schema_result = runner.invoke(cli.main, ['list-objects'])
+    # or each model type, check the list of schema_objects
+    for mtype in _model_types:
+        _, kwargs = _empty_model_registry['ytModel']
+        schema_result = runner.invoke(cli.main, ['list-objects', '--model_type', mtype])
+        assert schema_result.exit_code == 0
+        assert all([s in schema_result.output for s in kwargs.keys()])
