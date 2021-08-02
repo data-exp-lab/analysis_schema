@@ -1,8 +1,7 @@
 import analysis_schema
 import json
-import pytest
 import yt
-
+from yt.testing import assert_array_equal
 
 plot_ds = r"""
 {
@@ -20,12 +19,13 @@ def test_validation():
     # only testing the validation here, not instantiating yt objects
     model = analysis_schema.ytModel.parse_raw(plot_ds)
     jdict = json.loads(plot_ds)
-    assert(str(model.Data.fn) == jdict['Data']['FileName'])
+    assert str(model.Data.fn) == jdict["Data"]["FileName"]
 
 
 def test_execution():
 
-    # requires the datafile -- should use pytest to decorate...
+    # requires the datafile -- should use pytest to decorate or use an in-mem
+    # dataset (which the current model does not support).
     model = analysis_schema.ytModel.parse_raw(plot_ds)
 
     try:
@@ -34,16 +34,16 @@ def test_execution():
     except FileNotFoundError:
         file_exists = False
 
+    domain_attrs = ["center", "width", "dimensions", "left_edge", "right_edge"]
     if file_exists:
         ds_a = model.Data._run()
 
         # check that domain attributes match
-        domain_attrs = ["center", "width", "dimensions", "left_edge", "right_edge"]
         for attr in domain_attrs:
             d_name = "domain_" + attr
-            yt.testing.assert_array_equal(getattr(ds_a, d_name),getattr(ds, d_name))
+            assert_array_equal(getattr(ds_a, d_name), getattr(ds, d_name))
 
         # check that field list matches
         flds_a = ds_a.field_list
         flds = ds.field_list
-        assert (all([fld in flds_a for fld in flds]))
+        assert all([fld in flds_a for fld in flds])
