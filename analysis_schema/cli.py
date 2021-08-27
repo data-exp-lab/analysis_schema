@@ -1,6 +1,8 @@
 """Console script for analysis_schema."""
 import sys
+
 import click
+
 import analysis_schema
 
 
@@ -16,9 +18,7 @@ def main():
     help="output filename. If not set, print to screen (default)",
 )
 @click.option(
-    "--model_type",
-    default="ytModel",
-    help="the schema model type (default ytModel)"
+    "--model_type", default="ytModel", help="the schema model type (default ytModel)"
 )
 @click.option(
     "--schema_object",
@@ -31,7 +31,7 @@ def main():
     ),
 )
 def generate(model_type, schema_object, output):
-    """ generate a schema file """
+    """generate a schema file"""
 
     if hasattr(analysis_schema, model_type) is False:
         raise ValueError(f"{model_type} is not a valid analysis_schema model")
@@ -66,12 +66,10 @@ def generate(model_type, schema_object, output):
 
 @main.command()
 @click.option(
-    "--model_type",
-    default="ytModel",
-    help="the schema model type (default ytModel)"
+    "--model_type", default="ytModel", help="the schema model type (default ytModel)"
 )
 def list_objects(model_type):
-    """ list schema_object types for a model type"""
+    """list schema_object types for a model type"""
     emr = analysis_schema.SchemaModel._empty_model_registry
     _, model_kwargs = emr[model_type]
     click.echo(f"Available schema_object values for {model_type} include:")

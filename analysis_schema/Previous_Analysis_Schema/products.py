@@ -1,8 +1,10 @@
 import typing
+
 from pydantic import BaseModel, Schema
-from .operations import Operation, Sum
+
 from .data_objects import AllData, DataObject
 from .dataset import Dataset
+from .operations import Operation, Sum
 
 
 class Projection(BaseModel):

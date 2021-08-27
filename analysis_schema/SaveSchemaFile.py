@@ -1,6 +1,7 @@
 from analysis_schema.SchemaModel import ytModel
 
-# This code will save an empty (no values have been entered) model to a json file, which will be referenced by the user
+# This code will save an empty (no values have been entered) model to a json file
+# which will be referenced by the user
 
 analysis_model_schema = ytModel(Data={"FileName": ""}, Plot=[{}])
 

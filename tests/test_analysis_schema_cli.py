@@ -5,13 +5,15 @@
 
 import json
 import os
+
 from click.testing import CliRunner
+
 from analysis_schema import cli, ytModel
 from analysis_schema.SchemaModel import _empty_model_registry, _model_types
 
 
 def test_command_line_interface():
-    """ Test the cli basic invocation """
+    """Test the cli basic invocation"""
 
     runner = CliRunner()
     result = runner.invoke(cli.main)
@@ -22,7 +24,7 @@ def test_command_line_interface():
 
 
 def test_schema_generation(tmpdir):
-    """ Test schema generation from cli """
+    """Test schema generation from cli"""
 
     runner = CliRunner()
     # check the help message
@@ -68,9 +70,7 @@ def test_schema_generation(tmpdir):
             if type(submodel) is not list:
                 submodel = [submodel]
             outjson = schema_result.output
-            assert all(
-                [sm.schema_json(indent=2) in outjson for sm in submodel]
-            )
+            assert all([sm.schema_json(indent=2) in outjson for sm in submodel])
 
     # check for some errors
     schema_result = runner.invoke(
@@ -81,7 +81,7 @@ def test_schema_generation(tmpdir):
 
 
 def test_schema_availability():
-    """ check cli methods for printing available models and schema objects"""
+    """check cli methods for printing available models and schema objects"""
 
     runner = CliRunner()
 

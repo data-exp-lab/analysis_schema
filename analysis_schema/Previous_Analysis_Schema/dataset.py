@@ -1,7 +1,9 @@
-import typing
 import enum
+import typing
+
 from pydantic import BaseModel, Schema, create_model
-from .quantities import UnitfulCoordinate, UnitfulValue, UnitfulArray
+
+from .quantities import UnitfulArray, UnitfulCoordinate, UnitfulValue
 
 
 class DomainContext(BaseModel):

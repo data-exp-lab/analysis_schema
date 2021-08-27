@@ -1,7 +1,9 @@
-from .BaseModelFunctions import ytBaseModel, ytParameter, ytDataObjectAbstract
-from pydantic import Field, BaseModel
-from typing import Optional, List, Union, Tuple, Any
 from pathlib import Path
+from typing import List, Optional, Tuple, Union
+
+from pydantic import BaseModel, Field
+
+from .BaseModelFunctions import ytBaseModel, ytDataObjectAbstract, ytParameter
 
 
 class Dataset(ytBaseModel):
@@ -13,7 +15,7 @@ class Dataset(ytBaseModel):
 
     fn: Path = Field(
         alias="FileName",
-        description="Must be string containing the (path to the file and the) file name",
+        description="A string containing the (path to the file and the) file name",
     )
     DatasetName: Optional[str]
     comments: Optional[str]
@@ -25,7 +27,8 @@ class FieldNames(ytParameter):
     Specify a field name from the dataset
     """
 
-    # can't seeem to alias 'field' - maybe because the pydantic name 'Field' is called to do the alias?
+    # can't seeem to alias 'field' - maybe because the pydantic name 'Field' is called
+    # to do the alias?
     field: str
     # unit - domain specific
     # getting an error with unit enabled
@@ -83,7 +86,8 @@ class ProjectionPlot(ytBaseModel):
     axis: Union[str, int] = Field(alias="Axis")
     # domain stuff here. Can we simplify? Contains operations stuff too
     center: Optional[str] = Field(alias="Center")
-    # more confusing design. Can we simplify? This contain field names, units, and widths
+    # more confusing design. Can we simplify? This contain field names, units, and
+    # widths
     width: Optional[Union[tuple, float]] = Field(alias="Width")
     axes_unit: Optional[str] = Field(alias="AxesUnit")
     weight_field: Optional[FieldNames] = Field(alias="WeightFieldName")
@@ -98,9 +102,9 @@ class ProjectionPlot(ytBaseModel):
     field_parameters: Optional[dict] = Field(alias="FieldParameters")
     # better name?
     method: Optional[str] = Field(alias="Method")
+    msg = "Select a subset of the dataset to visualize from the overall dataset"
     data_source: Optional[Union[Sphere, Region]] = Field(
-        alias="DataSource",
-        description="Select a subset of the dataset to visualize from the overall dataset",
+        alias="DataSource", description=msg,
     )
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
@@ -126,7 +130,9 @@ class PhasePlot(ytBaseModel):
 
 
 class Visualizations(BaseModel):
-    """This class organizes the attributes below so users can select the plot by name, and see the correct arguments as suggestiongs
+    """
+    This class organizes the attributes below so users can select the plot by name,
+    and see the correct arguments as suggestiongs
 
     Args:
         BaseModel (Pydantic BaseModel): [description]

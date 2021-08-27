@@ -1,11 +1,14 @@
+import argparse
 import json
+
 from analysis_schema.BaseModelFunctions import show_plots
 from analysis_schema.SchemaModel import ytModel
-import argparse
 
 
 def load_and_run(json_file, files):
-    """A function to load the user JSON and load it into the analysis schema model, and the run that model to produce an output.
+    """
+    A function to load the user JSON and load it into the analysis schema model, and
+    the run that model to produce an output.
 
     Args:
         json_file (json file): the JSON users edit

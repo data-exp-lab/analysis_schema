@@ -1,10 +1,13 @@
-from pydantic import BaseModel
-from typing import Optional
 from inspect import getfullargspec
+from typing import Optional
+
+from pydantic import BaseModel
 
 
 def show_plots(schema, files):
-    """This function accepts the schema model and runs it using yt code which returns a list. This function iterates through the list and displays each output.
+    """
+    This function accepts the schema model and runs it using yt code which returns
+    a list. This function iterates through the list and displays each output.
 
     Args:
         schema ([dict]): the analysis schema filled out with yt specificaions
@@ -21,7 +24,9 @@ def show_plots(schema, files):
 
 
 class ytBaseModel(BaseModel):
-    """A class to connect attributes and their values to yt operations and their keywork arguements.
+    """
+    A class to connect attributes and their values to yt operations and their
+    keywork arguements.
 
     Args:
         BaseModel ([type]): A pydantic basemodel in the form of a json schema
@@ -64,8 +69,9 @@ class ytBaseModel(BaseModel):
         func_spec = getfullargspec(func)
         print("spec", func_spec)
 
-        # the argument position number at which we have default values (a little hacky, should
-        # be a better way to do this, and not sure how to scale it to include *args and **kwargs)
+        # the argument position number at which we have default values (a little
+        # hacky, should be a better way to do this, and not sure how to scale it to
+        # include *args and **kwargs)
         n_args = len(func_spec.args)  # number of arguments
         print("number of args:", n_args)
         if func_spec.defaults is None:
@@ -76,8 +82,9 @@ class ytBaseModel(BaseModel):
             named_kw_start_at = n_args - len(func_spec.defaults)
         print(f"keywords start at {named_kw_start_at}")
 
-        # loop over the call signature arguments and pull out values from our pydantic class .
-        # this is recursive! will call _run() if a given argument value is also a ytBaseModel.
+        # loop over the call signature arguments and pull out values from our pydantic
+        # class. this is recursive! will call _run() if a given argument value is also
+        # a ytBaseModel.
         for arg_i, arg in enumerate(func_spec.args):
             # check if we've remapped the yt internal argument name for the schema
             if arg == "self":
@@ -85,8 +92,8 @@ class ytBaseModel(BaseModel):
             # if arg in self._arg_mapping:
             # arg = self._arg_mapping[arg]
 
-            # get the value for this argument. If it's not there, attempt to set default values
-            # for arguments needed for yt but not exposed in our pydantic class
+            # get the value for this argument. If it's not there, attempt to set default
+            # values for arguments needed for yt but not exposed in our pydantic class
             print("the arguemnt:", arg)
             try:
                 arg_value = getattr(self, arg)
@@ -110,15 +117,12 @@ class ytBaseModel(BaseModel):
             # this should make this a fully recursive function?
             # if hasattr(arg_value,'_run'):
             if isinstance(arg_value, ytBaseModel) or isinstance(arg_value, ytParameter):
-                print(
-                    f"{arg_value} is a {type(arg_value)}, calling {arg_value}._run() now..."
-                )
                 arg_value = arg_value._run()
 
             the_args.append(arg_value)
         print("the args list:", the_args)
 
-        # this saves the data from yt.load, so it can be used to instaniate the data object items
+        # save the data from yt.load, so it can be used to instaniate the data objects
         if funcname == "load":
             arg_value = str(arg_value)
             self._data_source[arg_value] = func(arg_value)
@@ -177,7 +181,8 @@ class ytDataObjectAbstract(ytBaseModel):
 
             the_args.append(con_value)
 
-        # if there is a dataset sitting in _data_source, add it to the args and call as a keyword argument
+        # if there is a dataset sitting in _data_source, add it to the args and call as
+        # a keyword argument
         if len(self._data_source) > 0:
             ds = list(self._data_source.values())[0]
             return val(*the_args, ds=ds)
