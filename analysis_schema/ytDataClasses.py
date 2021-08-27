@@ -1,7 +1,9 @@
-from .BaseModelFunctions import ytBaseModel, ytParameter, ytDataObjectAbstract
-from pydantic import Field, BaseModel
-from typing import Optional, List, Union, Tuple, Any
 from pathlib import Path
+from typing import Any, List, Optional, Tuple, Union
+
+from pydantic import BaseModel, Field
+
+from .BaseModelFunctions import ytBaseModel, ytDataObjectAbstract, ytParameter
 
 
 class Dataset(ytBaseModel):

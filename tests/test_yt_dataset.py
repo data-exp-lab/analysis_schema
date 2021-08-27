@@ -1,7 +1,9 @@
-import analysis_schema
 import json
+
 import yt
 from yt.testing import assert_array_equal
+
+import analysis_schema
 
 plot_ds = r"""
 {

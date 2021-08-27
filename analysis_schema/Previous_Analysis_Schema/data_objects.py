@@ -1,8 +1,11 @@
-import typing
 import enum
+import typing
+
 from pydantic import BaseModel, Schema, create_model
-from .quantities import UnitfulCoordinate, Vector, Path, UnitfulValue, UnitfulArray
-from .fields import FieldParameter, FieldName
+
+from .fields import FieldName, FieldParameter
+from .quantities import (Path, UnitfulArray, UnitfulCoordinate, UnitfulValue,
+                         Vector)
 
 
 class FlatDefinitionsEnum(str, enum.Enum):

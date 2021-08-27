@@ -1,9 +1,11 @@
-from .SchemaModel import schema
 import http.server
-import pkg_resources
+import traceback
 from cgi import parse_header, parse_multipart
 from urllib.parse import parse_qs
-import traceback
+
+import pkg_resources
+
+from .SchemaModel import schema
 
 # For static serving:
 # _index_contents = pkg_resources.resource_string(__name__, "index.html")

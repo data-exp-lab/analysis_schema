@@ -1,11 +1,13 @@
 import enum
-from typing import List, Tuple, Union, Dict
-from pydantic import BaseModel, Schema, create_model, Field
-from .quantities import UnitfulValue, UnitfulCoordinate
+from typing import Dict, List, Tuple, Union
+
+from pydantic import BaseModel, Field, Schema, create_model
+
+from .data_objects import DataSource
 from .fields import FieldName
 from .operations import ReturnsUnitfulValue
 from .products import Projection
-from .data_objects import DataSource
+from .quantities import UnitfulCoordinate, UnitfulValue
 
 
 class CenteringTypeEnum(str, enum.Enum):

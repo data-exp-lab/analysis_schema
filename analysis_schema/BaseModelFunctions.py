@@ -1,6 +1,7 @@
-from pydantic import BaseModel
-from typing import Optional
 from inspect import getfullargspec
+from typing import Optional
+
+from pydantic import BaseModel
 
 
 def show_plots(schema, files):

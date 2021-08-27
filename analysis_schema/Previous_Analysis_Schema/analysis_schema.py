@@ -4,38 +4,19 @@
 
 from pydantic import BaseModel
 
-from .data_objects import DataSource, DataObject
-
-from .dataset import (
-    DomainContext,
-    CosmologyContext,
-    TurbulentContext,
-    NeuroImagingContext,
-    Dataset,
-)
-
-from .operations import Average, Sum, Minimum, Maximum, Integrate, Operation
-
-from .products import Projection, ProfileND, Profile
-
-from .quantities import UnitfulValue, UnitfulArray, UnitfulCoordinate, Vector, Path
-
-from .visualization_objects import (
-    FixedResolutionBuffer,
-    ProfilePlot,
-    PhasePlot,
-    PhasePlotMPL,
-)
-
+from .data_objects import DataObject, DataSource
+from .dataset import (CosmologyContext, Dataset, DomainContext,
+                      NeuroImagingContext, TurbulentContext)
 from .fields import FieldDefinition
-
-from .stream_frontend import (
-    AMRGridDataSpecification,
-    AMRDataSpecification,
-    YTDatasetSpecification,
-)
-
 from .image_gallery import ImageGallery, PlotDefinition
+from .operations import Average, Integrate, Maximum, Minimum, Operation, Sum
+from .products import Profile, ProfileND, Projection
+from .quantities import (Path, UnitfulArray, UnitfulCoordinate, UnitfulValue,
+                         Vector)
+from .stream_frontend import (AMRDataSpecification, AMRGridDataSpecification,
+                              YTDatasetSpecification)
+from .visualization_objects import (FixedResolutionBuffer, PhasePlot,
+                                    PhasePlotMPL, ProfilePlot)
 
 schema = {
     n: v

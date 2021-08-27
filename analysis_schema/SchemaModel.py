@@ -1,5 +1,6 @@
-from .BaseModelFunctions import ytBaseModel
 from typing import List, Optional
+
+from .BaseModelFunctions import ytBaseModel
 from .ytDataClasses import Dataset, Visualizations
 
 

@@ -1,7 +1,8 @@
+import argparse
 import json
+
 from analysis_schema.BaseModelFunctions import show_plots
 from analysis_schema.SchemaModel import ytModel
-import argparse
 
 
 def load_and_run(json_file, files):

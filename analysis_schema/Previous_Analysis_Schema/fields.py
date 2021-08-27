@@ -1,6 +1,8 @@
-import typing
 import enum
+import typing
+
 from pydantic import BaseModel, Schema, create_model
+
 from . import quantities
 
 _parameter_value_types = typing.Union[
