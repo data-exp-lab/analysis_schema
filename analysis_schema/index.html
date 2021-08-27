@@ -12,10 +12,14 @@
 
 <!-- our main container with the monaco editor: -->
 <div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
-<!-- a submit button that will take the current json and do something with it: -->
-<button id="submitbutton">Submit</button> 
-<!-- on submit, just copy the json text into another div for now:  -->
-<div id="results" style="width:800px;height:600px;border:1px solid grey"></div>
+
+<!-- our form that will submit the schema and return a new page with results -->
+<form id="schema_form" action="/run_schema" method="POST">
+    <input id="run_schema" type="hidden" name="json" value="">
+    <output name="schema_output" for="run_schema"></output>
+    <button id="submitbutton">Submit</button>
+</form>
+
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.17.0/min/vs/loader.js"></script>
@@ -53,9 +57,10 @@
 
         function submitJson() 
         {            
-            // pulls out the json text and does something with it. right now this just copies the 
-            // text into another div, but we could call a GET/POST method here with the json text
-            document.getElementById('results').innerHTML = editor.getValue()
+            // pulls out the json text and submits it via the schema_form
+            var json_to_submit = editor.getValue()
+            document.getElementById("run_schema").value = json_to_submit;
+            document.getElementById("schema_form").submit();
         }
         document.getElementById('submitbutton').onclick = submitJson; // update the func to call for button
         
