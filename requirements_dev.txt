@@ -14,7 +14,9 @@ twine==1.12.1
 pytest==3.8.2
 pytest-runner==4.2
 
-pre-commit
 pydantic>=1.1
+h5py
 yt>4.0.0
 Click>=6.0
+
+pre-commit
