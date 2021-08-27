@@ -13,3 +13,4 @@ pytest-runner==4.2
 
 pre-commit
 pydantic>=1.1
+yt>4.0.0
