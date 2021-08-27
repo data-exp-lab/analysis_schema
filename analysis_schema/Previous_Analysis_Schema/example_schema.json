@@ -1,0 +1,293 @@
+
+{
+  "title": "Operation",
+  "type": "object",
+  "properties": {
+    "operation": {
+      "title": "Operation",
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Average"
+        },
+        {
+          "$ref": "#/definitions/Sum"
+        },
+        {
+          "$ref": "#/definitions/Minimum"
+        },
+        {
+          "$ref": "#/definitions/Maximum"
+        },
+        {
+          "$ref": "#/definitions/Integrate"
+        }
+      ]
+    }
+  },
+  "required": [
+    "operation"
+  ],
+  "definitions": {
+    "Average": {
+      "title": "Average",
+      "type": "object",
+      "properties": {
+        "average": {
+          "title": "Average",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        "weight": {
+          "title": "Weight",
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "axis": {
+          "title": "Axis",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "average"
+      ]
+    },
+    "Sum": {
+      "title": "Sum",
+      "type": "object",
+      "properties": {
+        "sum": {
+          "title": "Sum",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        "axis": {
+          "title": "Axis",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "sum"
+      ]
+    },
+    "Minimum": {
+      "title": "Minimum",
+      "type": "object",
+      "properties": {
+        "minimum": {
+          "title": "Minimum",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        "axis": {
+          "title": "Axis",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "minimum"
+      ]
+    },
+    "Maximum": {
+      "title": "Maximum",
+      "type": "object",
+      "properties": {
+        "maximum": {
+          "title": "Maximum",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        "axis": {
+          "title": "Axis",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "maximum"
+      ]
+    },
+    "Integrate": {
+      "title": "Integrate",
+      "type": "object",
+      "properties": {
+        "integrate": {
+          "title": "Integrate",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        "field": {
+          "title": "Field",
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "axis": {
+          "title": "Axis",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "integrate",
+        "field",
+        "axis"
+      ]
+    }
+  }
+}

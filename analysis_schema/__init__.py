@@ -6,4 +6,5 @@ __author__ = """Matthew Turk"""
 __email__ = "matthewturk@gmail.com"
 __version__ = "0.1.0"
 
-from .analysis_schema import *
+from .SchemaModel import ytModel, schema
+from . import server
