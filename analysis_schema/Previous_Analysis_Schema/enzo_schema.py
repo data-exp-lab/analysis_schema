@@ -28,8 +28,6 @@ import yt
 # In[4]:
 
 
-
-
 # In[5]:
 
 

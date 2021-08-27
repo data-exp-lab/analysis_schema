@@ -6,8 +6,7 @@ from pydantic import BaseModel, Schema, create_model
 from .data_objects import DataObject
 from .dataset import Dataset
 from .products import Profile
-from .quantities import (Path, UnitfulArray, UnitfulCoordinate, UnitfulValue,
-                         Vector)
+from .quantities import Path, UnitfulArray, UnitfulCoordinate, UnitfulValue, Vector
 
 
 class CoordinateHandler(BaseModel):

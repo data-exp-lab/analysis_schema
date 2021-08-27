@@ -4,8 +4,7 @@ import typing
 from pydantic import BaseModel, Schema, create_model
 
 from .fields import FieldName, FieldParameter
-from .quantities import (Path, UnitfulArray, UnitfulCoordinate, UnitfulValue,
-                         Vector)
+from .quantities import Path, UnitfulArray, UnitfulCoordinate, UnitfulValue, Vector
 
 
 class FlatDefinitionsEnum(str, enum.Enum):

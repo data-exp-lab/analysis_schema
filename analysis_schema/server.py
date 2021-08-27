@@ -32,7 +32,9 @@ class EditorHandler(http.server.BaseHTTPRequestHandler):
             return self.return_index()
         elif self.path == "/schema.json":
             # calls a specific schema
-            # can call the default schema through `return_schema`or a different schema from a local JSON file through `return_external_schema`
+            # can call the default schema through `return_schema`
+            # or a different schema from a local JSON file through
+            # `return_external_schema`
             return self.return_external_schema()
         elif self.path == "/monaco-editor-worker-loader-proxy.js":
             print("getting worker proxy")
@@ -65,7 +67,10 @@ class EditorHandler(http.server.BaseHTTPRequestHandler):
         return
 
     def return_schema(self):
-        """This function returns the schema generate within this module, which I am calling the defalut schema."""
+        """
+        This function returns the schema generate within this module,
+        which I am calling the defalut schema.
+        """
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
@@ -73,7 +78,12 @@ class EditorHandler(http.server.BaseHTTPRequestHandler):
         return
 
     def return_external_schema(self):
-        """This function grabs a local schema file instead of generating the default schema. To change the file, change file name in `_json_contents` agruements. To change back to the default schema, change the call in `do_GET` under self.path to call return_schema."""
+        """
+        This function grabs a local schema file instead of generating
+        the default schema. To change the file, change file name in
+        `_json_contents` agruements. To change back to the default schema,
+        change the call in `do_GET` under self.path to call return_schema.
+        """
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
@@ -125,7 +135,7 @@ def run(host=server_defaults["h"], port=server_defaults["p"], cli=False):
     if cli is False:
         print(f"starting server at {host}:{port}")
         print(f"visit http://{host}:{port} to launch schema editor")
-        print(f"crtl-c to kill server")
+        print("crtl-c to kill server")
     httpd = SchemaHTTPServer(server_address, EditorHandler)
     httpd.serve_forever()
 
