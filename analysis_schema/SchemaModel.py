@@ -26,14 +26,14 @@ class ytModel(ytBaseModel):
         # for the top level model, we override this.
         # Nested objects will still be recursive!
         output_list = []
-        attribute_data = getattr(self, "Data")
+        attribute_data = self.Data
 
         if attribute_data is not None:
             # the data does not get added to the output list, because we can't call
             # .save() or .show() on it
             attribute_data._run()
 
-        attribute_plot = getattr(self, "Plot")
+        attribute_plot = self.Plot
         if attribute_plot is not None:
             for data_class in attribute_plot:
                 for attribute in dir(data_class):

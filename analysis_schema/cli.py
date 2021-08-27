@@ -59,7 +59,7 @@ def generate(model_type, schema_object, output):
     if output is None:
         click.echo_via_pager(s)
     else:
-        click.echo("Outputting to {}".format(output))
+        click.echo(f"Outputting to {output}")
         with open(output, "w") as f:
             f.write(s)
 
