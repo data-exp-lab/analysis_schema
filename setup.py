@@ -11,11 +11,15 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['pydantic', 'yt>=4.0.0']
+requirements = ["Click>=6.0", "pydantic>=1.1", "yt>=4.0.0"]
 
-setup_requirements = ['pytest-runner', ]
+setup_requirements = ["pytest-runner", ]
 
-test_requirements = ['Click>=6.0', 'pytest', ]
+with open("tests/lint_requirements.txt") as lint_reqs:
+    test_requirements = lint_reqs.read().split("\n")
+
+with open("tests/dev_requirements.txt") as dev_reqs:
+    test_requirements += dev_reqs.read().split("\n")
 
 setup(
     author="Matthew Turk",
