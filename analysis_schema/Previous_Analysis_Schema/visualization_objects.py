@@ -1,10 +1,11 @@
-from pydantic import BaseModel, Schema, create_model
-from typing import Dict, List, Optional, Sequence, Set, Tuple, Any
+from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
-from .quantities import UnitfulCoordinate, Vector, Path, UnitfulValue, UnitfulArray
+from pydantic import BaseModel, Schema, create_model
+
 from .data_objects import DataObject
 from .dataset import Dataset
 from .products import Profile
+from .quantities import Path, UnitfulArray, UnitfulCoordinate, UnitfulValue, Vector
 
 
 class FixedResolutionBuffer(BaseModel):

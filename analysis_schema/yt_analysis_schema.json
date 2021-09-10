@@ -1,0 +1,395 @@
+{
+  "title": "yt Schema Model for Descriptive Visualization and Analysis",
+  "description": "Create a model in the form of a json schema, using the yt data classes. As values are added to the file referencing the schema, the function `run` with be called recursively to acccess nested yt elements and run the yt code.\n\nThe run function iterates through the attributes of the class and runs this values entered for those attributes and puts the output into a list. This list will be iterated through to render and display the output.",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "$ref": "#/definitions/Dataset"
+    },
+    "Plot": {
+      "title": "Plot",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Visualizations"
+      }
+    }
+  },
+  "definitions": {
+    "Dataset": {
+      "title": "Dataset",
+      "description": "The dataset to load. Filen name must be a string.\n\nRequired fields: Filename",
+      "type": "object",
+      "properties": {
+        "FileName": {
+          "title": "Filename",
+          "description": "Must be string containing the (path to the file and the) file name",
+          "type": "string",
+          "format": "path"
+        },
+        "DatasetName": {
+          "title": "Datasetname",
+          "type": "string"
+        },
+        "comments": {
+          "title": "Comments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "FileName"
+      ]
+    },
+    "FieldNames": {
+      "title": "FieldNames",
+      "description": "Specify a field name from the dataset",
+      "type": "object",
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "comments": {
+          "title": "Comments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field"
+      ]
+    },
+    "Sphere": {
+      "title": "Sphere",
+      "description": "A sphere of points defined by a *center* and a *radius*.\n\nArgs:\n    ytBaseModel ([type]): [description]",
+      "type": "object",
+      "properties": {
+        "Center": {
+          "title": "Center",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "Radius": {
+          "title": "Radius",
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        "DataSet": {
+          "$ref": "#/definitions/Dataset"
+        }
+      },
+      "required": [
+        "Center",
+        "Radius"
+      ]
+    },
+    "SlicePlot": {
+      "title": "SlicePlot",
+      "description": "A class to connect attributes and their values to yt operations and their keywork arguements.\n\nArgs:\n    BaseModel ([type]): A pydantic basemodel in the form of a json schema\n\nRaises:\n    AttributeError: [description]\n\nReturns:\n    [list]: A list of yt classes to be run and then displayed",
+      "type": "object",
+      "properties": {
+        "Dataset": {
+          "$ref": "#/definitions/Dataset"
+        },
+        "FieldNames": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "Axis": {
+          "title": "Axis",
+          "type": "string"
+        },
+        "Center": {
+          "title": "Center",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          ]
+        },
+        "Width": {
+          "title": "Width",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "array",
+              "items": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        "data_source": {
+          "$ref": "#/definitions/Sphere"
+        },
+        "Comments": {
+          "title": "Comments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "FieldNames",
+        "Axis"
+      ]
+    },
+    "Region": {
+      "title": "Region",
+      "description": "summary\n\nArgs:\n    ytDataObjectAbstract ([type]): [description]",
+      "type": "object",
+      "properties": {
+        "center": {
+          "title": "Center",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "left_edge": {
+          "title": "Left Edge",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "right_edge": {
+          "title": "Right Edge",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "center",
+        "left_edge",
+        "right_edge"
+      ]
+    },
+    "ProjectionPlot": {
+      "title": "ProjectionPlot",
+      "description": "A class to connect attributes and their values to yt operations and their keywork arguements.\n\nArgs:\n    BaseModel ([type]): A pydantic basemodel in the form of a json schema\n\nRaises:\n    AttributeError: [description]\n\nReturns:\n    [list]: A list of yt classes to be run and then displayed",
+      "type": "object",
+      "properties": {
+        "Dataset": {
+          "$ref": "#/definitions/Dataset"
+        },
+        "FieldNames": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "Axis": {
+          "title": "Axis",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "Center": {
+          "title": "Center",
+          "type": "string"
+        },
+        "Width": {
+          "title": "Width",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "AxesUnit": {
+          "title": "Axesunit",
+          "type": "string"
+        },
+        "WeightFieldName": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "MaxLevel": {
+          "title": "Maxlevel",
+          "type": "integer"
+        },
+        "Origin": {
+          "title": "Origin",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "RightHanded": {
+          "title": "Righthanded",
+          "type": "boolean"
+        },
+        "FontSize": {
+          "title": "Fontsize",
+          "type": "integer"
+        },
+        "FieldParameters": {
+          "title": "Fieldparameters",
+          "type": "object"
+        },
+        "Method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "DataSource": {
+          "title": "Datasource",
+          "description": "Select a subset of the dataset to visualize from the overall dataset",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Sphere"
+            },
+            {
+              "$ref": "#/definitions/Region"
+            }
+          ]
+        },
+        "Comments": {
+          "title": "Comments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "FieldNames",
+        "Axis"
+      ]
+    },
+    "PhasePlot": {
+      "title": "PhasePlot",
+      "description": "A class to connect attributes and their values to yt operations and their keywork arguements.\n\nArgs:\n    BaseModel ([type]): A pydantic basemodel in the form of a json schema\n\nRaises:\n    AttributeError: [description]\n\nReturns:\n    [list]: A list of yt classes to be run and then displayed",
+      "type": "object",
+      "properties": {
+        "Dataset": {
+          "$ref": "#/definitions/Dataset"
+        },
+        "xField": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "yField": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "zField(s)": {
+          "title": "Zfield(S)",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldNames"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FieldNames"
+              }
+            }
+          ]
+        },
+        "WegihtFieldName": {
+          "$ref": "#/definitions/FieldNames"
+        },
+        "xBins": {
+          "title": "Xbins",
+          "type": "integer"
+        },
+        "yBins": {
+          "title": "Ybins",
+          "type": "integer"
+        },
+        "Accumulation": {
+          "title": "Accumulation",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          ]
+        },
+        "Fractional": {
+          "title": "Fractional",
+          "type": "boolean"
+        },
+        "FigureSize": {
+          "title": "Figuresize",
+          "type": "integer"
+        },
+        "FontSize": {
+          "title": "Fontsize",
+          "type": "integer"
+        },
+        "Shading": {
+          "title": "Shading",
+          "type": "string"
+        },
+        "Comments": {
+          "title": "Comments",
+          "type": "string"
+        }
+      },
+      "required": [
+        "xField",
+        "yField",
+        "zField(s)"
+      ]
+    },
+    "Visualizations": {
+      "title": "Visualizations",
+      "description": "This class organizes the attributes below so users can select the plot by name, and see the correct arguments as suggestiongs\n\nArgs:\n    BaseModel (Pydantic BaseModel): [description]",
+      "type": "object",
+      "properties": {
+        "SlicePlot": {
+          "$ref": "#/definitions/SlicePlot"
+        },
+        "ProjectionPlot": {
+          "$ref": "#/definitions/ProjectionPlot"
+        },
+        "PhasePlot": {
+          "$ref": "#/definitions/PhasePlot"
+        }
+      }
+    }
+  }
+}

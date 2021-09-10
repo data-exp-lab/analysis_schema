@@ -1,11 +1,12 @@
-from pydantic import BaseModel, Schema, create_model
-from typing import Dict, List, Optional, Sequence, Set, Tuple, OrderedDict, Any
 import enum
+from typing import Any, Dict, List, Optional, OrderedDict, Sequence, Set, Tuple
 
-from .quantities import UnitfulCoordinate, Vector, Path, UnitfulValue, UnitfulArray
+from pydantic import BaseModel, Schema, create_model
+
 from .data_objects import DataObject
 from .dataset import Dataset
 from .products import Profile
+from .quantities import Path, UnitfulArray, UnitfulCoordinate, UnitfulValue, Vector
 
 
 class CoordinateHandler(BaseModel):

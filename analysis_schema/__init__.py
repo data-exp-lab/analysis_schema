@@ -6,4 +6,5 @@ __author__ = """Matthew Turk"""
 __email__ = "matthewturk@gmail.com"
 __version__ = "0.1.0"
 
-from .analysis_schema import *
+from . import server  # noqa F401
+from .SchemaModel import schema, ytModel  # noqa F401
