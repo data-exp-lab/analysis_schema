@@ -89,8 +89,8 @@ class ytBaseModel(BaseModel):
             # check if we've remapped the yt internal argument name for the schema
             if arg == "self":
                 continue
-            # if arg in self._arg_mapping:
-            # arg = self._arg_mapping[arg]
+            if arg in self._arg_mapping:
+                arg = self._arg_mapping[arg]
 
             # get the value for this argument. If it's not there, attempt to set default
             # values for arguments needed for yt but not exposed in our pydantic class
@@ -125,13 +125,13 @@ class ytBaseModel(BaseModel):
         # save the data from yt.load, so it can be used to instaniate the data objects
         if funcname == "load":
             arg_value = str(arg_value)
-            self._data_source[arg_value] = func(arg_value)
+            self._data_source["dataset_one"] = func(arg_value)
             print("data source:", self._data_source)
 
         # if ds is None, then find ._data_source and insert it in the first position
         if the_args[0] is None:
             if len(self._data_source) > 0:
-                ds = self._data_source["IsolatedGalaxy/galaxy0030/galaxy0030"]
+                ds = self._data_source["dataset_one"]
                 the_args.remove(None)
                 the_args.insert(0, ds)
                 return func(*the_args)

@@ -1,7 +1,9 @@
 from typing import List, Optional
 
-from .BaseModelFunctions import ytBaseModel
-from .ytDataClasses import Dataset, Visualizations
+from pydantic import fields
+
+from analysis_schema.BaseModelFunctions import ytBaseModel
+from analysis_schema.ytDataClasses import Dataset, Visualizations
 
 
 class ytModel(ytBaseModel):
@@ -21,6 +23,8 @@ class ytModel(ytBaseModel):
     class Config:
         title = "yt Schema Model for Descriptive Visualization and Analysis"
         underscore_attrs_are_private = True
+        # should solve the Fields issue: https://github.com/samuelcolvin/pydantic/issues/1250
+        #fields = {'field_value': 'fields'}
 
     def _run(self):
         # for the top level model, we override this.
@@ -46,6 +50,7 @@ class ytModel(ytBaseModel):
 
 schema = ytModel
 schema_dict = schema.schema()
+print("schema", schema)
 
 # create a dict to store the arguments required to instantiate an empty model
 # useful for generating schemas from subsets of a model (see cli.py for an example)

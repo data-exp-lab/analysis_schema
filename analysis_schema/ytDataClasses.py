@@ -71,18 +71,19 @@ class Slice(ytDataObjectAbstract):
 
 class SlicePlot(ytBaseModel):
     ds: Optional[Dataset] = Field(alias="Dataset")
-    fields: FieldNames = Field(alias="FieldNames")
+    FieldName: FieldNames
     axis: str = Field(alias="Axis")
     center: Optional[Union[str, List[float]]] = Field(alias="Center")
     width: Optional[Union[List[str], Tuple[int, str]]] = Field(alias="Width")
     data_source: Optional[Sphere]
     Comments: Optional[str]
     _yt_operation: str = "SlicePlot"
+    _arg_mapping: dict = {"fields":"FieldName"}
 
 
 class ProjectionPlot(ytBaseModel):
     ds: Optional[Dataset] = Field(alias="Dataset")
-    fields: FieldNames = Field(alias="FieldNames")
+    FieldName: FieldNames
     axis: Union[str, int] = Field(alias="Axis")
     # domain stuff here. Can we simplify? Contains operations stuff too
     center: Optional[str] = Field(alias="Center")
@@ -108,6 +109,7 @@ class ProjectionPlot(ytBaseModel):
     )
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
+    _arg_mapping: dict = {"fields":"FieldName"}
 
 
 class PhasePlot(ytBaseModel):

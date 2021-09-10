@@ -4,7 +4,6 @@ import json
 from analysis_schema.BaseModelFunctions import show_plots
 from analysis_schema.SchemaModel import ytModel
 
-
 def load_and_run(json_file, files):
     """
     A function to load the user JSON and load it into the analysis schema model, and
@@ -21,7 +20,10 @@ def load_and_run(json_file, files):
     # remove schema line
     live_schema.pop("$schema")
     # create analysis schema model
-    analysis_model = ytModel(Data=live_schema["Data"], Plot=live_schema["Plot"])
+    if "Data" in live_schema.keys():
+        analysis_model = ytModel(Data=live_schema["Data"], Plot=live_schema["Plot"])
+    else:
+        analysis_model = ytModel(Plot=live_schema["Plot"])
     print(show_plots(analysis_model, files))
 
 
