@@ -17,7 +17,7 @@ class Dataset(ytBaseModel):
         alias="FileName",
         description="A string containing the (path to the file and the) file name",
     )
-    DatasetName: Optional[str]
+    DatasetName: str
     comments: Optional[str]
     _yt_operation: str = "load"
 
@@ -70,7 +70,7 @@ class Slice(ytDataObjectAbstract):
 
 
 class SlicePlot(ytBaseModel):
-    ds: Optional[Dataset] = Field(alias="Dataset")
+    ds: Optional[Union[Dataset, str]] = Field(alias="Dataset")
     FieldName: FieldNames
     axis: str = Field(alias="Axis")
     center: Optional[Union[str, List[float]]] = Field(alias="Center")
@@ -82,7 +82,7 @@ class SlicePlot(ytBaseModel):
 
 
 class ProjectionPlot(ytBaseModel):
-    ds: Optional[Dataset] = Field(alias="Dataset")
+    ds: Optional[Union[Dataset, str]] = Field(alias="Dataset")
     FieldName: FieldNames
     axis: Union[str, int] = Field(alias="Axis")
     # domain stuff here. Can we simplify? Contains operations stuff too

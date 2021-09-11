@@ -17,14 +17,13 @@ class ytModel(ytBaseModel):
     iterated through to render and display the output.
     """
 
-    Data: Optional[Dataset]
+    Data: Optional[List[Dataset]]
     Plot: Optional[List[Visualizations]]
 
     class Config:
         title = "yt Schema Model for Descriptive Visualization and Analysis"
         underscore_attrs_are_private = True
         # should solve the Fields issue: https://github.com/samuelcolvin/pydantic/issues/1250
-        #fields = {'field_value': 'fields'}
 
     def _run(self):
         # for the top level model, we override this.
@@ -35,7 +34,8 @@ class ytModel(ytBaseModel):
         if attribute_data is not None:
             # the data does not get added to the output list, because we can't call
             # .save() or .show() on it
-            attribute_data._run()
+            for dataset in attribute_data:
+                dataset._run()
 
         attribute_plot = self.Plot
         if attribute_plot is not None:
@@ -45,7 +45,7 @@ class ytModel(ytBaseModel):
                         plotting_attribute = getattr(data_class, attribute)
                         if plotting_attribute is not None:
                             output_list.append(plotting_attribute._run())
-                return output_list
+            return output_list
 
 
 schema = ytModel
