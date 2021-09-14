@@ -4,7 +4,11 @@
   "type": "object",
   "properties": {
     "Data": {
-      "$ref": "#/definitions/Dataset"
+      "title": "Data",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Dataset"
+      }
     },
     "Plot": {
       "title": "Plot",
@@ -36,7 +40,8 @@
         }
       },
       "required": [
-        "FileName"
+        "FileName",
+        "DatasetName"
       ]
     },
     "FieldNames": {
@@ -154,9 +159,17 @@
       "type": "object",
       "properties": {
         "Dataset": {
-          "$ref": "#/definitions/Dataset"
+          "title": "Dataset",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Dataset"
+            },
+            {
+              "type": "string"
+            }
+          ]
         },
-        "FieldNames": {
+        "FieldName": {
           "$ref": "#/definitions/FieldNames"
         },
         "Axis": {
@@ -208,7 +221,7 @@
         }
       },
       "required": [
-        "FieldNames",
+        "FieldName",
         "Axis"
       ]
     },
@@ -218,9 +231,17 @@
       "type": "object",
       "properties": {
         "Dataset": {
-          "$ref": "#/definitions/Dataset"
+          "title": "Dataset",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Dataset"
+            },
+            {
+              "type": "string"
+            }
+          ]
         },
-        "FieldNames": {
+        "FieldName": {
           "$ref": "#/definitions/FieldNames"
         },
         "Axis": {
@@ -297,10 +318,15 @@
         "Comments": {
           "title": "Comments",
           "type": "string"
+        },
+        "msg": {
+          "title": "Msg",
+          "default": "Select a subset of the dataset to visualize from the overall dataset",
+          "type": "string"
         }
       },
       "required": [
-        "FieldNames",
+        "FieldName",
         "Axis"
       ]
     },
