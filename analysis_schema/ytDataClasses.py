@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field
 
-from .BaseModelFunctions import ytBaseModel, ytDataObjectAbstract, ytParameter
+from BaseModelFunctions import ytBaseModel, ytDataObjectAbstract, ytParameter
 
 
 class Dataset(ytBaseModel):

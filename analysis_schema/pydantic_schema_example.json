@@ -13,20 +13,18 @@
     "Plot": [
         {
             "SlicePlot": {
-                "Axis": "x",
                 "Dataset": "IG",
+                "Axis": "x",
                 "FieldName": {
                     "field": "density"
                 }
-            }
-        },
-        {
+            },
             "ProjectionPlot": {
+                "Dataset": "Enzo",
                 "Axis":"y",
                 "FieldName": {
                     "field": "temperature"
-                },
-                "Dataset": "Enzo"
+                }
             }
         }
     ]
