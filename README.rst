@@ -26,6 +26,8 @@ Features
 
 * TODO
 
+Writing code requires getting some key details right, such as code syntax, the order you execute your code, and using the correct data type. All of these details are related but not direclty relevant to what you want the code to actually do, and is focused on correctly communicating with software. Using the Analysis Schema, you can specify what you want the data to do by adding values to key words. The schema will guide you through what values to add when (ensuring the code runs in the correct order), what type of data should enter (should be a string, a number, or a file path), and validates your entire workflow before running the code.
+
 Credits
 -------
 
