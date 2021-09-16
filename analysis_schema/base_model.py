@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from ._data_store import _instantiated_datasets
 
 
-def show_plots(schema, files):
+def show_plots(schema, display_inline=False, save_output=True):
     """
     This function accepts the schema model and runs it using yt code which returns
     a list. This function iterates through the list and displays each output.
@@ -15,12 +15,11 @@ def show_plots(schema, files):
         schema ([dict]): the analysis schema filled out with yt specificaions
     """
     result = schema._run()
-    print(result)
     for output in range(len(tuple(result))):
         print("each output:", result[output])
-        if files == "Jupter":
+        if display_inline is True:
             result[output].show()
-        if files != "Jupyter":
+        if save_output is True:
             result[output].save()
             print("Files with output have been created!")
 
