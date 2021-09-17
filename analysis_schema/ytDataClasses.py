@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field
 
-from BaseModelFunctions import ytBaseModel, ytDataObjectAbstract, ytParameter
+from .BaseModelFunctions import ytBaseModel, ytDataObjectAbstract, ytParameter
 
 
 class Dataset(ytBaseModel):
@@ -71,19 +71,19 @@ class Slice(ytDataObjectAbstract):
 
 class SlicePlot(ytBaseModel):
     ds: Optional[Union[Dataset, str]] = Field(alias="Dataset")
-    FieldName: FieldNames
+    fields: FieldNames = Field(alias="FieldName")
     axis: str = Field(alias="Axis")
     center: Optional[Union[str, List[float]]] = Field(alias="Center")
     width: Optional[Union[List[str], Tuple[int, str]]] = Field(alias="Width")
     data_source: Optional[Sphere]
     Comments: Optional[str]
     _yt_operation: str = "SlicePlot"
-    _arg_mapping: dict = {"fields":"FieldName"}
+    # _arg_mapping: dict = {"fields":"FieldName"}
 
 
 class ProjectionPlot(ytBaseModel):
     ds: Optional[Union[Dataset, str]] = Field(alias="Dataset")
-    FieldName: FieldNames
+    fields: FieldNames = Field(alias="FieldName")
     axis: Union[str, int] = Field(alias="Axis")
     # domain stuff here. Can we simplify? Contains operations stuff too
     center: Optional[str] = Field(alias="Center")
@@ -105,11 +105,12 @@ class ProjectionPlot(ytBaseModel):
     method: Optional[str] = Field(alias="Method")
     msg = "Select a subset of the dataset to visualize from the overall dataset"
     data_source: Optional[Union[Sphere, Region]] = Field(
-        alias="DataSource", description=msg,
+        alias="DataSource",
+        description=msg,
     )
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
-    _arg_mapping: dict = {"fields":"FieldName"}
+    # _arg_mapping: dict = {"fields":"FieldName"}
 
 
 class PhasePlot(ytBaseModel):

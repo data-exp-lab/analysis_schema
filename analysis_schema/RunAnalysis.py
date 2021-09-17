@@ -4,6 +4,7 @@ import json
 from analysis_schema.BaseModelFunctions import show_plots
 from analysis_schema.SchemaModel import ytModel
 
+
 def load_and_run(json_file, files):
     """
     A function to load the user JSON and load it into the analysis schema model, and
