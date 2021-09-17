@@ -78,7 +78,7 @@ class SlicePlot(ytBaseModel):
     data_source: Optional[Sphere]
     Comments: Optional[str]
     _yt_operation: str = "SlicePlot"
-    _arg_mapping: dict = {"fields":"FieldName"}
+    _arg_mapping: dict = {"fields": "FieldName"}
 
 
 class ProjectionPlot(ytBaseModel):
@@ -105,11 +105,12 @@ class ProjectionPlot(ytBaseModel):
     method: Optional[str] = Field(alias="Method")
     msg = "Select a subset of the dataset to visualize from the overall dataset"
     data_source: Optional[Union[Sphere, Region]] = Field(
-        alias="DataSource", description=msg,
+        alias="DataSource",
+        description=msg,
     )
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
-    _arg_mapping: dict = {"fields":"FieldName"}
+    _arg_mapping: dict = {"fields": "FieldName"}
 
 
 class PhasePlot(ytBaseModel):
