@@ -50,5 +50,5 @@ schema_dict = schema.schema()
 # create a dict to store the arguments required to instantiate an empty model
 # useful for generating schemas from subsets of a model (see cli.py for an example)
 _empty_model_registry = {}
-_empty_model_registry["ytModel"] = (ytModel, dict(Data={"FileName": ""}, Plot=[{}]))
+_empty_model_registry["ytModel"] = (ytModel, dict(Data=[{"FileName": "", "DatasetName": ""}], Plot=[{}]))
 _model_types = list(_empty_model_registry.keys())
