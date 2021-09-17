@@ -4,7 +4,15 @@ Usage
 
 Using the analysis schema simply requires using the `ytModel` class and describing a workflow by selecting the relevant keyword and entering a value. The schema will validate what you have entered, and then run the code and return an output. This is very similar to using a JSON document, which is made up key-value pairs. In fact, the Analysis Schema is built and run using `pydantic`, a library that creates and validates models in JSON format. 
 
+insert gif
+
+Quickstart
+-----------
+
 The Analysis Schema can be used in both an interactive environment, like Jupyter, or in the command line.  
+
+Getting Started in Jupyter:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To use Analysis Schema in a Jupyter environment::
 
@@ -35,8 +43,14 @@ To use Analysis Schema in a Jupyter environment::
     print(model.json())
 
     # the model has been created from the above workflow, and now it can be plotted by calling the 
-    # `show_plots` function
+    # ``show_plots`` function
     #In a Jupyter environment, you can use the argument `display_inline=True`
     # This will take the model and run the code and return the output which is a SlicePlot
 
     sliceplot = analysis_schema.BaseModelFunctions.show_plots(schema=model, display_inline=True)
+
+Getting Started in the Command Line:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Analysis Schema Model
+---------------------
