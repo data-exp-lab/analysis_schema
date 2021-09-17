@@ -83,7 +83,7 @@ class SlicePlot(ytBaseModel):
 
 class ProjectionPlot(ytBaseModel):
     ds: Optional[Dataset] = Field(alias="Dataset")
-    FieldName: FieldNames
+    fields: FieldNames = Field(alias="FieldName")
     axis: Union[str, int] = Field(alias="Axis")
     # domain stuff here. Can we simplify? Contains operations stuff too
     center: Optional[str] = Field(alias="Center")
