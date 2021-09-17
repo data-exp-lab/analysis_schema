@@ -22,7 +22,6 @@ class ytModel(ytBaseModel):
         title = "yt Schema Model for Descriptive Visualization and Analysis"
         underscore_attrs_are_private = True
         # should solve the Fields issue: https://github.com/samuelcolvin/pydantic/issues/1250
-        # fields = {'field_value': 'fields'}
 
     def _run(self):
         # for the top level model, we override this.

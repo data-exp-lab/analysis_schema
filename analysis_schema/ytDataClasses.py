@@ -78,7 +78,7 @@ class SlicePlot(ytBaseModel):
     data_source: Optional[Sphere]
     Comments: Optional[str]
     _yt_operation: str = "SlicePlot"
-    _arg_mapping: dict = {"fields": "FieldName"}
+    # _arg_mapping: dict = {"fields": "FieldName"}
 
 
 class ProjectionPlot(ytBaseModel):
@@ -110,7 +110,7 @@ class ProjectionPlot(ytBaseModel):
     )
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
-    _arg_mapping: dict = {"fields": "FieldName"}
+    # _arg_mapping: dict = {"fields": "FieldName"}
 
 
 class PhasePlot(ytBaseModel):
