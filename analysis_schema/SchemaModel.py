@@ -1,9 +1,7 @@
 from typing import List, Optional
 
-from pydantic import fields
-
-from analysis_schema.BaseModelFunctions import ytBaseModel
-from analysis_schema.ytDataClasses import Dataset, Visualizations
+from .BaseModelFunctions import ytBaseModel
+from .ytDataClasses import Dataset, Visualizations
 
 
 class ytModel(ytBaseModel):
