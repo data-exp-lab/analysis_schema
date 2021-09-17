@@ -4,7 +4,11 @@
   "type": "object",
   "properties": {
     "Data": {
-      "$ref": "#/definitions/Dataset"
+      "title": "Data",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Dataset"
+      }
     },
     "Plot": {
       "title": "Plot",
@@ -36,7 +40,8 @@
         }
       },
       "required": [
-        "FileName"
+        "FileName",
+        "DatasetName"
       ]
     },
     "FieldNames": {
@@ -103,7 +108,15 @@
       "type": "object",
       "properties": {
         "Dataset": {
-          "$ref": "#/definitions/Dataset"
+          "title": "Dataset",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Dataset"
+            },
+            {
+              "type": "string"
+            }
+          ]
         },
         "FieldName": {
           "$ref": "#/definitions/FieldNames"
@@ -200,7 +213,15 @@
       "type": "object",
       "properties": {
         "Dataset": {
-          "$ref": "#/definitions/Dataset"
+          "title": "Dataset",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Dataset"
+            },
+            {
+              "type": "string"
+            }
+          ]
         },
         "FieldName": {
           "$ref": "#/definitions/FieldNames"
