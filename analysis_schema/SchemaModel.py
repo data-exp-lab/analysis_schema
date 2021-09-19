@@ -15,7 +15,7 @@ class ytModel(ytBaseModel):
     iterated through to render and display the output.
     """
 
-    Data: Optional[Dataset]
+    Data: Optional[List[Dataset]]
     Plot: Optional[List[Visualizations]]
 
     class Config:
@@ -31,7 +31,8 @@ class ytModel(ytBaseModel):
         if attribute_data is not None:
             # the data does not get added to the output list, because we can't call
             # .save() or .show() on it
-            attribute_data._run()
+            for dataset in attribute_data:
+                dataset._run()
 
         attribute_plot = self.Plot
         if attribute_plot is not None:
@@ -41,7 +42,7 @@ class ytModel(ytBaseModel):
                         plotting_attribute = getattr(data_class, attribute)
                         if plotting_attribute is not None:
                             output_list.append(plotting_attribute._run())
-                return output_list
+            return output_list
 
 
 schema = ytModel
