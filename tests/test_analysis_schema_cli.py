@@ -77,7 +77,7 @@ def test_schema_generation(tmpdir):
         cli.main, ["generate", "--model_type", "missing_model"]
     )
     assert schema_result.exit_code == 1
-    type(schema_result.exception) == ValueError
+    assert type(schema_result.exception) == ValueError
 
 
 def test_schema_availability():
