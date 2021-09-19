@@ -11,8 +11,8 @@ plot_ds = r"""
     "Data": [{
        "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030",
        "DatasetName": "IG_Testing"
-        }
-    }]
+           
+   }]
  }
 """
 
