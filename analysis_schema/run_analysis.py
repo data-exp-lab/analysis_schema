@@ -1,7 +1,7 @@
 import argparse
 import json
 
-from .base_model_functions import ShowPlots
+from .base_model_functions import show_plots
 from .schema_model import ytModel
 
 
@@ -22,7 +22,7 @@ def load_and_run(json_file, files):
     live_schema.pop("$schema")
     # create analysis schema model
     analysis_model = ytModel(Data=live_schema["Data"], Plot=live_schema["Plot"])
-    print(ShowPlots(analysis_model, files))
+    print(show_plots(analysis_model, files))
 
 
 if __name__ == "__main__":

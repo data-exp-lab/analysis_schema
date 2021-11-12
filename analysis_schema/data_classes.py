@@ -2,10 +2,9 @@ from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field
-
-from .base_model_functions import (ytBaseModel, ytDataObjectAbstract,
-                                   ytParameter)
-
+# isort: off
+from .base_model_functions import ytBaseModel, ytDataObjectAbstract, ytParameter 
+# isort: on
 
 class Dataset(ytBaseModel):
     """
@@ -105,7 +104,10 @@ class ProjectionPlot(ytBaseModel):
     method: Optional[str] = Field(alias="Method")
     msg = "Select a subset of the dataset to visualize from the overall dataset"
     data_source: Optional[Union[Sphere, Region]] = Field(
-        alias="DataSource", description=msg,
+        # isort: off
+        alias="DataSource",
+        description=msg,
+        # isort: on
     )
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
