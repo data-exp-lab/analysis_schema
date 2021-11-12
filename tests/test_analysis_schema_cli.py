@@ -9,7 +9,7 @@ import os
 from click.testing import CliRunner
 
 from analysis_schema import cli, ytModel
-from analysis_schema.SchemaModel import _empty_model_registry, _model_types
+from analysis_schema.schema_model import _empty_model_registry, _model_types
 
 
 def test_command_line_interface():

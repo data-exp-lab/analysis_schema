@@ -1,7 +1,7 @@
 """ some tests for the SchemaModel """
 from pydantic import BaseModel
 
-from analysis_schema.SchemaModel import _empty_model_registry, _model_types
+from analysis_schema.schema_model import _empty_model_registry, _model_types
 
 
 def test_instantiation():

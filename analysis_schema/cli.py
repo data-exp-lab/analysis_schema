@@ -37,7 +37,7 @@ def generate(model_type, schema_object, output):
         raise ValueError(f"{model_type} is not a valid analysis_schema model")
 
     # instantiate an empty model
-    emr = analysis_schema.SchemaModel._empty_model_registry
+    emr = analysis_schema.schema_model._empty_model_registry
     model_class, model_kwargs = emr[model_type]
     model = model_class(**model_kwargs)
 
@@ -70,7 +70,7 @@ def generate(model_type, schema_object, output):
 )
 def list_objects(model_type):
     """list schema_object types for a model type"""
-    emr = analysis_schema.SchemaModel._empty_model_registry
+    emr = analysis_schema.schema_model._empty_model_registry
     _, model_kwargs = emr[model_type]
     click.echo(f"Available schema_object values for {model_type} include:")
     for name in sorted(model_kwargs.keys()):
@@ -80,8 +80,8 @@ def list_objects(model_type):
 @main.command()
 def list_model_types():
     click.echo("Available model types:")
-    emr = analysis_schema.SchemaModel._empty_model_registry
-    for name in sorted(analysis_schema.SchemaModel._model_types):
+    emr = analysis_schema.schema_model._empty_model_registry
+    for name in sorted(analysis_schema.schema_model._model_types):
         model_class, _ = emr[name]
         click.echo(f"{name} ({model_class})")
 
