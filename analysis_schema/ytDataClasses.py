@@ -142,3 +142,4 @@ class Visualizations(BaseModel):
     SlicePlot: Optional[SlicePlot]
     ProjectionPlot: Optional[ProjectionPlot]
     PhasePlot: Optional[PhasePlot]
+    # define new run method to 
