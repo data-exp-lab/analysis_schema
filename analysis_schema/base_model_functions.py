@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-def show_plots(schema, files):
+def ShowPlots(schema, files):
     """
     This function accepts the schema model and runs it using yt code which returns
     a list. This function iterates through the list and displays each output.

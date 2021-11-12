@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field
 
-from .BaseModelFunctions import ytBaseModel, ytDataObjectAbstract, ytParameter
+from .base_model_functions import ytBaseModel, ytDataObjectAbstract, ytParameter
 
 
 class Dataset(ytBaseModel):
@@ -104,7 +104,8 @@ class ProjectionPlot(ytBaseModel):
     method: Optional[str] = Field(alias="Method")
     msg = "Select a subset of the dataset to visualize from the overall dataset"
     data_source: Optional[Union[Sphere, Region]] = Field(
-        alias="DataSource", description=msg,
+        alias="DataSource",
+        description=msg,
     )
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"

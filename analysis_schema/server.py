@@ -5,7 +5,7 @@ from urllib.parse import parse_qs
 
 import pkg_resources
 
-from .SchemaModel import schema
+from .schema_model import schema
 
 # For static serving:
 # _index_contents = pkg_resources.resource_string(__name__, "index.html")

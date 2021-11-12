@@ -1,4 +1,4 @@
-from analysis_schema.SchemaModel import ytModel
+from .schema_model import ytModel
 
 # This code will save an empty (no values have been entered) model to a json file
 # which will be referenced by the user
