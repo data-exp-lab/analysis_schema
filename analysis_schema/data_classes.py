@@ -3,9 +3,11 @@ from typing import List, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field
 
+# isort: off
+
 from .base_model_functions import ytBaseModel, ytDataObjectAbstract, ytParameter
 
-
+# isort: on
 class Dataset(ytBaseModel):
     """
     The dataset to load. Filen name must be a string.
