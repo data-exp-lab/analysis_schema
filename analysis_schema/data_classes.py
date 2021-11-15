@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 
 from .base_model_functions import ytBaseModel, ytDataObjectAbstract, ytParameter
 
+
 # skip: isort
 class Dataset(ytBaseModel):
     """
