@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field
 
-from .base_model_functions import ytBaseModel, ytDataObjectAbstract, ytParameter
+from .base_model_functions import ytBaseModel, ytDataObjectAbstract, ytParameter  # isort: split
 
 
 # skip: isort
