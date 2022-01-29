@@ -3,10 +3,9 @@ from typing import List, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field
 
-from .base_model_functions import ytBaseModel, ytDataObjectAbstract, ytParameter  # isort: split
+from .base_model import ytBaseModel, ytDataObjectAbstract, ytParameter
 
 
-# skip: isort
 class Dataset(ytBaseModel):
     """
     The dataset to load. Filen name must be a string.
@@ -105,8 +104,7 @@ class ProjectionPlot(ytBaseModel):
     method: Optional[str] = Field(alias="Method")
     msg = "Select a subset of the dataset to visualize from the overall dataset"
     data_source: Optional[Union[Sphere, Region]] = Field(
-        alias="DataSource",
-        description=msg,  # skip: isort
+        alias="DataSource", description=msg,
     )
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"

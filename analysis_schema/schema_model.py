@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from .base_model_functions import ytBaseModel
+from .base_model import ytBaseModel
 from .data_classes import Dataset, Visualizations
 
 
