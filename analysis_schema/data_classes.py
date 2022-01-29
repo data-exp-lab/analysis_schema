@@ -4,11 +4,13 @@ from typing import List, Optional, Tuple, Union
 from pydantic import BaseModel, Field
 
 from .base_model import ytBaseModel, ytDataObjectAbstract, ytParameter
+from ._data_store import _instantiated_datasets
+import yt
 
 
 class Dataset(ytBaseModel):
     """
-    The dataset to load. Filen name must be a string.
+    The dataset to load. Filename (fn) must be a string.
 
     Required fields: Filename
     """
@@ -21,6 +23,13 @@ class Dataset(ytBaseModel):
     comments: Optional[str]
     _yt_operation: str = "load"
 
+    def _run(self):
+        if self.fn in _instantiated_datasets:
+            return _instantiated_datasets[self.fn]
+        ds = yt.load(self.fn)
+        _instantiated_datasets[self.fn] = ds
+        return ds
+
 
 class FieldNames(ytParameter):
     """
@@ -30,10 +39,14 @@ class FieldNames(ytParameter):
     # can't seeem to alias 'field' - maybe because the pydantic name 'Field' is called
     # to do the alias?
     field: str
+    field_type: str
     # unit - domain specific
     # getting an error with unit enabled
     _unit: Optional[str]
     comments: Optional[str]
+
+    def _run(self):
+        return (self.field_type, self.field)
 
 
 class Sphere(ytDataObjectAbstract):
@@ -66,24 +79,29 @@ class Region(ytDataObjectAbstract):
 class Slice(ytDataObjectAbstract):
     axis: Union[int, str]
     coord: float
-    _yt_operation: "slice"
+    _yt_operation: str = "slice"
 
 
 class SlicePlot(ytBaseModel):
     ds: Optional[Dataset] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
-    axis: str = Field(alias="Axis")
+    normal: str = Field(alias="Axis")
     center: Optional[Union[str, List[float]]] = Field(alias="Center")
     width: Optional[Union[List[str], Tuple[int, str]]] = Field(alias="Width")
     data_source: Optional[Sphere]
     Comments: Optional[str]
     _yt_operation: str = "SlicePlot"
 
+    def _run(self):
+        if self.ds is None:
+            self.ds = list(_instantiated_datasets.values())[0]
+        return super()._run()
+
 
 class ProjectionPlot(ytBaseModel):
     ds: Optional[Dataset] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
-    axis: Union[str, int] = Field(alias="Axis")
+    normal: Union[str, int] = Field(alias="Axis")
     # domain stuff here. Can we simplify? Contains operations stuff too
     center: Optional[str] = Field(alias="Center")
     # more confusing design. Can we simplify? This contain field names, units, and
@@ -108,6 +126,11 @@ class ProjectionPlot(ytBaseModel):
     )
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
+
+    def _run(self):
+        if self.ds is None:
+            self.ds = list(_instantiated_datasets.values())[0]
+        return super()._run()
 
 
 class PhasePlot(ytBaseModel):

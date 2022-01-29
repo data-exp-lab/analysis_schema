@@ -53,55 +53,44 @@ class ytBaseModel(BaseModel):
         # that our class name exists in yt's top level api.
         import yt
 
-        print(self._yt_operation)
         funcname = getattr(self, "_yt_operation", type(self).__name__)
-        print("found name:", funcname)
 
         # if the function is not readily available in yt, move to the except block
         # try:
         func = getattr(yt, funcname)
-        print(f"pulled func {func}", type(func))
 
         # now we get the arguments for the function:
         # func_spec.args, which lists the named arguments and keyword arguments.
         # ignoring vargs and kw-only args for now...
         # see https://docs.python.org/3/library/inspect.html#inspect.getfullargspec
         func_spec = getfullargspec(func)
-        print("spec", func_spec)
 
         # the argument position number at which we have default values (a little
         # hacky, should be a better way to do this, and not sure how to scale it to
         # include *args and **kwargs)
         n_args = len(func_spec.args)  # number of arguments
-        print("number of args:", n_args)
         if func_spec.defaults is None:
             # no default args, make sure we never get there...
             named_kw_start_at = n_args + 1
         else:
             # the position at which named keyword args start
             named_kw_start_at = n_args - len(func_spec.defaults)
-        print(f"keywords start at {named_kw_start_at}")
 
         # loop over the call signature arguments and pull out values from our pydantic
         # class. this is recursive! will call _run() if a given argument value is also
         # a ytBaseModel.
         for arg_i, arg in enumerate(func_spec.args):
             # check if we've remapped the yt internal argument name for the schema
-            if arg == "self":
+            if arg in ["self", "cls"]:
                 continue
-            # if arg in self._arg_mapping:
-            # arg = self._arg_mapping[arg]
 
             # get the value for this argument. If it's not there, attempt to set default
             # values for arguments needed for yt but not exposed in our pydantic class
-            print("the arguemnt:", arg)
             try:
                 arg_value = getattr(self, arg)
-                print("the arg value:", arg_value)
-                if arg_value is None and arg != "ds":
+                if arg_value is None:
                     default_index = arg_i - named_kw_start_at
                     arg_value = func_spec.defaults[default_index]
-                    print("defaults:", default_index, arg_value)
             except AttributeError:
                 if arg_i >= named_kw_start_at:
                     # we are in the named keyword arguments, grab the default
@@ -109,7 +98,6 @@ class ytBaseModel(BaseModel):
                     # argument, so need to offset the arg_i counter
                     default_index = arg_i - named_kw_start_at
                     arg_value = func_spec.defaults[default_index]
-                    print("defaults:", default_index, arg_value)
                 else:
                     raise AttributeError
 
@@ -120,23 +108,9 @@ class ytBaseModel(BaseModel):
                 arg_value = arg_value._run()
 
             the_args.append(arg_value)
-        print("the args list:", the_args)
 
-        # save the data from yt.load, so it can be used to instaniate the data objects
-        if funcname == "load":
-            arg_value = str(arg_value)
-            self._data_source[arg_value] = func(arg_value)
-            print("data source:", self._data_source)
-
-        # if ds is None, then find ._data_source and insert it in the first position
-        if the_args[0] is None:
-            if len(self._data_source) > 0:
-                ds = self._data_source["IsolatedGalaxy/galaxy0030/galaxy0030"]
-                the_args.remove(None)
-                the_args.insert(0, ds)
-                return func(*the_args)
-        else:
-            return func(*the_args)
+        results = func(*the_args)
+        return results
 
 
 class ytParameter(BaseModel):

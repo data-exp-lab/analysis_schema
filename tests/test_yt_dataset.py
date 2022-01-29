@@ -1,11 +1,11 @@
 import json
-
 import yt
-from yt.testing import assert_array_equal
-
+from yt.testing import fake_amr_ds
 import analysis_schema
+from analysis_schema._data_store import _instantiated_datasets
 
-plot_ds = r"""
+
+ds_only = r"""
 {
     "$schema": "./yt_analysis_schema.json",
     "Data": {
@@ -16,36 +16,70 @@ plot_ds = r"""
 """
 
 
+viz_only_slc = r"""
+{
+    "$schema": "./yt_analysis_schema.json",
+    "Plot": [
+      {
+        "SlicePlot": {
+          "Axis":"y",
+          "Center": "m",
+          "FieldNames": {
+            "field": "temperature",
+            "field_type": "gas"
+          },
+          "FontSize": 30,
+          "DataSource":{
+            "Center": [0.6, 0.6, 0.6],
+            "Radius":0.2
+          }
+        }
+      }
+    ]
+}
+"""
+
+
+viz_only_prj = r"""
+{
+    "$schema": "./yt_analysis_schema.json",
+    "Plot": [
+      {
+        "ProjectionPlot": {
+          "Axis":"y",
+          "Center": "m",
+          "FieldNames": {
+            "field": "temperature",
+            "field_type": "gas"
+          }
+        }
+      }
+    ]
+}
+"""
+
+
 def test_validation():
 
     # only testing the validation here, not instantiating yt objects
-    model = analysis_schema.ytModel.parse_raw(plot_ds)
-    jdict = json.loads(plot_ds)
+    model = analysis_schema.ytModel.parse_raw(ds_only)
+    jdict = json.loads(ds_only)
     assert str(model.Data.fn) == jdict["Data"]["FileName"]
 
 
 def test_execution():
 
-    # requires the datafile -- should use pytest to decorate or use an in-mem
-    # dataset (which the current model does not support).
-    model = analysis_schema.ytModel.parse_raw(plot_ds)
+    # we can inject an instantiated dataset here! the methods that require a
+    # ds will check the dataset store if ds is None and use this ds:
+    test_ds = fake_amr_ds(fields=["temperature"], units=["K"])
+    _instantiated_datasets["_test_ds"] = test_ds
 
-    try:
-        ds = yt.load(model.Data.fn)
-        file_exists = True
-    except FileNotFoundError:
-        file_exists = False
+    # run the slice plot
+    model = analysis_schema.ytModel.parse_raw(viz_only_slc)
+    m = model._run()
+    assert isinstance(m[0], yt.AxisAlignedSlicePlot)
 
-    domain_attrs = ["center", "width", "dimensions", "left_edge", "right_edge"]
-    if file_exists:
-        ds_a = model.Data._run()
-
-        # check that domain attributes match
-        for attr in domain_attrs:
-            d_name = "domain_" + attr
-            assert_array_equal(getattr(ds_a, d_name), getattr(ds, d_name))
-
-        # check that field list matches
-        flds_a = ds_a.field_list
-        flds = ds.field_list
-        assert all([fld in flds_a for fld in flds])
+    # run the projection plot
+    model = analysis_schema.ytModel.parse_raw(viz_only_prj)
+    m = model._run()
+    assert isinstance(m[0], yt.AxisAlignedProjectionPlot)
