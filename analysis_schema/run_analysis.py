@@ -1,7 +1,7 @@
 import argparse
 import json
 
-from .base_model_functions import show_plots
+from .base_model import show_plots
 from .schema_model import ytModel
 
 
