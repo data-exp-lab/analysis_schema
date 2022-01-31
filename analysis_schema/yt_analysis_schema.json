@@ -102,9 +102,55 @@
         "Radius"
       ]
     },
+    "Region": {
+      "title": "Region",
+      "description": "A cartesian box data selection object\n    ",
+      "type": "object",
+      "properties": {
+        "center": {
+          "title": "Center",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "left_edge": {
+          "title": "Left Edge",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "right_edge": {
+          "title": "Right Edge",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "center",
+        "left_edge",
+        "right_edge"
+      ]
+    },
+    "DataSource3D": {
+      "title": "DataSource3D",
+      "description": "Select a subset of the dataset to visualize from the overall dataset",
+      "type": "object",
+      "properties": {
+        "sphere": {
+          "$ref": "#/definitions/Sphere"
+        },
+        "region": {
+          "$ref": "#/definitions/Region"
+        }
+      }
+    },
     "SlicePlot": {
       "title": "SlicePlot",
-      "description": "Axis-aligned slice plot.\n    ",
+      "description": "Axis-aligned slice plot.",
       "type": "object",
       "properties": {
         "Dataset": {
@@ -153,8 +199,8 @@
             }
           ]
         },
-        "data_source": {
-          "$ref": "#/definitions/Sphere"
+        "DataSource": {
+          "$ref": "#/definitions/DataSource3D"
         },
         "Comments": {
           "title": "Comments",
@@ -166,42 +212,9 @@
         "Axis"
       ]
     },
-    "Region": {
-      "title": "Region",
-      "description": "A cartesian box data selection object\n    ",
-      "type": "object",
-      "properties": {
-        "center": {
-          "title": "Center",
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
-        },
-        "left_edge": {
-          "title": "Left Edge",
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
-        },
-        "right_edge": {
-          "title": "Right Edge",
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
-        }
-      },
-      "required": [
-        "center",
-        "left_edge",
-        "right_edge"
-      ]
-    },
     "ProjectionPlot": {
       "title": "ProjectionPlot",
-      "description": "Axis-aligned projection plot.\n    ",
+      "description": "Axis-aligned projection plot.",
       "type": "object",
       "properties": {
         "Dataset": {
@@ -279,24 +292,10 @@
           "type": "string"
         },
         "DataSource": {
-          "title": "Datasource",
-          "description": "Select a subset of the dataset to visualize from the overall dataset",
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Sphere"
-            },
-            {
-              "$ref": "#/definitions/Region"
-            }
-          ]
+          "$ref": "#/definitions/DataSource3D"
         },
         "Comments": {
           "title": "Comments",
-          "type": "string"
-        },
-        "msg": {
-          "title": "Msg",
-          "default": "Select a subset of the dataset to visualize from the overall dataset",
           "type": "string"
         }
       },
@@ -307,7 +306,7 @@
     },
     "PhasePlot": {
       "title": "PhasePlot",
-      "description": "A yt phase plot\n    ",
+      "description": "A yt phase plot",
       "type": "object",
       "properties": {
         "Dataset": {

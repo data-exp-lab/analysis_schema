@@ -71,24 +71,34 @@ class Region(ytDataObjectAbstract):
 
 
 class Slice(ytDataObjectAbstract):
-    """An axis-aligned 2-d slice data selection object
-    """
+    """An axis-aligned 2-d slice data selection object"""
 
     axis: Union[int, str]
     coord: float
     _yt_operation: str = "slice"
 
 
+class DataSource3D(ytBaseModel):
+    """Select a subset of the dataset to visualize from the overall dataset"""
+
+    sphere: Optional[Sphere]
+    region: Optional[Region]
+
+    def _run(self):
+        for container in [self.sphere, self.region]:
+            if container:
+                return container._run()
+
+
 class SlicePlot(ytBaseModel):
-    """Axis-aligned slice plot.
-    """
+    """Axis-aligned slice plot."""
 
     ds: Optional[Dataset] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
     normal: str = Field(alias="Axis")
     center: Optional[Union[str, List[float]]] = Field(alias="Center")
     width: Optional[Union[List[str], Tuple[int, str]]] = Field(alias="Width")
-    data_source: Optional[Sphere]
+    data_source: Optional[DataSource3D] = Field(alias="DataSource")
     Comments: Optional[str]
     _yt_operation: str = "SlicePlot"
 
@@ -97,10 +107,15 @@ class SlicePlot(ytBaseModel):
             self.ds = list(_instantiated_datasets.values())[0]
         return super()._run()
 
+    @property
+    def axis(self):
+        # yt <= 4.1.0 uses axis instead of normal, this aliasing allows the
+        # recursive function to pull the right attribute.
+        return self.normal
+
 
 class ProjectionPlot(ytBaseModel):
-    """Axis-aligned projection plot.
-    """
+    """Axis-aligned projection plot."""
 
     ds: Optional[Dataset] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
@@ -123,10 +138,7 @@ class ProjectionPlot(ytBaseModel):
     field_parameters: Optional[dict] = Field(alias="FieldParameters")
     # better name?
     method: Optional[str] = Field(alias="Method")
-    msg = "Select a subset of the dataset to visualize from the overall dataset"
-    data_source: Optional[Union[Sphere, Region]] = Field(
-        alias="DataSource", description=msg,
-    )
+    data_source: Optional[DataSource3D] = Field(alias="DataSource")
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
 
@@ -135,10 +147,15 @@ class ProjectionPlot(ytBaseModel):
             self.ds = list(_instantiated_datasets.values())[0]
         return super()._run()
 
+    @property
+    def axis(self):
+        # yt <= 4.1.0 uses axis instead of normal, this aliasing allows the
+        # recursive function to pull the right attribute.
+        return self.normal
+
 
 class PhasePlot(ytBaseModel):
-    """A yt phase plot
-    """
+    """A yt phase plot"""
 
     data_source: Optional[Dataset] = Field(alias="Dataset")
     x_field: FieldNames = Field(alias="xField")

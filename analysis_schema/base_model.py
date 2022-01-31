@@ -2,6 +2,7 @@ from inspect import getfullargspec
 from typing import Optional
 
 from pydantic import BaseModel
+from ._data_store import _instantiated_datasets
 
 
 def show_plots(schema, files):
@@ -40,8 +41,6 @@ class ytBaseModel(BaseModel):
 
     _arg_mapping: dict = {}  # mapping from internal yt name to schema name
     _yt_operation: Optional[str]
-    # the list to store the data after it has been instaniated
-    _data_source = {}
 
     def _run(self):
 
@@ -99,7 +98,7 @@ class ytBaseModel(BaseModel):
                     default_index = arg_i - named_kw_start_at
                     arg_value = func_spec.defaults[default_index]
                 else:
-                    raise AttributeError
+                    raise AttributeError(f"could not file {arg}")
 
             # check if this argument is itself a ytBaseModel for which we need to run
             # this should make this a fully recursive function?
@@ -144,19 +143,20 @@ class ytDataObjectAbstract(ytBaseModel):
 
         # iterate through the arguments for the found data object
         for arguments in val._con_args:
-            # print("the args:", arguments)
             con_value = getattr(self, arguments)
-            # print(con_value)
-
             # check that the argument is the correct instance
             if isinstance(con_value, ytDataObjectAbstract):
                 # call the _run() function on the agrument
                 con_value = con_value._run()
-
             the_args.append(con_value)
 
-        # if there is a dataset sitting in _data_source, add it to the args and call as
-        # a keyword argument
-        if len(self._data_source) > 0:
-            ds = list(self._data_source.values())[0]
+        # if there is a dataset sitting in _instantiated_datasets, add it to
+        # the args and call as a keyword argument
+        if len(_instantiated_datasets) > 0:
+            ds_keys = list(_instantiated_datasets.keys())
+            ds = _instantiated_datasets[ds_keys[0]]
             return val(*the_args, ds=ds)
+        else:
+            raise AttributeError(
+                "could not find a dataset: cannot build the data container"
+            )
