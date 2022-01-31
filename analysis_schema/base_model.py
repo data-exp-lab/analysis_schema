@@ -1,7 +1,8 @@
 from inspect import getfullargspec
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel
+
 from ._data_store import _instantiated_datasets
 
 
@@ -41,6 +42,7 @@ class ytBaseModel(BaseModel):
 
     _arg_mapping: dict = {}  # mapping from internal yt name to schema name
     _yt_operation: Optional[str]
+    _known_kwargs: Optional[List[str]] = None  # a list of known keyword args
 
     def _run(self):
 
@@ -53,7 +55,6 @@ class ytBaseModel(BaseModel):
         import yt
 
         funcname = getattr(self, "_yt_operation", type(self).__name__)
-
         # if the function is not readily available in yt, move to the except block
         # try:
         func = getattr(yt, funcname)
@@ -100,16 +101,34 @@ class ytBaseModel(BaseModel):
                 else:
                     raise AttributeError(f"could not file {arg}")
 
-            # check if this argument is itself a ytBaseModel for which we need to run
-            # this should make this a fully recursive function?
-            # if hasattr(arg_value,'_run'):
-            if isinstance(arg_value, ytBaseModel) or isinstance(arg_value, ytParameter):
+            if _check_run(arg_value):
                 arg_value = arg_value._run()
-
             the_args.append(arg_value)
 
-        results = func(*the_args)
-        return results
+        # if this class has a list of known kwargs that we know will not be
+        # picked up by argspec, add them here. Not using inspect here because
+        # some of the yt visualization classes pass along kwargs, so we need
+        # to do this semi-manually for some classes and functions.
+        kwarg_dict = {}
+        if self._known_kwargs:
+            for kw in self._known_kwargs:
+                arg_value = getattr(self, kw, None)
+                if _check_run(arg_value):
+                    arg_value = arg_value._run()
+                kwarg_dict[kw] = arg_value
+
+        return func(*the_args, **kwarg_dict)
+
+
+def _check_run(obj) -> bool:
+    # the following classes will have a ._run() attribute that needs to be called
+    if (
+        isinstance(obj, ytBaseModel)
+        or isinstance(obj, ytParameter)
+        or isinstance(obj, ytDataObjectAbstract)
+    ):
+        return True
+    return False
 
 
 class ytParameter(BaseModel):
@@ -122,10 +141,7 @@ class ytParameter(BaseModel):
             if key not in self._skip_these
         ]
         if len(p) > 1:
-            print("some error", p)
-            raise ValueError(
-                "whoops. ytParameter instances can only have single values"
-            )
+            raise ValueError("ytParameter instances can only have single values")
         return p[0]
 
 

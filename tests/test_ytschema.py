@@ -1,9 +1,17 @@
+# isort: skip_file
 import json
+
 import yt
 from yt.testing import fake_amr_ds
+
 import analysis_schema
 from analysis_schema._data_store import _instantiated_datasets
-
+from analysis_schema.base_model import (
+    _check_run,
+    ytBaseModel,
+    ytDataObjectAbstract,
+    ytParameter,
+)
 
 ds_only = r"""
 {
@@ -12,30 +20,6 @@ ds_only = r"""
       "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030",
       "DatasetName": "IG_Testing"
     }
-}
-"""
-
-
-viz_only_slc = r"""
-{
-    "$schema": "./yt_analysis_schema.json",
-    "Plot": [
-      {
-        "SlicePlot": {
-          "Axis":"y",
-          "Center": "m",
-          "FieldNames": {
-            "field": "temperature",
-            "field_type": "gas"
-          },
-          "FontSize": 30,
-          "DataSource":{
-            "Center": [0.6, 0.6, 0.6],
-            "Radius":0.2
-          }
-        }
-      }
-    ]
 }
 """
 
@@ -70,7 +54,7 @@ viz_only_slc = r"""
     "$schema": "./yt_analysis_schema.json",
     "Plot": [
       {
-        "ProjectionPlot": {
+        "SlicePlot": {
           "Axis":"y",
           "FieldNames": {
             "field": "temperature",
@@ -112,4 +96,12 @@ def test_execution():
     # run the projection plot
     model = analysis_schema.ytModel.parse_raw(viz_only_prj)
     m = model._run()
-    assert isinstance(m[0], yt.AxisAlignedProjectionPlot)
+    assert isinstance(m[0], yt.ProjectionPlot)
+
+
+def test_base_model():
+    # some basic tests of base_model
+    for cls in [ytBaseModel, ytDataObjectAbstract, ytParameter]:
+        c = cls()
+        assert _check_run(c)
+    assert _check_run("someothertype") is False

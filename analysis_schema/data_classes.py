@@ -1,11 +1,11 @@
 from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
+import yt
 from pydantic import BaseModel, Field
 
-from .base_model import ytBaseModel, ytDataObjectAbstract, ytParameter
 from ._data_store import _instantiated_datasets
-import yt
+from .base_model import ytBaseModel, ytDataObjectAbstract, ytParameter
 
 
 class Dataset(ytBaseModel):
@@ -101,17 +101,14 @@ class SlicePlot(ytBaseModel):
     data_source: Optional[DataSource3D] = Field(alias="DataSource")
     Comments: Optional[str]
     _yt_operation: str = "SlicePlot"
+    _known_kwargs: Optional[List[str]] = [
+        "data_source",
+    ]
 
     def _run(self):
         if self.ds is None:
             self.ds = list(_instantiated_datasets.values())[0]
         return super()._run()
-
-    @property
-    def axis(self):
-        # yt <= 4.1.0 uses axis instead of normal, this aliasing allows the
-        # recursive function to pull the right attribute.
-        return self.normal
 
 
 class ProjectionPlot(ytBaseModel):
