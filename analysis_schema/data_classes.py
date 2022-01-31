@@ -33,7 +33,7 @@ class Dataset(ytBaseModel):
 
 class FieldNames(ytParameter):
     """
-    Specify a field name from the dataset
+    Specify a field name and field type from the dataset
     """
 
     # can't seeem to alias 'field' - maybe because the pydantic name 'Field' is called
@@ -51,9 +51,6 @@ class FieldNames(ytParameter):
 
 class Sphere(ytDataObjectAbstract):
     """A sphere of points defined by a *center* and a *radius*.
-
-    Args:
-        ytBaseModel ([type]): [description]
     """
 
     # found in the 'selection_data_containers.py'
@@ -64,10 +61,7 @@ class Sphere(ytDataObjectAbstract):
 
 
 class Region(ytDataObjectAbstract):
-    """summary
-
-    Args:
-        ytDataObjectAbstract ([type]): [description]
+    """A cartesian box data selection object
     """
 
     center: List[float]
@@ -77,12 +71,18 @@ class Region(ytDataObjectAbstract):
 
 
 class Slice(ytDataObjectAbstract):
+    """An axis-aligned 2-d slice data selection object
+    """
+
     axis: Union[int, str]
     coord: float
     _yt_operation: str = "slice"
 
 
 class SlicePlot(ytBaseModel):
+    """Axis-aligned slice plot.
+    """
+
     ds: Optional[Dataset] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
     normal: str = Field(alias="Axis")
@@ -99,6 +99,9 @@ class SlicePlot(ytBaseModel):
 
 
 class ProjectionPlot(ytBaseModel):
+    """Axis-aligned projection plot.
+    """
+
     ds: Optional[Dataset] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
     normal: Union[str, int] = Field(alias="Axis")
@@ -134,6 +137,9 @@ class ProjectionPlot(ytBaseModel):
 
 
 class PhasePlot(ytBaseModel):
+    """A yt phase plot
+    """
+
     data_source: Optional[Dataset] = Field(alias="Dataset")
     x_field: FieldNames = Field(alias="xField")
     y_field: FieldNames = Field(alias="yField")
@@ -155,10 +161,7 @@ class PhasePlot(ytBaseModel):
 class Visualizations(BaseModel):
     """
     This class organizes the attributes below so users can select the plot by name,
-    and see the correct arguments as suggestiongs
-
-    Args:
-        BaseModel (Pydantic BaseModel): [description]
+    and see the correct arguments as suggestions
     """
 
     # use pydantic basemodel

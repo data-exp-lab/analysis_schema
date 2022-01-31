@@ -26,7 +26,7 @@ def show_plots(schema, files):
 class ytBaseModel(BaseModel):
     """
     A class to connect attributes and their values to yt operations and their
-    keywork arguements.
+    keyword arguments.
 
     Args:
         BaseModel ([type]): A pydantic basemodel in the form of a json schema

@@ -10,7 +10,8 @@
           "Axis":"y",
           "Center": "m",
           "FieldNames": {
-            "field": "temperature"
+            "field": "temperature",
+            "field_type": "enzo"
           },
           "FontSize": 30,
           "DataSource":{
