@@ -1,7 +1,7 @@
 from typing import List, Optional
 
-from .BaseModelFunctions import ytBaseModel
-from .ytDataClasses import Dataset, Visualizations
+from .base_model import ytBaseModel
+from .data_classes import Dataset, Visualizations
 
 
 class ytModel(ytBaseModel):
