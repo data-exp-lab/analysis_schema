@@ -8,15 +8,16 @@
       {
         "ProjectionPlot": {
           "Axis":"y",
-          "Center": "m",
           "FieldNames": {
             "field": "temperature",
-            "field_type": "enzo"
+            "field_type": "gas"
           },
           "FontSize": 30,
           "DataSource":{
-            "Center": [0.6, 0.6, 0.6],
-            "Radius":0.2
+              "sphere": {
+                  "Center": [0.6, 0.6, 0.6],
+                  "Radius": 0.2
+              }
           }
         }
       }
