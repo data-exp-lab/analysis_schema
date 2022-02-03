@@ -70,6 +70,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*/.ipynb_checkpoints/*
 
 # pyenv
 .python-version
@@ -102,7 +103,7 @@ ENV/
 .mypy_cache/
 .vscode/settings.json
 
-# pycharm 
+# pycharm
 .idea/
 
 # temp files
