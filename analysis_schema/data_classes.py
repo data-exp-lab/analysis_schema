@@ -1,14 +1,16 @@
 from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
+import yt
 from pydantic import BaseModel, Field
 
+from ._data_store import _instantiated_datasets
 from .base_model import ytBaseModel, ytDataObjectAbstract, ytParameter
 
 
 class Dataset(ytBaseModel):
     """
-    The dataset to load. Filen name must be a string.
+    The dataset to load. Filename (fn) must be a string.
 
     Required fields: Filename
     """
@@ -21,26 +23,34 @@ class Dataset(ytBaseModel):
     comments: Optional[str]
     _yt_operation: str = "load"
 
+    def _run(self):
+        if self.fn in _instantiated_datasets:
+            return _instantiated_datasets[self.fn]
+        ds = yt.load(self.fn)
+        _instantiated_datasets[self.fn] = ds
+        return ds
+
 
 class FieldNames(ytParameter):
     """
-    Specify a field name from the dataset
+    Specify a field name and field type from the dataset
     """
 
     # can't seeem to alias 'field' - maybe because the pydantic name 'Field' is called
     # to do the alias?
     field: str
+    field_type: str
     # unit - domain specific
     # getting an error with unit enabled
     _unit: Optional[str]
     comments: Optional[str]
 
+    def _run(self):
+        return (self.field_type, self.field)
+
 
 class Sphere(ytDataObjectAbstract):
     """A sphere of points defined by a *center* and a *radius*.
-
-    Args:
-        ytBaseModel ([type]): [description]
     """
 
     # found in the 'selection_data_containers.py'
@@ -51,10 +61,7 @@ class Sphere(ytDataObjectAbstract):
 
 
 class Region(ytDataObjectAbstract):
-    """summary
-
-    Args:
-        ytDataObjectAbstract ([type]): [description]
+    """A cartesian box data selection object
     """
 
     center: List[float]
@@ -64,26 +71,52 @@ class Region(ytDataObjectAbstract):
 
 
 class Slice(ytDataObjectAbstract):
+    """An axis-aligned 2-d slice data selection object"""
+
     axis: Union[int, str]
     coord: float
-    _yt_operation: "slice"
+    _yt_operation: str = "slice"
+
+
+class DataSource3D(ytBaseModel):
+    """Select a subset of the dataset to visualize from the overall dataset"""
+
+    sphere: Optional[Sphere]
+    region: Optional[Region]
+
+    def _run(self):
+        for container in [self.sphere, self.region]:
+            if container:
+                return container._run()
 
 
 class SlicePlot(ytBaseModel):
+    """Axis-aligned slice plot."""
+
     ds: Optional[Dataset] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
-    axis: str = Field(alias="Axis")
+    normal: str = Field(alias="Axis")
     center: Optional[Union[str, List[float]]] = Field(alias="Center")
     width: Optional[Union[List[str], Tuple[int, str]]] = Field(alias="Width")
-    data_source: Optional[Sphere]
+    data_source: Optional[DataSource3D] = Field(alias="DataSource")
     Comments: Optional[str]
     _yt_operation: str = "SlicePlot"
+    _known_kwargs: Optional[List[str]] = [
+        "data_source",
+    ]
+
+    def _run(self):
+        if self.ds is None:
+            self.ds = list(_instantiated_datasets.values())[0]
+        return super()._run()
 
 
 class ProjectionPlot(ytBaseModel):
+    """Axis-aligned projection plot."""
+
     ds: Optional[Dataset] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
-    axis: Union[str, int] = Field(alias="Axis")
+    normal: Union[str, int] = Field(alias="Axis")
     # domain stuff here. Can we simplify? Contains operations stuff too
     center: Optional[str] = Field(alias="Center")
     # more confusing design. Can we simplify? This contain field names, units, and
@@ -102,15 +135,25 @@ class ProjectionPlot(ytBaseModel):
     field_parameters: Optional[dict] = Field(alias="FieldParameters")
     # better name?
     method: Optional[str] = Field(alias="Method")
-    msg = "Select a subset of the dataset to visualize from the overall dataset"
-    data_source: Optional[Union[Sphere, Region]] = Field(
-        alias="DataSource", description=msg,
-    )
+    data_source: Optional[DataSource3D] = Field(alias="DataSource")
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
 
+    def _run(self):
+        if self.ds is None:
+            self.ds = list(_instantiated_datasets.values())[0]
+        return super()._run()
+
+    @property
+    def axis(self):
+        # yt <= 4.1.0 uses axis instead of normal, this aliasing allows the
+        # recursive function to pull the right attribute.
+        return self.normal
+
 
 class PhasePlot(ytBaseModel):
+    """A yt phase plot"""
+
     data_source: Optional[Dataset] = Field(alias="Dataset")
     x_field: FieldNames = Field(alias="xField")
     y_field: FieldNames = Field(alias="yField")
@@ -132,10 +175,7 @@ class PhasePlot(ytBaseModel):
 class Visualizations(BaseModel):
     """
     This class organizes the attributes below so users can select the plot by name,
-    and see the correct arguments as suggestiongs
-
-    Args:
-        BaseModel (Pydantic BaseModel): [description]
+    and see the correct arguments as suggestions
     """
 
     # use pydantic basemodel
