@@ -3,6 +3,7 @@ include CONTRIBUTING.rst
 include HISTORY.rst
 include LICENSE
 include README.rst
+include requirements_dev.txt
 include analysis_schema/index.html
 include *.yaml
 include Makefile
