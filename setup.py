@@ -18,7 +18,7 @@ setup_requirements = ["pytest-runner", ]
 with open("tests/lint_requirements.txt") as lint_reqs:
     test_requirements = lint_reqs.read().split("\n")
 
-with open("tests/dev_requirements.txt") as dev_reqs:
+with open("requirements_dev.txt") as dev_reqs:
     test_requirements += dev_reqs.read().split("\n")
 
 setup(
