@@ -1,9 +1,10 @@
 from inspect import getfullargspec
 from typing import List, Optional
 
+import yt
 from pydantic import BaseModel
 
-from ._data_store import _instantiated_datasets
+from ._data_store import DatasetFixture
 
 
 def show_plots(schema, files):
@@ -168,6 +169,18 @@ class ytDataObjectAbstract(ytBaseModel):
 
         # if there is a dataset sitting in _instantiated_datasets, add it to
         # the args and call as a keyword argument
+
+        # if len(Dataset_Fixture.all_data) > 0:
+        #     ds_keys = list(Dataset_Fixture.all_data.keys())
+        #     for key in ds_keys:
+        #         ds = yt.load(Dataset_Fixture.all_data[key])
+        #         return val(*the_args, ds=ds)
+        # else:
+        #     raise AttributeError(
+        #         "could not find a dataset: cannot build the data container"
+        #     )
+
+
         if len(_instantiated_datasets) > 0:
             ds_keys = list(_instantiated_datasets.keys())
             ds = _instantiated_datasets[ds_keys[0]]

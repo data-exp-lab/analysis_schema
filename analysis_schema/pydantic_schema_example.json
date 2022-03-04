@@ -1,24 +1,24 @@
 {
     "$schema": "./yt_analysis_schema.json",
-    "Data": {
-      "FileName": "./IsolatedGalaxy/galaxy0030/galaxy0030",
+    "Data": [
+      {
+      "FileName": "../../Data/IsolatedGalaxy/galaxy0030/galaxy0030",
       "DatasetName": "IG_Testing"
-    },
+    }
+  ],
     "Plot": [
       {
         "ProjectionPlot": {
+          "Dataset": {
+            "FileName": "../../Data/enzo_tiny_cosmology/DD0000/DD0000",
+            "DatasetName": "Enzo"
+          },
           "Axis":"y",
           "FieldNames": {
             "field": "temperature",
             "field_type": "gas"
           },
-          "FontSize": 30,
-          "DataSource":{
-              "sphere": {
-                  "Center": [0.6, 0.6, 0.6],
-                  "Radius": 0.2
-              }
-          }
+          "FontSize": 30
         }
       }
     ]

@@ -4,30 +4,30 @@ from typing import List, Optional, Tuple, Union
 import yt
 from pydantic import BaseModel, Field
 
-from ._data_store import _instantiated_datasets
+from ._data_store import DatasetFixture
 from .base_model import ytBaseModel, ytDataObjectAbstract, ytParameter
-
 
 class Dataset(ytBaseModel):
     """
     The dataset to load. Filename (fn) must be a string.
 
-    Required fields: Filename
+    Required fields: Filename, DatasetName
     """
 
+    DatasetName: Optional[str]
     fn: Path = Field(
         alias="FileName",
         description="A string containing the (path to the file and the) file name",
     )
-    DatasetName: Optional[str]
     comments: Optional[str]
     _yt_operation: str = "load"
 
     def _run(self):
-        if self.fn in _instantiated_datasets:
-            return _instantiated_datasets[self.fn]
-        ds = yt.load(self.fn)
-        _instantiated_datasets[self.fn] = ds
+        print(self.fn, self.DatasetName)
+        if self.DatasetName in [DatasetFixture._instantiated_datasets.keys()]:
+            return DatasetFixture._instantiated_datasets[self.DatasetName]
+        ds = DatasetFixture._instantiate_data(self.fn, self.DatasetName)
+        DatasetFixture._instantiated_datasets[self.DatasetName] = ds
         return ds
 
 

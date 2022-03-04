@@ -2,6 +2,7 @@ from typing import List, Optional
 
 from .base_model import ytBaseModel
 from .data_classes import Dataset, Visualizations
+from ._data_store import DatasetFixture
 
 
 class ytModel(ytBaseModel):
@@ -15,7 +16,7 @@ class ytModel(ytBaseModel):
     iterated through to render and display the output.
     """
 
-    Data: Optional[Dataset]
+    Data: Optional[List[Dataset]]
     Plot: Optional[List[Visualizations]]
 
     class Config:
@@ -31,17 +32,22 @@ class ytModel(ytBaseModel):
         if attribute_data is not None:
             # the data does not get added to the output list, because we can't call
             # .save() or .show() on it
-            attribute_data._run()
+            for data in attribute_data:
+                if data.DatasetName not in list(DatasetFixture.all_data.keys()):
+                    data_hold = DatasetFixture(data.fn, data.DatasetName)
+                    data._run()
+                
 
-        attribute_plot = self.Plot
-        if attribute_plot is not None:
-            for data_class in attribute_plot:
-                for attribute in dir(data_class):
-                    if attribute.endswith("Plot"):
-                        plotting_attribute = getattr(data_class, attribute)
-                        if plotting_attribute is not None:
-                            output_list.append(plotting_attribute._run())
-                return output_list
+            attribute_plot = self.Plot
+            if attribute_plot is not None:
+                for data_class in attribute_plot:
+                    for attribute in dir(data_class):
+                        if attribute.endswith("Plot"):
+                            plotting_attribute = getattr(data_class, attribute)
+                            print("plot:", plotting_attribute)
+                            if plotting_attribute is not None:
+                                output_list.append(plotting_attribute._run())
+                    return output_list
 
 
 schema = ytModel
@@ -50,5 +56,5 @@ schema_dict = schema.schema()
 # create a dict to store the arguments required to instantiate an empty model
 # useful for generating schemas from subsets of a model (see cli.py for an example)
 _empty_model_registry = {}
-_empty_model_registry["ytModel"] = (ytModel, dict(Data={"FileName": ""}, Plot=[{}]))
+_empty_model_registry["ytModel"] = (ytModel, dict(Data=[{"FileName": ""}], Plot=[{}]))
 _model_types = list(_empty_model_registry.keys())
