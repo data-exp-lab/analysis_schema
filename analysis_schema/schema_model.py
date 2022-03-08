@@ -45,6 +45,7 @@ class ytModel(ytBaseModel):
                             print("plot:", plotting_attribute)
                             if plotting_attribute is not None:
                                 output_list.append(plotting_attribute._run())
+                                output_list = output_list.pop()
                     return output_list
 
 

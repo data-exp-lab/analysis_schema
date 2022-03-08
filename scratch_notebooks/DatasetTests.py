@@ -13,5 +13,3 @@ files="Jupter")
 
 save_schema()
 # %%
-
-# %%
