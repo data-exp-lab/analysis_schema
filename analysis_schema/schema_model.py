@@ -33,9 +33,7 @@ class ytModel(ytBaseModel):
             # the data does not get added to the output list, because we can't call
             # .save() or .show() on it
             for data in attribute_data:
-                if data.DatasetName not in list(DatasetFixture.all_data.keys()):
-                    data_hold = DatasetFixture(data.fn, data.DatasetName)
-                    data._run()
+                data._run()
                 
 
             attribute_plot = self.Plot

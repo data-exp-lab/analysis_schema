@@ -2,17 +2,17 @@
     "$schema": "./yt_analysis_schema.json",
     "Data": [
       {
+      "FileName": "../../Data/enzo_tiny_cosmology/DD0000/DD0000",
+      "DatasetName": "Enzo"
+    },
+    {
       "FileName": "../../Data/IsolatedGalaxy/galaxy0030/galaxy0030",
-      "DatasetName": "IG_Testing"
+      "DatasetName": "Iso"
     }
   ],
     "Plot": [
       {
         "ProjectionPlot": {
-          "Dataset": {
-            "FileName": "../../Data/enzo_tiny_cosmology/DD0000/DD0000",
-            "DatasetName": "Enzo"
-          },
           "Axis":"y",
           "FieldNames": {
             "field": "temperature",

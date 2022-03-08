@@ -18,5 +18,7 @@ class DatasetFixture():
 
     def _instantiate_data(self, DatasetName, all_data=all_data, _instantiated_datasets=_instantiated_datasets):
         ds = yt.load(all_data[DatasetName])
-        _instantiated_datasets[self.DatasetName] = ds
+        print("Instaniateed data:", ds)
+        _instantiated_datasets[DatasetName] = ds
+        print(_instantiated_datasets)
         return ds

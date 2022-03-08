@@ -26,9 +26,10 @@ class Dataset(ytBaseModel):
         print(self.fn, self.DatasetName)
         if self.DatasetName in [DatasetFixture._instantiated_datasets.keys()]:
             return DatasetFixture._instantiated_datasets[self.DatasetName]
-        ds = DatasetFixture._instantiate_data(self.fn, self.DatasetName)
-        DatasetFixture._instantiated_datasets[self.DatasetName] = ds
-        return ds
+        else:
+            DatasetFixture(self.fn, self.DatasetName)
+            ds = DatasetFixture._instantiate_data(self.fn, self.DatasetName)
+            return ds
 
 
 class FieldNames(ytParameter):
@@ -107,7 +108,7 @@ class SlicePlot(ytBaseModel):
 
     def _run(self):
         if self.ds is None:
-            self.ds = list(_instantiated_datasets.values())[0]
+            self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
         return super()._run()
 
 
@@ -141,7 +142,7 @@ class ProjectionPlot(ytBaseModel):
 
     def _run(self):
         if self.ds is None:
-            self.ds = list(_instantiated_datasets.values())[0]
+            self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
         return super()._run()
 
     @property
