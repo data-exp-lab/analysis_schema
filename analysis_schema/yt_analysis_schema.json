@@ -31,23 +31,20 @@
         "FileName": {
           "title": "Filename",
           "description": "A string containing the (path to the file and the) file name",
-          "anyOf": [
-            {
-              "type": "string",
-              "format": "path"
-            },
-            {
-              "type": "string"
-            }
-          ]
+          "type": "string",
+          "format": "path"
         },
         "comments": {
           "title": "Comments",
           "type": "string"
+        },
+        "instantiate": {
+          "title": "Instantiate",
+          "default": true,
+          "type": "boolean"
         }
       },
       "required": [
-        "DatasetName",
         "FileName"
       ]
     },

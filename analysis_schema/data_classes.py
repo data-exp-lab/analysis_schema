@@ -20,6 +20,7 @@ class Dataset(ytBaseModel):
         description="A string containing the (path to the file and the) file name",
     )
     comments: Optional[str]
+    instantiate: bool = True
     _yt_operation: str = "load"
 
     def _run(self):
@@ -28,8 +29,9 @@ class Dataset(ytBaseModel):
             return DatasetFixture._instantiated_datasets[self.DatasetName]
         else:
             DatasetFixture(self.fn, self.DatasetName)
-            ds = DatasetFixture._instantiate_data(self.fn, self.DatasetName)
-            return ds
+            if self.instantiate is True:
+                ds = DatasetFixture._instantiate_data(self.fn, self.DatasetName)
+                return ds
 
 
 class FieldNames(ytParameter):
