@@ -1,7 +1,6 @@
 from inspect import getfullargspec
 from typing import List, Optional
 
-import yt
 from pydantic import BaseModel
 
 from ._data_store import DatasetFixture
@@ -178,7 +177,6 @@ class ytDataObjectAbstract(ytBaseModel):
         #     raise AttributeError(
         #         "could not find a dataset: cannot build the data container"
         #     )
-
 
         if len(DatasetFixture._instantiated_datasets) > 0:
             ds_keys = list(DatasetFixture._instantiated_datasets.keys())

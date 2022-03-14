@@ -1,11 +1,11 @@
 from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
-import yt
 from pydantic import BaseModel, Field
 
 from ._data_store import DatasetFixture
 from .base_model import ytBaseModel, ytDataObjectAbstract, ytParameter
+
 
 class Dataset(ytBaseModel):
     """
@@ -152,14 +152,14 @@ class ProjectionPlot(ytBaseModel):
     def _run(self):
         super_list = []
         if self.ds is None:
-            #self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
+            # self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
             for instantiated_keys in list(DatasetFixture._instantiated_datasets.keys()):
                 self.ds = DatasetFixture._instantiated_datasets[instantiated_keys]
                 super_list.append(super()._run())
                 # put each 'self' into the output
                 # when calling `._run()` there is no plotting attribute, so it is not added to the output list
         return super_list
-        #return super()._run()
+        # return super()._run()
 
     @property
     def axis(self):
@@ -191,14 +191,15 @@ class PhasePlot(ytBaseModel):
     def _run(self):
         super_list = []
         if self.ds is None:
-            #self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
+            # self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
             for instantiated_keys in list(DatasetFixture._instantiated_datasets.keys()):
                 self.ds = DatasetFixture._instantiated_datasets[instantiated_keys]
                 super_list.append(super()._run())
                 # put each 'self' into the output
                 # when calling `._run()` there is no plotting attribute, so it is not added to the output list
         return super_list
-        #return super()._run()
+        # return super()._run()
+
 
 class Visualizations(BaseModel):
     """

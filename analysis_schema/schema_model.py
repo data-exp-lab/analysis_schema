@@ -35,7 +35,6 @@ class ytModel(ytBaseModel):
             # .save() or .show() on it
             for data in attribute_data:
                 data._run()
-                
 
             attribute_plot = self.Plot
             if attribute_plot is not None:
