@@ -16,7 +16,6 @@ def show_plots(schema, files):
         schema ([dict]): the analysis schema filled out with yt specificaions
     """
     result = schema._run()
-    print(result)
     for output in range(len(tuple(result))):
         print("each output:", result[output])
         if files == "Jupter":
@@ -181,9 +180,9 @@ class ytDataObjectAbstract(ytBaseModel):
         #     )
 
 
-        if len(_instantiated_datasets) > 0:
-            ds_keys = list(_instantiated_datasets.keys())
-            ds = _instantiated_datasets[ds_keys[0]]
+        if len(DatasetFixture._instantiated_datasets) > 0:
+            ds_keys = list(DatasetFixture._instantiated_datasets.keys())
+            ds = DatasetFixture._instantiated_datasets[ds_keys[0]]
             return val(*the_args, ds=ds)
         else:
             raise AttributeError(

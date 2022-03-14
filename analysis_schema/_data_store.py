@@ -2,6 +2,7 @@ from pydantic import BaseModel
 import yt
 
 # _instantiated_datasets = {}
+_output_list = []
 
 class DatasetFixture():
 
@@ -18,7 +19,5 @@ class DatasetFixture():
 
     def _instantiate_data(self, DatasetName, all_data=all_data, _instantiated_datasets=_instantiated_datasets):
         ds = yt.load(all_data[DatasetName])
-        print("Instaniateed data:", ds)
         _instantiated_datasets[DatasetName] = ds
-        print(_instantiated_datasets)
         return ds

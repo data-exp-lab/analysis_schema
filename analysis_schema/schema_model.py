@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from .base_model import ytBaseModel
 from .data_classes import Dataset, Visualizations
-from ._data_store import DatasetFixture
+from ._data_store import DatasetFixture, _output_list
 
 
 class ytModel(ytBaseModel):
@@ -26,7 +26,8 @@ class ytModel(ytBaseModel):
     def _run(self):
         # for the top level model, we override this.
         # Nested objects will still be recursive!
-        output_list = []
+        # output_list = []
+        # because this inside the _run() function, it is wiped clean everytime it is called
         attribute_data = self.Data
 
         if attribute_data is not None:
@@ -42,11 +43,10 @@ class ytModel(ytBaseModel):
                     for attribute in dir(data_class):
                         if attribute.endswith("Plot"):
                             plotting_attribute = getattr(data_class, attribute)
-                            print("plot:", plotting_attribute)
                             if plotting_attribute is not None:
-                                output_list.append(plotting_attribute._run())
-                                output_list = output_list.pop()
-                    return output_list
+                                _output_list.append(plotting_attribute._run())
+                            output_flat = [viz for out in _output_list for viz in out]
+                return output_flat
 
 
 schema = ytModel

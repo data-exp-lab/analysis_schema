@@ -12,6 +12,15 @@
   ],
     "Plot": [
       {
+        "SlicePlot": {
+          "Axis": "x",
+          "FieldNames": {
+            "field": "density",
+            "field_type": "gas"
+          }
+        }
+      },
+      {
         "ProjectionPlot": {
           "Axis":"y",
           "FieldNames": {

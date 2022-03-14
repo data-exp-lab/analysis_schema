@@ -24,7 +24,6 @@ class Dataset(ytBaseModel):
     _yt_operation: str = "load"
 
     def _run(self):
-        print(self.fn, self.DatasetName)
         if self.DatasetName in [DatasetFixture._instantiated_datasets.keys()]:
             return DatasetFixture._instantiated_datasets[self.DatasetName]
         else:
@@ -109,9 +108,17 @@ class SlicePlot(ytBaseModel):
     ]
 
     def _run(self):
+        # if self.ds is None:
+        #     self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
+        # return super()._run()
+        super_list = []
         if self.ds is None:
-            self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
-        return super()._run()
+            for instantiated_keys in list(DatasetFixture._instantiated_datasets.keys()):
+                self.ds = DatasetFixture._instantiated_datasets[instantiated_keys]
+                super_list.append(super()._run())
+                # put each 'self' into the output
+                # when calling `._run()` there is no plotting attribute, so it is not added to the output list
+        return super_list
 
 
 class ProjectionPlot(ytBaseModel):
@@ -143,9 +150,16 @@ class ProjectionPlot(ytBaseModel):
     _yt_operation: str = "ProjectionPlot"
 
     def _run(self):
+        super_list = []
         if self.ds is None:
-            self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
-        return super()._run()
+            #self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
+            for instantiated_keys in list(DatasetFixture._instantiated_datasets.keys()):
+                self.ds = DatasetFixture._instantiated_datasets[instantiated_keys]
+                super_list.append(super()._run())
+                # put each 'self' into the output
+                # when calling `._run()` there is no plotting attribute, so it is not added to the output list
+        return super_list
+        #return super()._run()
 
     @property
     def axis(self):
@@ -174,6 +188,17 @@ class PhasePlot(ytBaseModel):
     Comments: Optional[str]
     _yt_operation: str = "PhasePlot"
 
+    def _run(self):
+        super_list = []
+        if self.ds is None:
+            #self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
+            for instantiated_keys in list(DatasetFixture._instantiated_datasets.keys()):
+                self.ds = DatasetFixture._instantiated_datasets[instantiated_keys]
+                super_list.append(super()._run())
+                # put each 'self' into the output
+                # when calling `._run()` there is no plotting attribute, so it is not added to the output list
+        return super_list
+        #return super()._run()
 
 class Visualizations(BaseModel):
     """
