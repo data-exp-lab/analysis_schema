@@ -1,11 +1,15 @@
 from pydantic import BaseModel
 import yt
 
-# _instantiated_datasets = {}
+# this is the list that all visualization outputs are collected. Maybe this also needs a class? Or some other data structure?
 _output_list = []
 
 
 class DatasetFixture:
+    """
+    A class to hold all references and instantiated datasets. Also has a method to instantiate the data if it isn't already.
+    There is a dictionary for dataset references and instantiated datasets.
+    """
 
     all_data = {}
     _instantiated_datasets = {}

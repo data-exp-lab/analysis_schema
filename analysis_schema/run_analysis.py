@@ -21,8 +21,12 @@ def load_and_run(json_file, files):
     # remove schema line
     live_schema.pop("$schema")
     # create analysis schema model
-    analysis_model = ytModel(Data=live_schema["Data"], Plot=live_schema["Plot"])
-    print(show_plots(analysis_model, files))
+    if "Data" in list(live_schema.keys()):
+        analysis_model = ytModel(Data=live_schema["Data"], Plot=live_schema["Plot"])
+        print(show_plots(analysis_model, files))
+    else:
+        analysis_model = ytModel(Plot=live_schema["Plot"])
+        print(show_plots(analysis_model, files))
 
 
 if __name__ == "__main__":

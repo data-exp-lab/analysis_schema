@@ -1,5 +1,7 @@
 from typing import List, Optional
 
+from matplotlib.pyplot import plot
+
 from .base_model import ytBaseModel
 from .data_classes import Dataset, Visualizations
 from ._data_store import DatasetFixture, _output_list
@@ -36,16 +38,18 @@ class ytModel(ytBaseModel):
             for data in attribute_data:
                 data._run()
 
-            attribute_plot = self.Plot
-            if attribute_plot is not None:
-                for data_class in attribute_plot:
-                    for attribute in dir(data_class):
-                        if attribute.endswith("Plot"):
-                            plotting_attribute = getattr(data_class, attribute)
-                            if plotting_attribute is not None:
-                                _output_list.append(plotting_attribute._run())
-                            output_flat = [viz for out in _output_list for viz in out]
-                return output_flat
+        attribute_plot = self.Plot
+        if attribute_plot is not None:
+            for data_class in attribute_plot:
+                for attribute in dir(data_class):
+                    if attribute.endswith("Plot"):
+                        plotting_attribute = getattr(data_class, attribute)
+                        print("the plot:", plotting_attribute)
+                        if plotting_attribute is not None:
+                            _output_list.append(plotting_attribute._run())
+                        print("Output:", _output_list)
+                        output_flat = [viz for out in _output_list for viz in out]
+            return output_flat
 
 
 schema = ytModel

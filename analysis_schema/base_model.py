@@ -15,6 +15,7 @@ def show_plots(schema, files):
         schema ([dict]): the analysis schema filled out with yt specificaions
     """
     result = schema._run()
+    print("The result:", result)
     for output in range(len(tuple(result))):
         print("each output:", result[output])
         if files == "Jupter":

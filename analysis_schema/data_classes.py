@@ -95,7 +95,7 @@ class DataSource3D(ytBaseModel):
 class SlicePlot(ytBaseModel):
     """Axis-aligned slice plot."""
 
-    ds: Optional[Dataset] = Field(alias="Dataset")
+    ds: Optional[List[Dataset]] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
     normal: str = Field(alias="Axis")
     center: Optional[Union[str, List[float]]] = Field(alias="Center")
@@ -108,17 +108,30 @@ class SlicePlot(ytBaseModel):
     ]
 
     def _run(self):
-        # if self.ds is None:
-        #     self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
-        # return super()._run()
+        """
+        This _run function checks if this plot has a value for the `ds` arguement (or attribute). 
+        If it does not, then it looks for data in the `DatasetFixture` class. 
+        If there is more than one instantiated dataset, a plot will be created for each dataset.
+
+        return: a dataset, or a list of datasets
+        """
         super_list = []
         if self.ds is None:
             for instantiated_keys in list(DatasetFixture._instantiated_datasets.keys()):
                 self.ds = DatasetFixture._instantiated_datasets[instantiated_keys]
+                # append output to a list to return
                 super_list.append(super()._run())
                 # put each 'self' into the output
                 # when calling `._run()` there is no plotting attribute, so it is not added to the output list
-        return super_list
+            return super_list
+        if self.ds is not None:
+            if isinstance(self.ds, list):
+                for data in self.ds:
+                   self.ds = data
+                   super_list.append(super()._run())
+                return super_list
+            super_list.append(super()._run())
+            return super_list
 
 
 class ProjectionPlot(ytBaseModel):
@@ -150,16 +163,24 @@ class ProjectionPlot(ytBaseModel):
     _yt_operation: str = "ProjectionPlot"
 
     def _run(self):
+        """
+        This _run function checks if this plot has a value for the `ds` arguement (or attribute). 
+        If it does not, then it looks for data in the `DatasetFixture` class. 
+        If there is more than one instantiated dataset, a plot will be created for each dataset.
+
+        return: a dataset, or a list of datasets
+        """
         super_list = []
         if self.ds is None:
-            # self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
             for instantiated_keys in list(DatasetFixture._instantiated_datasets.keys()):
                 self.ds = DatasetFixture._instantiated_datasets[instantiated_keys]
                 super_list.append(super()._run())
                 # put each 'self' into the output
                 # when calling `._run()` there is no plotting attribute, so it is not added to the output list
-        return super_list
-        # return super()._run()
+            return super_list
+        if self.ds is not None:
+            super_list.append(super()._run())
+            return super_list
 
     @property
     def axis(self):

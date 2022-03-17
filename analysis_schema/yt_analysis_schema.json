@@ -165,7 +165,11 @@
       "type": "object",
       "properties": {
         "Dataset": {
-          "$ref": "#/definitions/Dataset"
+          "title": "Dataset",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Dataset"
+          }
         },
         "FieldNames": {
           "$ref": "#/definitions/FieldNames"
