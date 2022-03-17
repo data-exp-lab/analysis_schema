@@ -137,7 +137,7 @@ class SlicePlot(ytBaseModel):
 class ProjectionPlot(ytBaseModel):
     """Axis-aligned projection plot."""
 
-    ds: Optional[Dataset] = Field(alias="Dataset")
+    ds: Optional[List[Dataset]] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
     normal: Union[str, int] = Field(alias="Axis")
     # domain stuff here. Can we simplify? Contains operations stuff too
@@ -174,11 +174,17 @@ class ProjectionPlot(ytBaseModel):
         if self.ds is None:
             for instantiated_keys in list(DatasetFixture._instantiated_datasets.keys()):
                 self.ds = DatasetFixture._instantiated_datasets[instantiated_keys]
+                # append output to a list to return
                 super_list.append(super()._run())
                 # put each 'self' into the output
                 # when calling `._run()` there is no plotting attribute, so it is not added to the output list
             return super_list
         if self.ds is not None:
+            if isinstance(self.ds, list):
+                for data in self.ds:
+                    self.ds = data
+                    super_list.append(super()._run())
+                return super_list
             super_list.append(super()._run())
             return super_list
 

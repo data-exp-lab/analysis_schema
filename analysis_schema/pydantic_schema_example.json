@@ -2,7 +2,7 @@
   "$schema": "../analysis_schema/yt_analysis_schema.json",
   "Plot": [
     {
-      "SlicePlot": {
+      "ProjectionPlot": {
         "Dataset": [
           {
             "FileName": "../../Data/enzo_tiny_cosmology/DD0000/DD0000",
@@ -13,7 +13,7 @@
             "DatasetName": "IG"
           }
         ],
-        "Axis": "x",
+        "Axis":"y",
         "FieldNames": {
           "field": "density",
           "field_type": "gas"
