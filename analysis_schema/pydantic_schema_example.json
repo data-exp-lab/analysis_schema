@@ -17,6 +17,10 @@
         "FieldNames": {
           "field": "density",
           "field_type": "gas"
+        },
+        "WeightFieldName": {
+          "field": "temperature",
+          "field_type": "gas"
         }
       }
     }

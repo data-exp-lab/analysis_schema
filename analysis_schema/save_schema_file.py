@@ -5,6 +5,9 @@ from .schema_model import ytModel
 
 
 def save_schema():
+    """
+    A function to create a schema file
+    """
 
     analysis_model_schema = ytModel(
         Data=[{"DatasetName": "", "FileName": ""}], Plot=[{}]

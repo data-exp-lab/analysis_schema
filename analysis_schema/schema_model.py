@@ -4,7 +4,7 @@ from matplotlib.pyplot import plot
 
 from .base_model import ytBaseModel
 from .data_classes import Dataset, Visualizations
-from ._data_store import DatasetFixture, _output_list
+from ._data_store import _output_list, DatasetFixture
 
 
 class ytModel(ytBaseModel):
@@ -44,10 +44,8 @@ class ytModel(ytBaseModel):
                 for attribute in dir(data_class):
                     if attribute.endswith("Plot"):
                         plotting_attribute = getattr(data_class, attribute)
-                        print("the plot:", plotting_attribute)
                         if plotting_attribute is not None:
                             _output_list.append(plotting_attribute._run())
-                        print("Output:", _output_list)
                         output_flat = [viz for out in _output_list for viz in out]
             return output_flat
 

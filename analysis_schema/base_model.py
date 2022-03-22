@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
-from ._data_store import DatasetFixture
+from ._data_store import dataset_fixture
 
 
 def show_plots(schema, files):
@@ -179,9 +179,9 @@ class ytDataObjectAbstract(ytBaseModel):
         #         "could not find a dataset: cannot build the data container"
         #     )
 
-        if len(DatasetFixture._instantiated_datasets) > 0:
-            ds_keys = list(DatasetFixture._instantiated_datasets.keys())
-            ds = DatasetFixture._instantiated_datasets[ds_keys[0]]
+        if len(dataset_fixture._instantiated_datasets) > 0:
+            ds_keys = list(dataset_fixture._instantiated_datasets.keys())
+            ds = dataset_fixture._instantiated_datasets[ds_keys[0]]
             return val(*the_args, ds=ds)
         else:
             raise AttributeError(

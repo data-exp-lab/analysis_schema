@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple, Union
 
 from pydantic import BaseModel, Field
 
-from ._data_store import DatasetFixture
+from ._data_store import dataset_fixture
 from .base_model import ytBaseModel, ytDataObjectAbstract, ytParameter
 
 
@@ -24,12 +24,13 @@ class Dataset(ytBaseModel):
     _yt_operation: str = "load"
 
     def _run(self):
-        if self.DatasetName in [DatasetFixture._instantiated_datasets.keys()]:
-            return DatasetFixture._instantiated_datasets[self.DatasetName]
+        print("class", dataset_fixture)
+        if self.DatasetName in [dataset_fixture._instantiated_datasets.keys()]:
+            return dataset_fixture._instantiated_datasets[self.DatasetName]
         else:
-            DatasetFixture(self.fn, self.DatasetName)
+            dataset_fixture.add_to_alldata(self.fn, self.DatasetName)
             if self.instantiate is True:
-                ds = DatasetFixture._instantiate_data(self.fn, self.DatasetName)
+                ds = dataset_fixture._instantiate_data(self.DatasetName)
                 return ds
 
 
@@ -117,8 +118,8 @@ class SlicePlot(ytBaseModel):
         """
         super_list = []
         if self.ds is None:
-            for instantiated_keys in list(DatasetFixture._instantiated_datasets.keys()):
-                self.ds = DatasetFixture._instantiated_datasets[instantiated_keys]
+            for instantiated_keys in list(dataset_fixture._instantiated_datasets.keys()):
+                self.ds = dataset_fixture._instantiated_datasets[instantiated_keys]
                 # append output to a list to return
                 super_list.append(super()._run())
                 # put each 'self' into the output
@@ -172,8 +173,8 @@ class ProjectionPlot(ytBaseModel):
         """
         super_list = []
         if self.ds is None:
-            for instantiated_keys in list(DatasetFixture._instantiated_datasets.keys()):
-                self.ds = DatasetFixture._instantiated_datasets[instantiated_keys]
+            for instantiated_keys in list(dataset_fixture._instantiated_datasets.keys()):
+                self.ds = dataset_fixture._instantiated_datasets[instantiated_keys]
                 # append output to a list to return
                 super_list.append(super()._run())
                 # put each 'self' into the output
@@ -219,8 +220,8 @@ class PhasePlot(ytBaseModel):
         super_list = []
         if self.ds is None:
             # self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
-            for instantiated_keys in list(DatasetFixture._instantiated_datasets.keys()):
-                self.ds = DatasetFixture._instantiated_datasets[instantiated_keys]
+            for instantiated_keys in list(dataset_fixture._instantiated_datasets.keys()):
+                self.ds = dataset_fixture._instantiated_datasets[instantiated_keys]
                 super_list.append(super()._run())
                 # put each 'self' into the output
                 # when calling `._run()` there is no plotting attribute, so it is not added to the output list
