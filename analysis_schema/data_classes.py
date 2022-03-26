@@ -118,7 +118,9 @@ class SlicePlot(ytBaseModel):
         """
         super_list = []
         if self.ds is None:
-            for instantiated_keys in list(dataset_fixture._instantiated_datasets.keys()):
+            for instantiated_keys in list(
+                dataset_fixture._instantiated_datasets.keys()
+            ):
                 self.ds = dataset_fixture._instantiated_datasets[instantiated_keys]
                 # append output to a list to return
                 super_list.append(super()._run())
@@ -128,8 +130,8 @@ class SlicePlot(ytBaseModel):
         if self.ds is not None:
             if isinstance(self.ds, list):
                 for data in self.ds:
-                   self.ds = data
-                   super_list.append(super()._run())
+                    self.ds = data
+                    super_list.append(super()._run())
                 return super_list
             super_list.append(super()._run())
             return super_list
@@ -173,7 +175,9 @@ class ProjectionPlot(ytBaseModel):
         """
         super_list = []
         if self.ds is None:
-            for instantiated_keys in list(dataset_fixture._instantiated_datasets.keys()):
+            for instantiated_keys in list(
+                dataset_fixture._instantiated_datasets.keys()
+            ):
                 self.ds = dataset_fixture._instantiated_datasets[instantiated_keys]
                 # append output to a list to return
                 super_list.append(super()._run())
@@ -220,7 +224,9 @@ class PhasePlot(ytBaseModel):
         super_list = []
         if self.ds is None:
             # self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
-            for instantiated_keys in list(dataset_fixture._instantiated_datasets.keys()):
+            for instantiated_keys in list(
+                dataset_fixture._instantiated_datasets.keys()
+            ):
                 self.ds = dataset_fixture._instantiated_datasets[instantiated_keys]
                 super_list.append(super()._run())
                 # put each 'self' into the output
