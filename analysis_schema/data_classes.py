@@ -24,7 +24,6 @@ class Dataset(ytBaseModel):
     _yt_operation: str = "load"
 
     def _run(self):
-        print("class", dataset_fixture)
         if self.DatasetName in [dataset_fixture._instantiated_datasets.keys()]:
             return dataset_fixture._instantiated_datasets[self.DatasetName]
         else:
@@ -49,6 +48,7 @@ class FieldNames(ytParameter):
     comments: Optional[str]
 
     def _run(self):
+        # add field fixture?
         return (self.field_type, self.field)
 
 

@@ -14,6 +14,7 @@ class DatasetFixture:
     def __init__(self):
         self.all_data = {}
         self._instantiated_datasets = {}
+        self.all_fields = {}
 
     def add_to_alldata(self, fn, DatasetName):
         """
@@ -36,7 +37,24 @@ class DatasetFixture:
         """
         ds = yt.load(self.all_data[DatasetName])
         self._instantiated_datasets[DatasetName] = ds
+        # adding the fieldlist to a List. How to handle fieldlists for multiiple datasets?
+        self.all_fields[DatasetName] = ds.field_list
         return ds
 
 
 dataset_fixture = DatasetFixture()
+
+class FieldFixture(DatasetFixture):
+
+    def __init__(self):
+        # how to account for field type?
+        print("do I need to do this step?")
+
+    def add_fields(self):
+        self.all_fields.append((self.field_type, self.field))
+        print("field list:", self.add_fields)
+        return self.all_fields
+
+field_fixture = FieldFixture()
+
+    
