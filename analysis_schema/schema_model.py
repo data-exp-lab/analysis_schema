@@ -4,7 +4,7 @@ from matplotlib.pyplot import plot
 
 from .base_model import ytBaseModel
 from .data_classes import Dataset, Visualizations
-from ._data_store import _output_list, DatasetFixture
+from ._data_store import Output
 
 
 class ytModel(ytBaseModel):
@@ -31,6 +31,7 @@ class ytModel(ytBaseModel):
         # output_list = []
         # because this inside the _run() function, it is wiped clean everytime it is called
         attribute_data = self.Data
+        output = Output()
 
         if attribute_data is not None:
             # the data does not get added to the output list, because we can't call
@@ -45,8 +46,8 @@ class ytModel(ytBaseModel):
                     if attribute.endswith("Plot"):
                         plotting_attribute = getattr(data_class, attribute)
                         if plotting_attribute is not None:
-                            _output_list.append(plotting_attribute._run())
-                        output_flat = [viz for out in _output_list for viz in out]
+                            output.add_output(plotting_attribute._run())
+                        output_flat = [viz for out in output._output_list for viz in out]
             return output_flat
 
 

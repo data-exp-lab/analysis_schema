@@ -93,11 +93,13 @@ def test_execution():
     # run the slice plot
     model = analysis_schema.ytModel.parse_raw(viz_only_slc)
     m = model._run()
+    print(m)
     assert isinstance(m[0], yt.AxisAlignedSlicePlot)
 
     # run the projection plot
     model = analysis_schema.ytModel.parse_raw(viz_only_prj)
     m = model._run()
+    print(m)
     assert isinstance(m[0], yt.ProjectionPlot)
 
 

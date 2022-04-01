@@ -1,8 +1,13 @@
 from pydantic import BaseModel
 import yt
 
-# this is the list that all visualization outputs are collected. Maybe this also needs a class? Or some other data structure?
-_output_list = []
+class Output:
+
+    def __init__(self):
+        self._output_list = []
+
+    def add_output(self, ytmodel_plotresult):
+        self._output_list.append(ytmodel_plotresult)
 
 
 class DatasetFixture:
