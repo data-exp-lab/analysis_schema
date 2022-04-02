@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 import yt
 
-class Output:
 
+class Output:
     def __init__(self):
         self._output_list = []
 

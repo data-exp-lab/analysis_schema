@@ -81,7 +81,9 @@ class Slice(ytDataObjectAbstract):
 
 
 class DataSource3D(ytBaseModel):
-    """Select a subset of the dataset to visualize from the overall dataset"""
+    """Select a subset of the dataset to visualize from the
+    overall dataset
+    """
 
     sphere: Optional[Sphere]
     region: Optional[Region]
@@ -109,9 +111,13 @@ class SlicePlot(ytBaseModel):
 
     def _run(self):
         """
-        This _run function checks if this plot has a value for the `ds` arguement (or attribute). 
-        If it does not, then it looks for data in the `DatasetFixture` class. 
-        If there is more than one instantiated dataset, a plot will be created for each dataset.
+        This _run function checks if this plot has a value
+        for the `ds`
+        arguement (or attribute).
+        If it does not, then it looks for data in the
+        `DatasetFixture` class.
+        If there is more than one instantiated dataset, a plot
+         will be created for each dataset.
 
         return: a dataset, or a list of datasets
         """
@@ -124,7 +130,8 @@ class SlicePlot(ytBaseModel):
                 # append output to a list to return
                 super_list.append(super()._run())
                 # put each 'self' into the output
-                # when calling `._run()` there is no plotting attribute, so it is not added to the output list
+                # when calling `._run()` there is no plotting
+                #  attribute, so it is not added to the output list
             return super_list
         if self.ds is not None:
             if isinstance(self.ds, list):
@@ -142,9 +149,11 @@ class ProjectionPlot(ytBaseModel):
     ds: Optional[List[Dataset]] = Field(alias="Dataset")
     fields: FieldNames = Field(alias="FieldNames")
     normal: Union[str, int] = Field(alias="Axis")
-    # domain stuff here. Can we simplify? Contains operations stuff too
+    # domain stuff here. Can we simplify? Contains operations
+    # stuff too
     center: Optional[str] = Field(alias="Center")
-    # more confusing design. Can we simplify? This contain field names, units, and
+    # more confusing design. Can we simplify? This
+    # contain field names, units, and
     # widths
     width: Optional[Union[tuple, float]] = Field(alias="Width")
     axes_unit: Optional[str] = Field(alias="AxesUnit")
@@ -166,9 +175,12 @@ class ProjectionPlot(ytBaseModel):
 
     def _run(self):
         """
-        This _run function checks if this plot has a value for the `ds` arguement (or attribute). 
-        If it does not, then it looks for data in the `DatasetFixture` class. 
-        If there is more than one instantiated dataset, a plot will be created for each dataset.
+        This _run function checks if this plot has a value
+        for the `ds` arguement (or attribute).
+        If it does not, then it looks for data in the
+        `DatasetFixture` class.
+        If there is more than one instantiated dataset,
+        a plot will be created for each dataset.
 
         return: a dataset, or a list of datasets
         """
@@ -181,7 +193,8 @@ class ProjectionPlot(ytBaseModel):
                 # append output to a list to return
                 super_list.append(super()._run())
                 # put each 'self' into the output
-                # when calling `._run()` there is no plotting attribute, so it is not added to the output list
+                # when calling `._run()` there is no plotting
+                # attribute, so it is not added to the output list
             return super_list
         if self.ds is not None:
             if isinstance(self.ds, list):
@@ -229,14 +242,16 @@ class PhasePlot(ytBaseModel):
                 self.ds = dataset_fixture._instantiated_datasets[instantiated_keys]
                 super_list.append(super()._run())
                 # put each 'self' into the output
-                # when calling `._run()` there is no plotting attribute, so it is not added to the output list
+                # when calling `._run()` there is no plotting
+                # attribute, so it is not added to the output list
         return super_list
         # return super()._run()
 
 
 class Visualizations(BaseModel):
     """
-    This class organizes the attributes below so users can select the plot by name,
+    This class organizes the attributes below so users
+    can select the plot by name,
     and see the correct arguments as suggestions
     """
 
