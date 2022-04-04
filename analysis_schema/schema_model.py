@@ -1,8 +1,8 @@
 from typing import List, Optional
 
+from ._data_store import Output
 from .base_model import ytBaseModel
 from .data_classes import Dataset, Visualizations
-from ._data_store import Output
 
 
 class ytModel(ytBaseModel):
