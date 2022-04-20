@@ -3,10 +3,18 @@ include CONTRIBUTING.rst
 include HISTORY.rst
 include LICENSE
 include README.rst
+include requirements_dev.txt
 include analysis_schema/index.html
+include *.yaml
+include Makefile
+include tox.ini
 
 recursive-include tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
 recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
+recursive-include analysis_schema *.json
+recursive-include analysis_schema *.py
+recursive-include examples *.ipynb
+exclude .editorconfig
