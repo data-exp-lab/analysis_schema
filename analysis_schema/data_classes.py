@@ -50,8 +50,7 @@ class FieldNames(ytParameter):
 
 
 class Sphere(ytDataObjectAbstract):
-    """A sphere of points defined by a *center* and a *radius*.
-    """
+    """A sphere of points defined by a *center* and a *radius*."""
 
     # found in the 'selection_data_containers.py'
     center: List[float] = Field(alias="Center")
@@ -61,8 +60,7 @@ class Sphere(ytDataObjectAbstract):
 
 
 class Region(ytDataObjectAbstract):
-    """A cartesian box data selection object
-    """
+    """A cartesian box data selection object"""
 
     center: List[float]
     left_edge: List[float]
