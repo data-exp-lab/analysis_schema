@@ -21,28 +21,28 @@ class DatasetFixture:
         self.all_data = {}
         self._instantiated_datasets = {}
 
-    def add_to_alldata(self, fn, DatasetName):
+    def add_to_alldata(self, fn: str, dataset_name: str):
         """
         A function to track all dataset.
         Stores dataset name, or if no name is provided,
         adds a number as the name.
         """
         self.fn = fn
-        if DatasetName is not None:
-            self.DatasetName = DatasetName
+        if dataset_name is not None:
+            self.dataset_name = dataset_name
         else:
-            self.DatasetName = len(self.all_data.values())
-        self.all_data[DatasetName] = fn
+            self.dataset_name = len(self.all_data.values())
+        self.all_data[dataset_name] = fn
 
     def _instantiate_data(
-        self, DatasetName,
+        self, dataset_name: str,
     ):
         """
         Instantiates a dataset and stores it in a separate dictionary.
         Returns an instantiated (loaded into memory) dataset.
         """
-        ds = yt.load(self.all_data[DatasetName])
-        self._instantiated_datasets[DatasetName] = ds
+        ds = yt.load(self.all_data[dataset_name])
+        self._instantiated_datasets[dataset_name] = ds
         return ds
 
 

@@ -7,6 +7,10 @@
           {
             "FileName": "../../Data/IsolatedGalaxy/galaxy0030/galaxy0030",
             "DatasetName": "IG"
+          },
+          {
+            "FileName": "../../Data/enzo_tiny_cosmology/DD0000/DD0000",
+            "DatasetName": "Enzo"
           }
         ],
         "Axis":"y",

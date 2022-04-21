@@ -37,14 +37,10 @@
         "comments": {
           "title": "Comments",
           "type": "string"
-        },
-        "instantiate": {
-          "title": "Instantiate",
-          "default": true,
-          "type": "boolean"
         }
       },
       "required": [
+        "DatasetName",
         "FileName"
       ]
     },
@@ -148,7 +144,7 @@
     },
     "DataSource3D": {
       "title": "DataSource3D",
-      "description": "Select a subset of the dataset to visualize from the overall dataset",
+      "description": "Select a subset of the dataset to visualize from the\noverall dataset",
       "type": "object",
       "properties": {
         "sphere": {
@@ -407,7 +403,7 @@
     },
     "Visualizations": {
       "title": "Visualizations",
-      "description": "This class organizes the attributes below so users can select the plot by name,\nand see the correct arguments as suggestions",
+      "description": "This class organizes the attributes below so users\ncan select the plot by name,\nand see the correct arguments as suggestions",
       "type": "object",
       "properties": {
         "SlicePlot": {

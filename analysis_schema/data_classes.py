@@ -14,24 +14,25 @@ class Dataset(ytBaseModel):
     Required fields: Filename, DatasetName
     """
 
-    DatasetName: Optional[str]
+    DatasetName: str
     fn: Path = Field(
         alias="FileName",
         description="A string containing the (path to the file and the) file name",
     )
     comments: Optional[str]
-    instantiate: bool = True
+   # instantiate: bool = True
     _yt_operation: str = "load"
 
     def _run(self):
-        if self.DatasetName in [dataset_fixture._instantiated_datasets.keys()]:
-            return dataset_fixture._instantiated_datasets[self.DatasetName]
-        else:
-            dataset_fixture.add_to_alldata(self.fn, self.DatasetName)
-            if self.instantiate is True:
+        if self.DatasetName is not None:
+            if self.DatasetName in [dataset_fixture._instantiated_datasets.keys()]:
+                return dataset_fixture._instantiated_datasets[self.DatasetName]
+            else:
+                dataset_fixture.add_to_alldata(self.fn, self.DatasetName)
                 ds = dataset_fixture._instantiate_data(self.DatasetName)
                 return ds
-
+        else:
+            raise AttributeError("Missing a dataset!")
 
 class FieldNames(ytParameter):
     """
@@ -121,26 +122,26 @@ class SlicePlot(ytBaseModel):
 
         return: a dataset, or a list of datasets
         """
-        super_list = []
+        figures = []
         if self.ds is None:
             for instantiated_keys in list(
                 dataset_fixture._instantiated_datasets.keys()
             ):
                 self.ds = dataset_fixture._instantiated_datasets[instantiated_keys]
                 # append output to a list to return
-                super_list.append(super()._run())
+                figures.append(super()._run())
                 # put each 'self' into the output
                 # when calling `._run()` there is no plotting
                 #  attribute, so it is not added to the output list
-            return super_list
+            return figures
         if self.ds is not None:
             if isinstance(self.ds, list):
                 for data in self.ds:
                     self.ds = data
-                    super_list.append(super()._run())
-                return super_list
-            super_list.append(super()._run())
-            return super_list
+                    figures.append(super()._run())
+                return figures
+            figures.append(super()._run())
+            return figures
 
 
 class ProjectionPlot(ytBaseModel):

@@ -166,19 +166,6 @@ class ytDataObjectAbstract(ytBaseModel):
                 con_value = con_value._run()
             the_args.append(con_value)
 
-        # if there is a dataset sitting in _instantiated_datasets, add it to
-        # the args and call as a keyword argument
-
-        # if len(Dataset_Fixture.all_data) > 0:
-        #     ds_keys = list(Dataset_Fixture.all_data.keys())
-        #     for key in ds_keys:
-        #         ds = yt.load(Dataset_Fixture.all_data[key])
-        #         return val(*the_args, ds=ds)
-        # else:
-        #     raise AttributeError(
-        #         "could not find a dataset: cannot build the data container"
-        #     )
-
         if len(dataset_fixture._instantiated_datasets) > 0:
             ds_keys = list(dataset_fixture._instantiated_datasets.keys())
             ds = dataset_fixture._instantiated_datasets[ds_keys[0]]
