@@ -18,4 +18,5 @@ recursive-include analysis_schema *.json
 recursive-include analysis_schema *.py
 recursive-include examples *.ipynb
 recursive-include examples *.py
+recursive-exclude * .ipynb_checkpoints/*
 exclude .editorconfig
