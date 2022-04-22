@@ -11,7 +11,7 @@ class Dataset(ytBaseModel):
     """
     The dataset to load. Filename (fn) must be a string.
 
-    Required fields: Filename, DatasetName
+    Required fields: Filename
     """
 
     DatasetName: str
