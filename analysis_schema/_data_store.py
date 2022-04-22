@@ -35,7 +35,8 @@ class DatasetFixture:
         self.all_data[dataset_name] = fn
 
     def _instantiate_data(
-        self, dataset_name: str,
+        self,
+        dataset_name: str,
     ):
         """
         Instantiates a dataset and stores it in a separate dictionary.

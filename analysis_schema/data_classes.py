@@ -20,7 +20,7 @@ class Dataset(ytBaseModel):
         description="A string containing the (path to the file and the) file name",
     )
     comments: Optional[str]
-   # instantiate: bool = True
+    # instantiate: bool = True
     _yt_operation: str = "load"
 
     def _run(self):
@@ -33,6 +33,7 @@ class Dataset(ytBaseModel):
                 return ds
         else:
             raise AttributeError("Missing a dataset!")
+
 
 class FieldNames(ytParameter):
     """

@@ -17,4 +17,5 @@ recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
 recursive-include analysis_schema *.json
 recursive-include analysis_schema *.py
 recursive-include examples *.ipynb
+recursive-include examples *.py
 exclude .editorconfig
