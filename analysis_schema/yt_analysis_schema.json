@@ -4,7 +4,11 @@
   "type": "object",
   "properties": {
     "Data": {
-      "$ref": "#/definitions/Dataset"
+      "title": "Data",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Dataset"
+      }
     },
     "Plot": {
       "title": "Plot",
@@ -17,18 +21,18 @@
   "definitions": {
     "Dataset": {
       "title": "Dataset",
-      "description": "The dataset to load. Filename (fn) must be a string.\n\nRequired fields: Filename",
+      "description": "The dataset to load. Filename (fn) must be a string.\n\nRequired fields: Filename, DatasetName",
       "type": "object",
       "properties": {
+        "DatasetName": {
+          "title": "Datasetname",
+          "type": "string"
+        },
         "FileName": {
           "title": "Filename",
           "description": "A string containing the (path to the file and the) file name",
           "type": "string",
           "format": "path"
-        },
-        "DatasetName": {
-          "title": "Datasetname",
-          "type": "string"
         },
         "comments": {
           "title": "Comments",
@@ -36,6 +40,7 @@
         }
       },
       "required": [
+        "DatasetName",
         "FileName"
       ]
     },
@@ -82,6 +87,8 @@
             },
             {
               "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
               "items": [
                 {
                   "type": "number"
@@ -137,7 +144,7 @@
     },
     "DataSource3D": {
       "title": "DataSource3D",
-      "description": "Select a subset of the dataset to visualize from the overall dataset",
+      "description": "Select a subset of the dataset to visualize from the\noverall dataset",
       "type": "object",
       "properties": {
         "sphere": {
@@ -154,7 +161,11 @@
       "type": "object",
       "properties": {
         "Dataset": {
-          "$ref": "#/definitions/Dataset"
+          "title": "Dataset",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Dataset"
+          }
         },
         "FieldNames": {
           "$ref": "#/definitions/FieldNames"
@@ -188,6 +199,8 @@
             },
             {
               "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
               "items": [
                 {
                   "type": "integer"
@@ -218,7 +231,11 @@
       "type": "object",
       "properties": {
         "Dataset": {
-          "$ref": "#/definitions/Dataset"
+          "title": "Dataset",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Dataset"
+          }
         },
         "FieldNames": {
           "$ref": "#/definitions/FieldNames"
@@ -386,7 +403,7 @@
     },
     "Visualizations": {
       "title": "Visualizations",
-      "description": "This class organizes the attributes below so users can select the plot by name,\nand see the correct arguments as suggestions",
+      "description": "This class organizes the attributes below so users\ncan select the plot by name,\nand see the correct arguments as suggestions",
       "type": "object",
       "properties": {
         "SlicePlot": {

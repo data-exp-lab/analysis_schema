@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
-from ._data_store import _instantiated_datasets
+from ._data_store import dataset_fixture
 
 
 def show_plots(schema, files):
@@ -15,7 +15,7 @@ def show_plots(schema, files):
         schema ([dict]): the analysis schema filled out with yt specificaions
     """
     result = schema._run()
-    print(result)
+    print("The result:", result)
     for output in range(len(tuple(result))):
         print("each output:", result[output])
         if files == "Jupter":
@@ -166,11 +166,9 @@ class ytDataObjectAbstract(ytBaseModel):
                 con_value = con_value._run()
             the_args.append(con_value)
 
-        # if there is a dataset sitting in _instantiated_datasets, add it to
-        # the args and call as a keyword argument
-        if len(_instantiated_datasets) > 0:
-            ds_keys = list(_instantiated_datasets.keys())
-            ds = _instantiated_datasets[ds_keys[0]]
+        if len(dataset_fixture._instantiated_datasets) > 0:
+            ds_keys = list(dataset_fixture._instantiated_datasets.keys())
+            ds = dataset_fixture._instantiated_datasets[ds_keys[0]]
             return val(*the_args, ds=ds)
         else:
             raise AttributeError(
