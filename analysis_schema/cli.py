@@ -33,7 +33,7 @@ def main():
 def generate(model_type, schema_object, output):
     """generate a schema file"""
 
-    if hasattr(analysis_schema, model_type) is False:
+    if hasattr(analysis_schema.schema_model, model_type) is False:
         raise ValueError(f"{model_type} is not a valid analysis_schema model")
 
     # instantiate an empty model

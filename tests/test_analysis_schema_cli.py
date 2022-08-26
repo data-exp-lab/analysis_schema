@@ -8,8 +8,7 @@ import os
 
 from click.testing import CliRunner
 
-from analysis_schema import cli, ytModel
-from analysis_schema.schema_model import _empty_model_registry, _model_types
+from analysis_schema import cli, schema_model
 
 
 def test_command_line_interface():
@@ -41,7 +40,7 @@ def test_schema_generation(tmpdir):
     # check schema-string to screen
     schema_result = runner.invoke(cli.main, ["generate"])
     assert schema_result.exit_code == 0
-    mod = ytModel()
+    mod = schema_model.ytModel()
     s = mod.schema_json(indent=2)
     assert s in schema_result.output
 
@@ -58,8 +57,8 @@ def test_schema_generation(tmpdir):
     assert all([s in schema_from_file.keys() for s in schema.keys()])
 
     # check that we can generate a schema for a subset of the full schema
-    for mtype in _model_types:
-        cls, kwargs = _empty_model_registry[mtype]
+    for mtype in schema_model._model_types:
+        cls, kwargs = schema_model._empty_model_registry[mtype]
         mod = cls(**kwargs)
         base_args = ["generate", "--model_type", mtype]
         for obj in list(kwargs.keys()):
@@ -88,11 +87,11 @@ def test_schema_availability():
     # test the model type list generation
     schema_result = runner.invoke(cli.main, ["list-model-types"])
     assert schema_result.exit_code == 0
-    assert all([s in schema_result.output for s in _model_types])
+    assert all([s in schema_result.output for s in schema_model._model_types])
 
     # or each model type, check the list of schema_objects
-    for mtype in _model_types:
-        _, kwargs = _empty_model_registry["ytModel"]
+    for mtype in schema_model._model_types:
+        _, kwargs = schema_model._empty_model_registry["ytModel"]
         run_args = ["list-objects", "--model_type", mtype]
         schema_result = runner.invoke(cli.main, run_args)
         assert schema_result.exit_code == 0

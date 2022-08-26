@@ -21,7 +21,8 @@
         "WeightFieldName": {
           "field": "temperature",
           "field_type": "gas"
-        }
+        },
+        "output_type": "file"
       }
     }
   ]

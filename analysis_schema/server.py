@@ -5,6 +5,8 @@ from urllib.parse import parse_qs
 
 import pkg_resources
 
+from analysis_schema._workflows import MainWorkflow
+
 from .schema_model import schema
 
 # For static serving:
@@ -144,7 +146,7 @@ def run_a_schema(json_payload_str):
 
     # parse and validate
     try:
-        valid_json = schema.parse_raw(json_payload_str)
+        wkflow = MainWorkflow(json_payload_str)
     except Exception as ex:
         return "".join(
             traceback.format_exception(etype=type(ex), value=ex, tb=ex.__traceback__)
@@ -152,7 +154,7 @@ def run_a_schema(json_payload_str):
 
     # run it
     try:
-        results = valid_json._run()
+        results = wkflow.run_all()
     except Exception as ex:
         return "".join(
             traceback.format_exception(etype=type(ex), value=ex, tb=ex.__traceback__)

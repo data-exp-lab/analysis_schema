@@ -21,7 +21,7 @@
   "definitions": {
     "Dataset": {
       "title": "Dataset",
-      "description": "The dataset to load. Filename (fn) must be a string.\n\nRequired fields: Filename, DatasetName",
+      "description": "The dataset to load. Filename (fn) must be a string.\n\nRequired fields: Filename",
       "type": "object",
       "properties": {
         "DatasetName": {
@@ -43,6 +43,15 @@
         "DatasetName",
         "FileName"
       ]
+    },
+    "ytVisType": {
+      "title": "ytVisType",
+      "description": "Select visualization output type.",
+      "enum": [
+        "file",
+        "html"
+      ],
+      "type": "string"
     },
     "FieldNames": {
       "title": "FieldNames",
@@ -69,7 +78,7 @@
     },
     "Sphere": {
       "title": "Sphere",
-      "description": "A sphere of points defined by a *center* and a *radius*.\n    ",
+      "description": "A sphere of points defined by a *center* and a *radius*.",
       "type": "object",
       "properties": {
         "Center": {
@@ -111,7 +120,7 @@
     },
     "Region": {
       "title": "Region",
-      "description": "A cartesian box data selection object\n    ",
+      "description": "A cartesian box data selection object",
       "type": "object",
       "properties": {
         "center": {
@@ -160,6 +169,17 @@
       "description": "Axis-aligned slice plot.",
       "type": "object",
       "properties": {
+        "output_type": {
+          "$ref": "#/definitions/ytVisType"
+        },
+        "output_file": {
+          "title": "Output File",
+          "type": "string"
+        },
+        "output_dir": {
+          "title": "Output Dir",
+          "type": "string"
+        },
         "Dataset": {
           "title": "Dataset",
           "type": "array",
@@ -221,6 +241,7 @@
         }
       },
       "required": [
+        "output_type",
         "FieldNames",
         "Axis"
       ]
@@ -230,6 +251,17 @@
       "description": "Axis-aligned projection plot.",
       "type": "object",
       "properties": {
+        "output_type": {
+          "$ref": "#/definitions/ytVisType"
+        },
+        "output_file": {
+          "title": "Output File",
+          "type": "string"
+        },
+        "output_dir": {
+          "title": "Output Dir",
+          "type": "string"
+        },
         "Dataset": {
           "title": "Dataset",
           "type": "array",
@@ -317,6 +349,7 @@
         }
       },
       "required": [
+        "output_type",
         "FieldNames",
         "Axis"
       ]
@@ -326,6 +359,17 @@
       "description": "A yt phase plot",
       "type": "object",
       "properties": {
+        "output_type": {
+          "$ref": "#/definitions/ytVisType"
+        },
+        "output_file": {
+          "title": "Output File",
+          "type": "string"
+        },
+        "output_dir": {
+          "title": "Output Dir",
+          "type": "string"
+        },
         "Dataset": {
           "$ref": "#/definitions/Dataset"
         },
@@ -396,6 +440,7 @@
         }
       },
       "required": [
+        "output_type",
         "xField",
         "yField",
         "zField(s)"

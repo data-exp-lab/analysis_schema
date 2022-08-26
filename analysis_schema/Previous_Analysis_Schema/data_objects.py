@@ -1,14 +1,14 @@
 import enum
 import typing
 
-from pydantic import BaseModel, Schema, create_model
+from pydantic import BaseModel, create_model
 
 from .fields import FieldName, FieldParameter
-from .quantities import Path, UnitfulArray, UnitfulCoordinate, UnitfulValue, Vector
+from .quantities import UnitfulCoordinate, UnitfulValue
 
 
 class FlatDefinitionsEnum(str, enum.Enum):
-    all_data = "all_data"
+    all_data = "available_datasets"
 
 
 class BooleanOpEnum(str, enum.Enum):

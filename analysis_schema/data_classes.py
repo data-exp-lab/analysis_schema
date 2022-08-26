@@ -1,10 +1,10 @@
+from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
-from ._data_store import dataset_fixture
-from .base_model import ytBaseModel, ytDataObjectAbstract, ytParameter
+from analysis_schema.base_model import ytBaseModel
 
 
 class Dataset(ytBaseModel):
@@ -20,22 +20,10 @@ class Dataset(ytBaseModel):
         description="A string containing the (path to the file and the) file name",
     )
     comments: Optional[str]
-    # instantiate: bool = True
     _yt_operation: str = "load"
 
-    def _run(self):
-        if self.DatasetName is not None:
-            if self.DatasetName in [dataset_fixture._instantiated_datasets.keys()]:
-                return dataset_fixture._instantiated_datasets[self.DatasetName]
-            else:
-                dataset_fixture.add_to_alldata(self.fn, self.DatasetName)
-                ds = dataset_fixture._instantiate_data(self.DatasetName)
-                return ds
-        else:
-            raise AttributeError("Missing a dataset!")
 
-
-class FieldNames(ytParameter):
+class FieldNames(ytBaseModel):
     """
     Specify a field name and field type from the dataset
     """
@@ -49,11 +37,8 @@ class FieldNames(ytParameter):
     _unit: Optional[str]
     comments: Optional[str]
 
-    def _run(self):
-        return (self.field_type, self.field)
 
-
-class Sphere(ytDataObjectAbstract):
+class Sphere(ytBaseModel):
     """A sphere of points defined by a *center* and a *radius*."""
 
     # found in the 'selection_data_containers.py'
@@ -63,7 +48,7 @@ class Sphere(ytDataObjectAbstract):
     _yt_operation: str = "sphere"
 
 
-class Region(ytDataObjectAbstract):
+class Region(ytBaseModel):
     """A cartesian box data selection object"""
 
     center: List[float]
@@ -72,7 +57,7 @@ class Region(ytDataObjectAbstract):
     _yt_operation: str = "region"
 
 
-class Slice(ytDataObjectAbstract):
+class Slice(ytBaseModel):
     """An axis-aligned 2-d slice data selection object"""
 
     axis: Union[int, str]
@@ -88,13 +73,21 @@ class DataSource3D(ytBaseModel):
     sphere: Optional[Sphere]
     region: Optional[Region]
 
-    def _run(self):
-        for container in [self.sphere, self.region]:
-            if container:
-                return container._run()
+
+class ytVisType(str, Enum):
+    """Select visualization output type."""
+
+    file = "file"
+    html = "html"
 
 
-class SlicePlot(ytBaseModel):
+class ytVisualization(ytBaseModel):
+    output_type: ytVisType
+    output_file: Optional[str] = None
+    output_dir: Optional[str] = None
+
+
+class SlicePlot(ytVisualization):
     """Axis-aligned slice plot."""
 
     ds: Optional[List[Dataset]] = Field(alias="Dataset")
@@ -109,41 +102,8 @@ class SlicePlot(ytBaseModel):
         "data_source",
     ]
 
-    def _run(self):
-        """
-        This _run function checks if this plot has a value
-        for the `ds`
-        arguement (or attribute).
-        If it does not, then it looks for data in the
-        `DatasetFixture` class.
-        If there is more than one instantiated dataset, a plot
-         will be created for each dataset.
 
-        return: a dataset, or a list of datasets
-        """
-        figures = []
-        if self.ds is None:
-            for instantiated_keys in list(
-                dataset_fixture._instantiated_datasets.keys()
-            ):
-                self.ds = dataset_fixture._instantiated_datasets[instantiated_keys]
-                # append output to a list to return
-                figures.append(super()._run())
-                # put each 'self' into the output
-                # when calling `._run()` there is no plotting
-                #  attribute, so it is not added to the output list
-            return figures
-        if self.ds is not None:
-            if isinstance(self.ds, list):
-                for data in self.ds:
-                    self.ds = data
-                    figures.append(super()._run())
-                return figures
-            figures.append(super()._run())
-            return figures
-
-
-class ProjectionPlot(ytBaseModel):
+class ProjectionPlot(ytVisualization):
     """Axis-aligned projection plot."""
 
     ds: Optional[List[Dataset]] = Field(alias="Dataset")
@@ -173,38 +133,6 @@ class ProjectionPlot(ytBaseModel):
     Comments: Optional[str]
     _yt_operation: str = "ProjectionPlot"
 
-    def _run(self):
-        """
-        This _run function checks if this plot has a value
-        for the `ds` arguement (or attribute).
-        If it does not, then it looks for data in the
-        `DatasetFixture` class.
-        If there is more than one instantiated dataset,
-        a plot will be created for each dataset.
-
-        return: a dataset, or a list of datasets
-        """
-        super_list = []
-        if self.ds is None:
-            for instantiated_keys in list(
-                dataset_fixture._instantiated_datasets.keys()
-            ):
-                self.ds = dataset_fixture._instantiated_datasets[instantiated_keys]
-                # append output to a list to return
-                super_list.append(super()._run())
-                # put each 'self' into the output
-                # when calling `._run()` there is no plotting
-                # attribute, so it is not added to the output list
-            return super_list
-        if self.ds is not None:
-            if isinstance(self.ds, list):
-                for data in self.ds:
-                    self.ds = data
-                    super_list.append(super()._run())
-                return super_list
-            super_list.append(super()._run())
-            return super_list
-
     @property
     def axis(self):
         # yt <= 4.1.0 uses axis instead of normal, this aliasing allows the
@@ -212,7 +140,7 @@ class ProjectionPlot(ytBaseModel):
         return self.normal
 
 
-class PhasePlot(ytBaseModel):
+class PhasePlot(ytVisualization):
     """A yt phase plot"""
 
     data_source: Optional[Dataset] = Field(alias="Dataset")
@@ -232,30 +160,14 @@ class PhasePlot(ytBaseModel):
     Comments: Optional[str]
     _yt_operation: str = "PhasePlot"
 
-    def _run(self):
-        super_list = []
-        if self.ds is None:
-            # self.ds = list(DatasetFixture._instantiated_datasets.values())[0]
-            for instantiated_keys in list(
-                dataset_fixture._instantiated_datasets.keys()
-            ):
-                self.ds = dataset_fixture._instantiated_datasets[instantiated_keys]
-                super_list.append(super()._run())
-                # put each 'self' into the output
-                # when calling `._run()` there is no plotting
-                # attribute, so it is not added to the output list
-        return super_list
-        # return super()._run()
 
-
-class Visualizations(BaseModel):
+class Visualizations(ytBaseModel):
     """
     This class organizes the attributes below so users
     can select the plot by name,
     and see the correct arguments as suggestions
     """
 
-    # use pydantic basemodel
     SlicePlot: Optional[SlicePlot]
     ProjectionPlot: Optional[ProjectionPlot]
     PhasePlot: Optional[PhasePlot]

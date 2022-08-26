@@ -7,4 +7,5 @@ __email__ = "matthewturk@gmail.com"
 __version__ = "0.1.0"
 
 from . import server  # noqa F401
-from .schema_model import schema, ytModel  # noqa F401
+
+# from .schema_model import schema, ytModel  # noqa F401
