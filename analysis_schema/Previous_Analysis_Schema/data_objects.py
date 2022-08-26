@@ -8,7 +8,7 @@ from .quantities import UnitfulCoordinate, UnitfulValue
 
 
 class FlatDefinitionsEnum(str, enum.Enum):
-    all_data = "available_datasets"
+    all_data = "all_data"
 
 
 class BooleanOpEnum(str, enum.Enum):
