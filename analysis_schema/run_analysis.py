@@ -24,13 +24,7 @@ if __name__ == "__main__":
     # add the JSON file name agrument
     parser.add_argument("JSONFile", help="Call the JSON with the Schema to run")
 
-    parser.add_argument(
-        "ImageFormat",
-        nargs="*",
-        help="Enter 'Jupyter' to run .show() or a filename to run .save()",
-    )
-
     args = parser.parse_args()
 
     # run the analysis
-    load_and_run(args.JSONFile, args.ImageFormat)
+    load_and_run(args.JSONFile)

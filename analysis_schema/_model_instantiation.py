@@ -182,10 +182,6 @@ class RunnerRegistry:
 
 def _is_yt_schema_instance(obj):
     return isinstance(obj, base_model.ytBaseModel)
-    # is_model = isinstance(obj, base_model.ytBaseModel)
-    # is_param = isinstance(obj, base_model.ytParameter)
-    # is_viz = isinstance(obj, data_classes.Visualizations)
-    # return is_param or is_model or is_viz
 
 
 yt_registry = RunnerRegistry()
