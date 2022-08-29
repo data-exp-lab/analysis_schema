@@ -68,7 +68,7 @@ def test_execution_with_fake_ds(tmpdir):
     # get a new workflow with the updated dictionary
     wkflow = MainWorkflow(newdict)
 
-    # replace the data store with one with in-memory datasets
+    # replace the data store datasets with in-memory datasets
     new_store = DataStore()
     flist = [("gas", "density"), ("gas", "temperature")]
     ulist = ["g/cm**3", "K"]
