@@ -20,7 +20,6 @@ class Dataset(ytBaseModel):
         description="A string containing the (path to the file and the) file name",
     )
     comments: Optional[str]
-    _yt_operation: str = "load"
 
 
 class FieldNames(ytBaseModel):

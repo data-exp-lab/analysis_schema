@@ -1,3 +1,5 @@
+from typing import List, Optional
+
 from pydantic import BaseModel
 
 
@@ -21,4 +23,6 @@ def show_plots(schema, files):
 
 
 class ytBaseModel(BaseModel):
-    pass
+    _arg_mapping: dict = {}  # mapping from internal yt name to schema name
+    _yt_operation: Optional[str] = None  # the name of a yt operation
+    _known_kwargs: Optional[List[str]] = None  # a list of known keyword args
