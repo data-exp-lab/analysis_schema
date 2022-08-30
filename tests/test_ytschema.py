@@ -1,17 +1,7 @@
 # isort: skip_file
 import json
 
-import yt
-from yt.testing import fake_amr_ds
-
-import analysis_schema
-from analysis_schema._data_store import dataset_fixture
-from analysis_schema.base_model import (
-    _check_run,
-    ytBaseModel,
-    ytDataObjectAbstract,
-    ytParameter,
-)
+from analysis_schema.schema_model import ytModel
 
 ds_only = r"""
 {
@@ -26,51 +16,41 @@ ds_only = r"""
 """
 
 
-viz_only_prj = r"""
+more_complete_example = r"""
 {
-    "$schema": "./yt_analysis_schema.json",
-    "Plot": [
-      {
-        "ProjectionPlot": {
-          "Axis":"y",
-          "FieldNames": {
-            "field": "temperature",
-            "field_type": "gas"
+  "$schema": "../analysis_schema/yt_analysis_schema.json",
+  "Data": [
+    {
+        "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030",
+        "DatasetName": "IG_Testing"
+    }
+   ],
+  "Plot": [
+    {
+      "ProjectionPlot": {
+        "Dataset": [
+          {
+            "FileName": "great_filename",
+            "DatasetName": "nice"
           },
-          "DataSource": {
-            "region": {
-              "center": [0.25, 0.25, 0.25],
-              "left_edge": [0.0, 0.0, 0.0],
-              "right_edge": [0.5, 0.5, 0.5]
-            }
+          {
+            "FileName": "and_another",
+            "DatasetName": "another"
           }
-        }
+        ],
+        "Axis":"y",
+        "FieldNames": {
+          "field": "density",
+          "field_type": "gas"
+        },
+        "WeightFieldName": {
+          "field": "temperature",
+          "field_type": "gas"
+        },
+        "output_type": "file"
       }
-    ]
-}
-"""
-
-
-viz_only_slc = r"""
-{
-    "$schema": "./yt_analysis_schema.json",
-    "Plot": [
-      {
-        "SlicePlot": {
-          "Axis":"y",
-          "FieldNames": {
-            "field": "temperature",
-            "field_type": "gas"
-          },
-          "DataSource": {
-            "sphere": {
-              "Center": [0.25, 0.25, 0.25],
-              "Radius": 0.25
-            }
-          }
-        }
-      }
-    ]
+    }
+  ]
 }
 """
 
@@ -78,34 +58,11 @@ viz_only_slc = r"""
 def test_validation():
 
     # only testing the validation here, not instantiating yt objects
-    model = analysis_schema.ytModel.parse_raw(ds_only)
+    model = ytModel.parse_raw(ds_only)
     jdict = json.loads(ds_only)
     assert str(model.Data[0].fn) == jdict["Data"][0]["FileName"]
 
-
-def test_execution():
-
-    # we can inject an instantiated dataset here! the methods that require a
-    # ds will check the dataset store if ds is None and use this ds:
-    test_ds = fake_amr_ds(fields=[("gas", "temperature")], units=["K"])
-    dataset_fixture._instantiated_datasets["_test_ds"] = test_ds
-
-    # run the slice plot
-    model = analysis_schema.ytModel.parse_raw(viz_only_slc)
-    m = model._run()
-    print(m)
-    assert isinstance(m[0], yt.AxisAlignedSlicePlot)
-
-    # run the projection plot
-    model = analysis_schema.ytModel.parse_raw(viz_only_prj)
-    m = model._run()
-    print(m)
-    assert isinstance(m[0], yt.ProjectionPlot)
-
-
-def test_base_model():
-    # some basic tests of base_model
-    for cls in [ytBaseModel, ytDataObjectAbstract, ytParameter]:
-        c = cls()
-        assert _check_run(c)
-    assert _check_run("someothertype") is False
+    model = ytModel.parse_raw(more_complete_example)
+    jdict = json.loads(ds_only)
+    assert str(model.Data[0].fn) == jdict["Data"][0]["FileName"]
+    assert str(model.Plot[0].ProjectionPlot.normal) == "y"

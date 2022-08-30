@@ -1,7 +1,7 @@
 import enum
 from typing import Dict, List, Tuple, Union
 
-from pydantic import BaseModel, Field, Schema, create_model
+from pydantic import BaseModel, Field
 
 from .data_objects import DataSource
 from .fields import FieldName

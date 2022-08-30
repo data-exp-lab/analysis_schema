@@ -1,11 +1,9 @@
 import argparse
-import json
 
-from .base_model import show_plots
-from .schema_model import ytModel
+from analysis_schema._workflows import MainWorkflow
 
 
-def load_and_run(json_file, files):
+def load_and_run(json_file):
     """
     A function to load the user JSON and load it into the analysis schema model, and
     the run that model to produce an output.
@@ -13,20 +11,9 @@ def load_and_run(json_file, files):
     Args:
         json_file (json file): the JSON users edit
     """
-    # open the file where the user is entering values
-    live_json = open(json_file)
-    # assign to a variable
-    live_schema = json.load(live_json)
-    live_json.close()
-    # remove schema line
-    live_schema.pop("$schema")
-    # create analysis schema model
-    if "Data" in list(live_schema.keys()):
-        analysis_model = ytModel(Data=live_schema["Data"], Plot=live_schema["Plot"])
-        print(show_plots(analysis_model, files))
-    else:
-        analysis_model = ytModel(Plot=live_schema["Plot"])
-        print(show_plots(analysis_model, files))
+
+    wk = MainWorkflow(json_file)
+    return wk.run_all()
 
 
 if __name__ == "__main__":
@@ -37,13 +24,7 @@ if __name__ == "__main__":
     # add the JSON file name agrument
     parser.add_argument("JSONFile", help="Call the JSON with the Schema to run")
 
-    parser.add_argument(
-        "ImageFormat",
-        nargs="*",
-        help="Enter 'Jupyter' to run .show() or a filename to run .save()",
-    )
-
     args = parser.parse_args()
 
     # run the analysis
-    load_and_run(args.JSONFile, args.ImageFormat)
+    load_and_run(args.JSONFile)
