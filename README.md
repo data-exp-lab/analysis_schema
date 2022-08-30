@@ -14,7 +14,7 @@ It consists of three pieces:
 
 Use a JSON file to describe a basic plot. The file has to reference the structured schema file, which is also called the analysis schema. The schema validates the workflow and ensures the correct data types are used.
 
-Let's call this `example.py` and fill it out:
+Let's call this `example.json` and fill it out:
 
 ```JSON
 
@@ -50,6 +50,8 @@ python3 run_analysis.py example.py
 After running that line of code in the command line, image files of a projection plot or other visauls are returned.
 
 Documentation is coming soon to: https://analysis-schema.readthedocs.io.
+
+More examples can be seen with this virtual poster [describing Analysis Schema use cases](https://samwalkow.github.io/2021-scipy-poster-ScientificWorkflowDescription/).
 
 ## Dependencies
 
