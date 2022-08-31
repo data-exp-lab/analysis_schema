@@ -51,7 +51,7 @@ After running that line of code in the command line, image files of a projection
 
 Documentation is coming soon to: https://analysis-schema.readthedocs.io.
 
-More examples can be seen with this virtual poster [describing Analysis Schema use cases](https://samwalkow.github.io/2021-scipy-poster-ScientificWorkflowDescription/).
+More examples can be seen with this virtual poster [describing Analysis Schema use cases](https://samwalkow.github.io/2021-scipy-poster-ScientificWorkflowDescription/) and in the examples folder above. 
 
 ## Dependencies
 

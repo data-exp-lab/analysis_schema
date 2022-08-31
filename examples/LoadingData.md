@@ -1,5 +1,5 @@
 
-# Loading Data in the Analysis Schema
+# Loading Data
 
 The most basic task you can do in the analysis schema is load your data. This is done by calling the keyword `Data` and filling out the `FileName` and `DatasetName` attributes. The `FileName`  is the file or file path for your data and the `DatasetName` is the name (in the form of a string) for your data, similar to a variable name. 
 
