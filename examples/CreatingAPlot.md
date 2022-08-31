@@ -1,8 +1,10 @@
 # Creating a Plot
 
-You can quickly create a plot with minimal description. The output is return as an image file. 
+You can quickly create a plot with minimal description. The output is returned as an image file. This is done by calling the `Plot` keyword, which accecpts a list of plots. Once you specify a plot type, you can fill out the attributes, some of which are required and some of which are optional. Attributes can be filled out in any order. 
 
 ## SlicePlot
+
+This is a simple Sliceplot, that is plotting the density field along the x axis. 
 
 ```json
 
