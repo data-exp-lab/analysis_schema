@@ -1,0 +1,34 @@
+{
+    "$schema": "../analysis_schema/yt_analysis_schema.json",
+    "Plot": [
+      {
+        "SlicePlot": {
+          "Dataset": [
+            {
+              "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030",
+              "DatasetName": "IG"
+            }
+          ],
+          "Axis":"y",
+          "Fields":[{"field": "density", "field_type": "gas"}, 
+                    {"field": "temperature", "field_type": "gas"}],
+          "output_type": "file"
+        }
+      },
+      {
+        "ProjectionPlot": {
+            "Dataset": [
+              {
+                "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030",
+                "DatasetName": "IG"
+              }
+            ],
+            "Axis":"y",
+            "Fields":[{"field": "density", "field_type": "gas"}, 
+                      {"field": "temperature", "field_type": "gas"}],
+            "output_type": "file"
+          } 
+      }
+    ]
+}
+  

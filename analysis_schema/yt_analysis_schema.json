@@ -53,9 +53,9 @@
       ],
       "type": "string"
     },
-    "FieldNames": {
-      "title": "FieldNames",
-      "description": "Specify a field name and field type from the dataset",
+    "ytField": {
+      "title": "ytField",
+      "description": "A field name and field type from the dataset",
       "type": "object",
       "properties": {
         "field": {
@@ -96,8 +96,6 @@
             },
             {
               "type": "array",
-              "minItems": 2,
-              "maxItems": 2,
               "items": [
                 {
                   "type": "number"
@@ -187,8 +185,19 @@
             "$ref": "#/definitions/Dataset"
           }
         },
-        "FieldNames": {
-          "$ref": "#/definitions/FieldNames"
+        "Fields": {
+          "title": "Fields",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ytField"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ytField"
+              }
+            }
+          ]
         },
         "Axis": {
           "title": "Axis",
@@ -219,8 +228,6 @@
             },
             {
               "type": "array",
-              "minItems": 2,
-              "maxItems": 2,
               "items": [
                 {
                   "type": "integer"
@@ -242,7 +249,7 @@
       },
       "required": [
         "output_type",
-        "FieldNames",
+        "Fields",
         "Axis"
       ]
     },
@@ -269,8 +276,19 @@
             "$ref": "#/definitions/Dataset"
           }
         },
-        "FieldNames": {
-          "$ref": "#/definitions/FieldNames"
+        "Fields": {
+          "title": "Fields",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ytField"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ytField"
+              }
+            }
+          ]
         },
         "Axis": {
           "title": "Axis",
@@ -304,7 +322,7 @@
           "type": "string"
         },
         "WeightFieldName": {
-          "$ref": "#/definitions/FieldNames"
+          "$ref": "#/definitions/ytField"
         },
         "MaxLevel": {
           "title": "Maxlevel",
@@ -350,7 +368,7 @@
       },
       "required": [
         "output_type",
-        "FieldNames",
+        "Fields",
         "Axis"
       ]
     },
@@ -374,27 +392,27 @@
           "$ref": "#/definitions/Dataset"
         },
         "xField": {
-          "$ref": "#/definitions/FieldNames"
+          "$ref": "#/definitions/ytField"
         },
         "yField": {
-          "$ref": "#/definitions/FieldNames"
+          "$ref": "#/definitions/ytField"
         },
         "zField(s)": {
           "title": "Zfield(S)",
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldNames"
+              "$ref": "#/definitions/ytField"
             },
             {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/FieldNames"
+                "$ref": "#/definitions/ytField"
               }
             }
           ]
         },
         "WegihtFieldName": {
-          "$ref": "#/definitions/FieldNames"
+          "$ref": "#/definitions/ytField"
         },
         "xBins": {
           "title": "Xbins",
