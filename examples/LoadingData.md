@@ -76,3 +76,39 @@ You can declare your dataset at the top of the document, or you can describe oth
 ```
 
 Both the `Plot` and `Data` keywords support lists, so you can specify multiple plots and datasets and the analysis schema will iterate through each specification and plot each dataset you specify. 
+
+## Subsetting Data
+
+In the examples above an entire dataset is being visualized, but you can also access and plot subsections of data. Below is another `SlicePlot` but under the `DataSource` keyword, the data is subsetted using a `sphere` data type. This way only the data that is in that section is plotted. 
+
+```json
+
+{
+    "$schema": "../analysis_schema/yt_analysis_schema.json",
+    "Plot": [
+        {
+            "SlicePlot": {
+                "Dataset": [
+                    {
+                        "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030",
+                        "DatasetName": "IG"
+                    }
+                ],
+                "Axis": "x",
+                "FieldNames": {
+                    "field": "pressure",
+                    "field_type": "gas"
+                },
+                "DataSource": {
+                    "sphere": {
+                        "Center": [0.5, 0.5, 0.5],
+                        "Radius": 0.1
+                    }
+                },
+                "output_type": "file"
+            }
+        }
+    ]
+  }
+
+```
