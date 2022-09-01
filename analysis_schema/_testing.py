@@ -24,8 +24,8 @@ def force_in_mem_dstore(wkflow, field_list: list = None, units_list: list = None
     # replace the data store datasets with in-memory datasets
     new_store = DataStore()
     if field_list is None:
-        field_list = [("gas", "density"), ("gas", "temperature")]
-        units_list = ["g/cm**3", "K"]
+        field_list = [("gas", "density"), ("gas", "temperature"), ("gas", "mass")]
+        units_list = ["g/cm**3", "K", "kg"]
     for dsname, dscon in wkflow.data_store.available_datasets.items():
         ds_ = fake_amr_ds(fields=field_list, units=units_list)
         new_store.store(dscon.filename, dataset_name=dsname, in_memory_ds=ds_)

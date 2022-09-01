@@ -1,0 +1,23 @@
+{
+    "$schema": "../analysis_schema/yt_analysis_schema.json",
+    "Plot": [
+      {
+        "PhasePlot": {
+            "Dataset": [
+              {
+                "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030",
+                "DatasetName": "IG"
+              }
+            ],
+            "xField": {
+                "field": "density", "field_type": "gas"
+            },
+            "yField": {
+                "field_type": "gas", "field": "temperature"
+            },
+            "zFields": {"field": "mass", "field_type": "gas"},
+            "output_type": "file"
+          }
+      }
+    ]
+}
