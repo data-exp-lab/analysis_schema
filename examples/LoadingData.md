@@ -5,6 +5,8 @@ The most basic task you can do in the analysis schema is load your data. This is
 
 The `Data` keyword is a list data type, so you can specify multiple datasets within a workflow. 
 
+Note the Analysis Schema returns image files, so nothing will be returned when just a dataset is specified even though that is valid workflow (mean you won't get a validation error). 
+
 ## Loading a Single Dataset
 
 A single dataset:
@@ -76,6 +78,8 @@ You can declare your dataset at the top of the document, or you can describe oth
 ```
 
 Both the `Plot` and `Data` keywords support lists, so you can specify multiple plots and datasets and the analysis schema will iterate through each specification and plot each dataset you specify. Note that if supplying a list of datasets, any fields specified must be present in all datasets.
+
+Because a plot is specified, an image file of the `SlicePlot` will be returned.
 
 ## Subsetting Data
 

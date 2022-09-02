@@ -10,6 +10,10 @@ It consists of three pieces:
 2. An engine that connects input from the configuration file to the underlying code.
 3. The configuration file. 
 
+## Installation
+
+TODO
+
 ## Example
 
 Use a JSON file to describe a basic plot. The file has to reference the structured schema file, which is also called the analysis schema. The schema validates the workflow and ensures the correct data types are used.
