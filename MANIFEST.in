@@ -8,9 +8,11 @@ include analysis_schema/index.html
 include *.yaml
 include Makefile
 include tox.ini
+include *.md
 
 recursive-include tests *
 recursive-include tests *.json
+recursive-include examples *.md
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
@@ -21,3 +23,5 @@ recursive-include examples *.ipynb
 recursive-include examples *.py
 recursive-exclude * .ipynb_checkpoints/*
 exclude .editorconfig
+
+
