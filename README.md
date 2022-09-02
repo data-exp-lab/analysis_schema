@@ -19,7 +19,7 @@ Let's call this `example.json` and fill it out:
 ```JSON
 
 {
-    "$schema": "yt_analysis_scheam.json",
+    "$schema": "yt_analysis_schema.json",
     "Plot": [
         {
             "ProjectionPlot": {
