@@ -6,7 +6,7 @@ The Analysis Schema creates a workflow system that processes a configuration fil
 
 It consists of three pieces:
 
-1. A structured schema that guides the workflow. See the `yt_analysis_schema.json`. 
+1. A structured schema that guides the workflow. See [`yt_analysis_schema.json`](yt_analysis_schema.json). 
 2. An engine that connects input from the configuration file to the underlying code.
 3. The configuration file. 
 
