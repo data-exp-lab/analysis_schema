@@ -96,3 +96,21 @@ def test_schema_availability():
         schema_result = runner.invoke(cli.main, run_args)
         assert schema_result.exit_code == 0
         assert all([s in schema_result.output for s in kwargs.keys()])
+
+
+def test_run_analysis(tmpdir):
+
+    input_fi = tmpdir / "input.json"
+    # this will only instantiate a data_store, not actually load data, so
+    # it will run even if the data is not available.
+    test_json = {
+        "Data": [
+            {"FileName": "IsolatedGalaxy/galaxy0030/galaxy0030", "DatasetName": "IG"}
+        ]
+    }
+    with open(input_fi, "w") as input_file:
+        input_file.write(json.dumps(test_json))
+
+    runner = CliRunner()
+    schema_result = runner.invoke(cli.main, ["run-analysis", str(input_fi)])
+    assert schema_result.exit_code == 0
