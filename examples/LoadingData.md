@@ -75,7 +75,7 @@ You can declare your dataset at the top of the document, or you can describe oth
 
 ```
 
-Both the `Plot` and `Data` keywords support lists, so you can specify multiple plots and datasets and the analysis schema will iterate through each specification and plot each dataset you specify. 
+Both the `Plot` and `Data` keywords support lists, so you can specify multiple plots and datasets and the analysis schema will iterate through each specification and plot each dataset you specify. Note that if supplying a list of datasets, any fields specified must be present in all datasets.
 
 ## Subsetting Data
 
