@@ -2,13 +2,13 @@
 
 A declarative schema and workflow framework for analysis and visualization of physical systems.
 
-The Analysis Schema creates a workflow system that processes a configuration file where users specify _what_ they would like the code to do, instead of _how_ to do it to complete analysis and visualization tasks. It supports high level analysis description that can be saved, shared, and reused in JSON document. 
+The Analysis Schema creates a workflow system that processes a configuration file where users specify _what_ they would like the code to do, instead of _how_ to do it to complete analysis and visualization tasks. It supports high level analysis description that can be saved, shared, and reused in JSON document.
 
 It consists of three pieces:
 
-1. A structured schema that guides the workflow. See [`yt_analysis_schema.json`](yt_analysis_schema.json). 
+1. A structured schema that guides the workflow. See [`yt_analysis_schema.json`](yt_analysis_schema.json).
 2. An engine that connects input from the configuration file to the underlying code.
-3. The configuration file. 
+3. The configuration file.
 
 ## Installation
 
@@ -45,17 +45,17 @@ Let's call this `example.json` and fill it out:
 
 ```
 
-Once a configuraion file is complete, the file can be submitted as parameter to the program where the engine executes the code. The `run_analysis` module executes the code:
+Once a configuration file is complete, the file can be submitted to the `analysis_schema` command line interface,
 
 ```
-python3 run_analysis.py example.py
+analysis_schema run-analysis example.json
 ```
 
-After running that line of code in the command line, image files of a projection plot or other visauls are returned.
+After running that command, image files will be saved and their filenames will display at the command line.
 
 Documentation is coming soon to: https://analysis-schema.readthedocs.io.
 
-More examples can be seen with this virtual poster [describing Analysis Schema use cases](https://samwalkow.github.io/2021-scipy-poster-ScientificWorkflowDescription/) and in the examples folder above. 
+More examples can be seen with this virtual poster [describing Analysis Schema use cases](https://samwalkow.github.io/2021-scipy-poster-ScientificWorkflowDescription/) and in the examples folder above.
 
 ## Dependencies
 

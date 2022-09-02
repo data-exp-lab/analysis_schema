@@ -122,3 +122,18 @@ def _check_for_ds(model, dataset_set: set, data_store):
                         dataset_set = _check_for_ds(val, dataset_set, data_store)
 
     return dataset_set
+
+
+def load_and_run(model: Union[str, PosixPath, dict]):
+    """load and submit a json file workflow
+    Parameters:
+    ----------
+    model: str, Path or dict
+        the json model to load. Can be a path, a raw json string or a dictionary
+    Returns:
+    --------
+    A list of results from the json workflow.
+    """
+
+    wk = MainWorkflow(model)
+    return wk.run_all()
