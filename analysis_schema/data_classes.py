@@ -15,7 +15,7 @@ class Dataset(ytBaseModel):
     """
 
     DatasetName: str
-    fn: Path = Field(
+    fn: Optional[Path] = Field(
         alias="FileName",
         description="A string containing the (path to the file and the) file name",
     )
