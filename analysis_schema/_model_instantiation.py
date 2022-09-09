@@ -18,7 +18,7 @@ class YTRunner(abc.ABC):
 
 
 class FieldNames(YTRunner):
-    def process_pydantic(self, pydantic_instance: data_classes.FieldNames, ds=None):
+    def process_pydantic(self, pydantic_instance: data_classes.ytField, ds=None):
         return (pydantic_instance.field_type, pydantic_instance.field)
 
 
@@ -148,7 +148,10 @@ class Visualizations(YTRunner):
                 fi = yt_viz.save(fname)
             else:
                 fi = yt_viz.save()
-            return fi[0]
+            if len(fi) == 1:
+                return fi[0]
+            return fi  # multiple fields will return filenames in list
+
         elif viz_model.output_type == "html":
             return yt_viz._repr_html_()
 
@@ -185,7 +188,7 @@ def _is_yt_schema_instance(obj):
 
 
 yt_registry = RunnerRegistry()
-yt_registry.register(data_classes.FieldNames, FieldNames())
+yt_registry.register(data_classes.ytField, FieldNames())
 yt_registry.register(data_classes.Visualizations, Visualizations())
 yt_registry.register(data_classes.Dataset, Dataset())
 yt_registry.register(data_classes.DataSource3D, DataSource3D())
