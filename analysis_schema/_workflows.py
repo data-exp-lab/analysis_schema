@@ -80,6 +80,13 @@ class MainWorkflow:
         self.workflows_by_dataset = workflows_by_ds
         self.workflows_with_no_dataset = workflows_without_dataset
 
+        for dsname in workflows_by_ds.keys():
+            available = self.data_store.available_datasets
+            if dsname not in available:
+                raise ValueError(
+                    f"the {dsname} is missing a file. Please specify a file name."
+                )
+
     def run_all(self):
         output = []
 
@@ -99,7 +106,8 @@ class MainWorkflow:
 def _add_ds_to_store(pydantic_ds: Dataset, data_store):
     ds_nm = pydantic_ds.DatasetName
     fn = pydantic_ds.fn
-    data_store.store(fn, dataset_name=ds_nm)
+    if fn is not None:
+        data_store.store(fn, dataset_name=ds_nm)
     name_to_add = data_store.validate_name(fn, ds_nm)
     return name_to_add
 
