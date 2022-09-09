@@ -4,11 +4,7 @@ import sys
 import click
 
 import analysis_schema
-<<<<<<< HEAD
 from analysis_schema._workflows import load_and_run
-=======
-from analysis_schema._workflows import MainWorkflow
->>>>>>> phaseplot fixes, run_analysis in click
 
 
 @click.group()
