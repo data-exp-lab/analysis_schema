@@ -1,20 +1,15 @@
 {
   "$schema": "../analysis_schema/yt_analysis_schema.json",
-  "Data": [
-    {
-      "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030",
-      "DatasetName": "IG"
-    },
-    {
-      "FileName": "enzo_tiny_cosmology/DD0000/DD0000",
-      "DatasetName": "Enzo"
-    }
-  ],
   "Plot": [
     {
       "ProjectionPlot": {
         "Dataset": [
           {
+            "FileName": "IsolatedGalaxy/galaxy0030/galaxy0030",
+            "DatasetName": "IG"
+          },
+          {
+            "FileName": "enzo_tiny_cosmology/DD0000/DD0000",
             "DatasetName": "Enzo"
           }
         ],
@@ -25,19 +20,6 @@
         },
         "WeightFieldName": {
           "field": "temperature",
-          "field_type": "gas"
-        },
-        "output_type": "file"
-      },
-      "SlicePlot": {
-        "Axis": "z",
-        "Dataset": [
-          {
-            "DatasetName": "IG"
-          }
-        ],
-        "FieldNames": {
-          "field": "density",
           "field_type": "gas"
         },
         "output_type": "file"
