@@ -57,7 +57,13 @@ def test_execution_with_fake_ds(tmpdir):
         assert os.path.isfile(str(output_fi))
 
 
-def test_bad_ds_referencing():
-    jfi = "tests/wkflow_ds_nofilename_error.json"
+bad_wkflows = []
+for fi in os.listdir("tests"):
+    if "wkflow_" in fi and fi.endswith("error.json"):
+        bad_wkflows.append(os.path.join("tests", fi))
+
+
+@pytest.mark.parametrize("jfi", bad_wkflows)
+def test_bad_ds_referencing(jfi):
     with pytest.raises(ValueError):
         _ = MainWorkflow(jfi)

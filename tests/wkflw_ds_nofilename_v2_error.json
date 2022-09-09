@@ -1,0 +1,20 @@
+{
+    "$schema": "../analysis_schema/yt_analysis_schema.json",
+    "Plot": [
+      {
+        "SlicePlot": {
+            "Dataset": [
+                {
+                    "DatasetName": "IG"
+                }
+            ],
+            "Axis": "y",
+            "Fields": {
+                "field": "density",
+                "field_type": "gas"
+            },
+            "output_type": "file"
+        }
+      }
+    ]
+}
