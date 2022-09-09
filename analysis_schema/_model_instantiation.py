@@ -130,6 +130,25 @@ class YTGeneric(YTRunner):
         return yt_func(*the_args, **kwarg_dict)
 
 
+class PhasePlot(YTGeneric):
+    def process_pydantic(self, pydantic_instance: data_classes.PhasePlot, ds=None):
+        if ds is None:
+            raise RuntimeError("ds required for a PhasePlot")
+
+        # before running the usual process_pydantic, need to set data_source
+        # if it does not exist, using values from the instantiated dataset
+        if pydantic_instance.data_source is None:
+            # this is equivalent to ds.all_data()
+            reg = data_classes.Region(
+                center=ds.domain_center.d.tolist(),
+                left_edge=ds.domain_left_edge.d.tolist(),
+                right_edge=ds.domain_right_edge.d.tolist(),
+            )
+            pydantic_instance.data_source = reg
+
+        return super().process_pydantic(pydantic_instance, ds=ds)
+
+
 class Visualizations(YTRunner):
     def _sanitize_viz(self, viz_model, yt_viz):
         if viz_model.output_type == "file":
@@ -156,12 +175,12 @@ class Visualizations(YTRunner):
             return yt_viz._repr_html_()
 
     def process_pydantic(self, pydantic_instance: data_classes.Visualizations, ds=None):
-        generic_runner = YTGeneric()
         viz_results = {}
         for attr in pydantic_instance.__fields__.keys():
             viz_model = getattr(pydantic_instance, attr)  # SlicePlot, etc.
+            viz_runner = yt_registry.get(viz_model)
             if viz_model is not None:
-                result = generic_runner.run(viz_model, ds=ds)
+                result = viz_runner.run(viz_model, ds=ds)
                 nme = f"{ds.basename}_{attr}"
                 viz_results[nme] = self._sanitize_viz(viz_model, result)
         return viz_results
@@ -192,3 +211,4 @@ yt_registry.register(data_classes.ytField, FieldNames())
 yt_registry.register(data_classes.Visualizations, Visualizations())
 yt_registry.register(data_classes.Dataset, Dataset())
 yt_registry.register(data_classes.DataSource3D, DataSource3D())
+yt_registry.register(data_classes.PhasePlot, PhasePlot())

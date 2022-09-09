@@ -388,7 +388,14 @@
           "type": "string"
         },
         "Dataset": {
-          "$ref": "#/definitions/Dataset"
+          "title": "Dataset",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Dataset"
+          }
+        },
+        "DataSource": {
+          "$ref": "#/definitions/DataSource3D"
         },
         "xField": {
           "$ref": "#/definitions/ytField"
@@ -396,8 +403,8 @@
         "yField": {
           "$ref": "#/definitions/ytField"
         },
-        "zField(s)": {
-          "title": "Zfield(S)",
+        "zFields": {
+          "title": "Zfields",
           "anyOf": [
             {
               "$ref": "#/definitions/ytField"
@@ -460,7 +467,7 @@
         "output_type",
         "xField",
         "yField",
-        "zField(s)"
+        "zFields"
       ]
     },
     "Visualizations": {

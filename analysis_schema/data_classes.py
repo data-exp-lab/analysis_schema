@@ -140,10 +140,11 @@ class ProjectionPlot(ytVisualization):
 class PhasePlot(ytVisualization):
     """A yt phase plot"""
 
-    data_source: Optional[Dataset] = Field(alias="Dataset")
+    ds: Optional[List[Dataset]] = Field(alias="Dataset")
+    data_source: Optional[DataSource3D] = Field(alias="DataSource")
     x_field: ytField = Field(alias="xField")
     y_field: ytField = Field(alias="yField")
-    z_fields: Union[ytField, List[ytField]] = Field(alias="zField(s)")
+    z_fields: Union[ytField, List[ytField]] = Field(alias="zFields")
     weight_field: Optional[ytField] = Field(alias="WegihtFieldName")
     x_bins: Optional[int] = Field(alias="xBins")
     y_bins: Optional[int] = Field(alias="yBins")
