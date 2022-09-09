@@ -11,6 +11,7 @@ include tox.ini
 include *.md
 
 recursive-include tests *
+recursive-include tests *.json
 recursive-include examples *.md
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]

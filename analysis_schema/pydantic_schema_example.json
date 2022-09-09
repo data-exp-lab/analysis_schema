@@ -19,7 +19,7 @@
           }
         ],
         "Axis":"y",
-        "FieldNames": {
+        "Fields": {
           "field": "density",
           "field_type": "gas"
         },

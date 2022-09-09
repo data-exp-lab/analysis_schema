@@ -22,13 +22,11 @@ class Dataset(ytBaseModel):
     comments: Optional[str]
 
 
-class FieldNames(ytBaseModel):
+class ytField(ytBaseModel):
     """
-    Specify a field name and field type from the dataset
+    A field name and field type from the dataset
     """
 
-    # can't seeem to alias 'field' - maybe because the pydantic name 'Field' is called
-    # to do the alias?
     field: str
     field_type: str
     # unit - domain specific
@@ -90,7 +88,7 @@ class SlicePlot(ytVisualization):
     """Axis-aligned slice plot."""
 
     ds: Optional[List[Dataset]] = Field(alias="Dataset")
-    fields: FieldNames = Field(alias="FieldNames")
+    fields: Union[ytField, List[ytField]] = Field(alias="Fields")
     normal: str = Field(alias="Axis")
     center: Optional[Union[str, List[float]]] = Field(alias="Center")
     width: Optional[Union[List[str], Tuple[int, str]]] = Field(alias="Width")
@@ -106,7 +104,7 @@ class ProjectionPlot(ytVisualization):
     """Axis-aligned projection plot."""
 
     ds: Optional[List[Dataset]] = Field(alias="Dataset")
-    fields: FieldNames = Field(alias="FieldNames")
+    fields: Union[ytField, List[ytField]] = Field(alias="Fields")
     normal: Union[str, int] = Field(alias="Axis")
     # domain stuff here. Can we simplify? Contains operations
     # stuff too
@@ -116,7 +114,7 @@ class ProjectionPlot(ytVisualization):
     # widths
     width: Optional[Union[tuple, float]] = Field(alias="Width")
     axes_unit: Optional[str] = Field(alias="AxesUnit")
-    weight_field: Optional[FieldNames] = Field(alias="WeightFieldName")
+    weight_field: Optional[ytField] = Field(alias="WeightFieldName")
     max_level: Optional[int] = Field(alias="MaxLevel")
     # need to sort this design out
     # might need to be a seperate class since we need to limit the length
@@ -143,10 +141,10 @@ class PhasePlot(ytVisualization):
     """A yt phase plot"""
 
     data_source: Optional[Dataset] = Field(alias="Dataset")
-    x_field: FieldNames = Field(alias="xField")
-    y_field: FieldNames = Field(alias="yField")
-    z_fields: Union[FieldNames, List[FieldNames]] = Field(alias="zField(s)")
-    weight_field: Optional[FieldNames] = Field(alias="WegihtFieldName")
+    x_field: ytField = Field(alias="xField")
+    y_field: ytField = Field(alias="yField")
+    z_fields: Union[ytField, List[ytField]] = Field(alias="zField(s)")
+    weight_field: Optional[ytField] = Field(alias="WegihtFieldName")
     x_bins: Optional[int] = Field(alias="xBins")
     y_bins: Optional[int] = Field(alias="yBins")
     # different names and explaintions for accumulation and fractional and shading

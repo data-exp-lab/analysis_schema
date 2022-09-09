@@ -4,6 +4,7 @@ import sys
 import click
 
 import analysis_schema
+from analysis_schema._workflows import load_and_run
 
 
 @click.group()
@@ -84,6 +85,14 @@ def list_model_types():
     for name in sorted(analysis_schema.schema_model._model_types):
         model_class, _ = emr[name]
         click.echo(f"{name} ({model_class})")
+
+
+@main.command()
+@click.argument("input_file", type=click.Path())
+def run_analysis(input_file):
+    """submit a json file to run analysis"""
+    output = load_and_run(input_file)
+    print(output)
 
 
 server_defaults = analysis_schema.server.server_defaults

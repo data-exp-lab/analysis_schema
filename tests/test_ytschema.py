@@ -39,7 +39,7 @@ more_complete_example = r"""
           }
         ],
         "Axis":"y",
-        "FieldNames": {
+        "Fields": {
           "field": "density",
           "field_type": "gas"
         },
