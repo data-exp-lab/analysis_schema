@@ -59,11 +59,11 @@ def test_execution_with_fake_ds(tmpdir):
 
 bad_wkflows = []
 for fi in os.listdir("tests"):
-    if "wkflow_" in fi and fi.endswith("error.json"):
+    if "wkflw_" in fi and fi.endswith("error.json"):
         bad_wkflows.append(os.path.join("tests", fi))
 
 
 @pytest.mark.parametrize("jfi", bad_wkflows)
 def test_bad_ds_referencing(jfi):
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r".* is missing a file. .*"):
         _ = MainWorkflow(jfi)
